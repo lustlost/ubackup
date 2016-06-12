@@ -5,6 +5,8 @@ import time
 import requests
 import sys
 
+dashboard_url='http://ubackup.xxx.com:5000'
+
 def get_config_value(file,item,key):
     cf = ConfigParser.ConfigParser()
     cf.read(file)
@@ -19,5 +21,5 @@ if __name__ == '__main__':
     queue_name = 'uuzuback'
     headers = {'content-type': 'application/json'}
     queue_size=redis_h.llen(queue_name)
-    r=requests.patch('http://ubackup.youzu.com/api/cluster/'+cluster_id,data=json.dumps({'queue_size':queue_size}),headers=headers)
+    r=requests.patch('%s/api/cluster/'%dashboard_url+cluster_id,data=json.dumps({'queue_size':queue_size}),headers=headers)
     print r.text

@@ -3,6 +3,8 @@ from optparse import OptionParser
 import os,urllib,sys,time,hashlib,json,ConfigParser
 import requests
 
+dashboard_url = 'http://ubackup.xxx.com:5000'
+
 def get_config_value(file,item,key):
     cf = ConfigParser.ConfigParser()
     cf.read(file)
@@ -24,5 +26,5 @@ if __name__ == '__main__':
     size,used = getDiskInfo(backup_path).values()
     data={'size':size,'used':used}
     headers = {'content-type': 'application/json'}
-    r=requests.patch('http://ubackup.youzu.com/api/node/'+node_id,data=json.dumps(data),headers=headers)
+    r=requests.patch('%s/api/node/'%dashboard_url+node_id,data=json.dumps(data),headers=headers)
     print r.text
