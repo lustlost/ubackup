@@ -20,5 +20,5 @@ a = {'mappings': {'table': {
                     }
                 }
 }
-r=requests.put('/cmdb_statistics/'%es_url,data=json.dumps(a))
+r=requests.put('%s/cmdb_statistics/'%es_url,data=json.dumps(a))
 print r.text
