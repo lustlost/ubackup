@@ -11,14 +11,14 @@
 ### 支持任意备份
 - 此系统只负责备份异地传输，不负责如何备份
 具体备份脚本用户自行编写，只要按照要求把备份信息写入对应日志文件即可
-
-
+- 备份队列优先级控制，重要的备份优先拉取到异地
 
 ### 支持以下报警类型
-
 - 正常备份脚本出错(脚本退出码非0)
 - 超过规定时间未备份
 - 非法备份
+
+针对报警做了一个chrome插件提醒的功能
 
 ### 支持后端集群线性扩展
 
@@ -45,3 +45,162 @@
 
 ### 集群管理页面
 ![alert](https://cloud.githubusercontent.com/assets/3296743/15818209/9743a77e-2c0e-11e6-9296-6785873788d8.png)
+
+## 部署方式
+
+### 安装基础环境
+安装好 ElasticSearch,Redis，下载源码
+```
+git clone git@github.com:lustlost/ubackup.git
+```
+初始化ES Mapper
+```
+python ubackup/server/create_es_mapper.py
+```
+
+
+### 客户端
+
+```
+yum install python-redis -y
+yum install rsync xinetd -y
+sed -i '/disable/ s#yes#no#g' /etc/xinetd.d/rsync
+cd ubackup/client
+cp uuzuback.conf /etc/
+
+```
+确保/etc/rsyncd.conf配置文件包含以下模块（具体可以根据实际情况修改）
+
+```
+[backup]
+path = /data/backup/
+hosts allow = 0.0.0.0/0
+read only = yes
+```
+
+/etc/init.d/xinetd restart
+
+
+配置文件有2个样例section
+```
+[global]
+server_id = 111111  #服务器ID，唯一标识，可以用资产编号
+game_id = 31  #业务ID，从Dashboard的业务管理中获取
+op_id = 1 #保留字段，随便填
+interval = 3600 #设定备份间隔时间
+redis_host = 0.0.0.0 #服务端redis地址
+redis_port = 6381 #服务端redis端口
+redis_queue = uuzuback #服务端redis队列名称
+my_ip = 127.0.0.0.1 #本机IP
+log = /var/log/uuzu_back.log #日志路径
+error_log = /var/log/uuzu_back.error #错误日志路径
+
+[mysql3308]   #一个section配置一个需要备份的实例
+back_type = mysql  #备份类型
+instance = 3308 #实例号，数据库类的备份可以用端口号表示
+rsync_model = backup/database_3308 #rsync模块名称
+back_dir = /data/backup/database_3308/ #备份文件路径
+back_log = /var/log/mysql_3308.log #备份信息路径
+last_all_log = /var/log/last_3308.log #上一次全备路径，如果不区分全备增量，此配置可以省略
+script = sh /usr/local/uuzuback/mysql_backup.sh /etc/my.cnf #备份脚本
+
+[redis6379]
+back_type = redis
+instance = 6381
+rsync_model = backup/redisbase_6381
+back_dir = /data/backup/redisbase_6381/
+back_log = /var/log/redis_6381.log
+script = sh /usr/local/uuzuback/redis_backup.sh /data/conf/redis_conf
+```
+
+把python uuzuback_client.py 加入crontab，cron的间隔时间和配置文件中的interval保持一致
+
+
+### 服务端:
+安装依赖
+```
+yum install supervisor MySQL-python -y
+pip install redis
+cd ubackup/server/
+cp uuzuback.conf /etc/
+
+```
+
+配置文件
+```
+[global]
+work_thread = 4 #执行rsync拉取的线程数量
+rsync_bwlimit = 62000 #rsync带宽限制
+server_root_path = /backup/uuzubackup/ #本地备份存放根目录
+reserve = 1000 #本机保留大小
+interval = 0 #每个线程拉取备份后，休息的秒数，可以用来控制拉取速度的
+redis_host = 127.0.0.1 #redis地址
+redis_port = 6381 #redis端口
+redis_queue = level1 uuzuback_f #队列名称，越前面的优先级越高
+log = /var/log/uuzuback.log 
+error_log = /var/log/uuzuback.error
+myip = 127.0.0.1 #本机IP
+retry = 3 #拉取重试次数
+message_redis_host=127.0.0.1 #全局队列地址
+message_redis_port=6381 #全局队列端口
+message_queue=message #全局队列名称
+mysqlkeeptime = 15 #保留字段
+rediskeeptime = 15 #保留字段
+node_id=5 #节点ID，从Dashboard中获取，用于上报节点信息用
+```
+
+启动服务
+/etc/supervisord.conf 加入配置段，server端执行文件路径根据实际情况配置
+打开 to_es.py
+修改5-9行的redis,es,dashboard连接信息
+
+```
+[program:uuzu_backup_server]
+command=/usr/bin/python /usr/local/uuzuback/uuzuback_server.py
+autorestart=true
+autostart=true
+stdout_logfile=/var/log/uuzu_backup_server.log
+
+[program:to_es]
+command=/usr/bin/python /usr/local/uuzuback/to_es.py
+autorestart=true
+autostart=true
+stdout_logfile=/var/log/uuzu_backup_to_es.log
+```
+
+### Dashboard:
+```
+cd ubackup/dashboard
+pip install -r requirements.txt
+```
+
+修改config.py，配置好数据库连接串,执行
+
+```
+python -c 'from myapp import db;db.create_all()'
+```
+启动服务
+```
+python runserver.py
+```
+访问5000端口即可
+
+### 节点信息上报:
+
+队列信息上报
+```
+在redis服务器上
+修改 server/update_queue.py中的dashboard_url
+添加crontab
+python update_queue.py {{ID}} 加入crontab ，ID
+配置文件使用任意节点的配置
+```
+磁盘信息上报
+```
+在节点服务器上
+修改 server/update_disk.py中的dashboard_url
+添加corntab
+python update_disk.py 加入crontab
+配置文件中的node_id配置的ID，配置为Dashboard上的节点ID
+
+```
