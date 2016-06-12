@@ -1,0 +1,89 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>TabStrip - Tab Placement</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/integralui.tabstrip.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-flat-blue.css" />
+    <script type="text/javascript" src="../../../external/angular.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.tabstrip.min.js"></script>
+    <script type="text/javascript">
+ 		angular
+			.module("appModule", ["integralui"])
+			.controller("appCtrl", ["$scope", "IntegralUITabStripService", function($scope, $ctrlService){
+                $scope.ctrlName = "ctrlSample";
+                $scope.placement = 'top';
+
+                $scope.tabs = [
+                    { 
+                        name: 'tab1',
+                        text: 'Tab 1',
+                        body: 'Curabitur pretium tincidunt lacus. Nulla gravida orci a odio. Nullam varius, turpis et commodo pharetra, est eros bibendum elit, nec luctus magna felis sollicitudin mauris. Integer in mauris eu nibh euismod gravida. Duis ac tellus et risus vulputate vehicula. Donec lobortis risus a elit. Etiam tempor.'
+                    },
+                    { 
+                        name: 'tab2',
+                        text: 'Tab 2',
+                        body: 'Pellentesque malesuada nulla a mi. Duis sapien sem, aliquet nec, commodo eget, consequat quis, neque. Aliquam faucibus, elit ut dictum aliquet, felis nisl adipiscing sapien, sed malesuada diam lacus eget erat. Cras mollis scelerisque nunc. Nullam arcu. Aliquam consequat.'
+                    },
+                    { 
+                        name: 'tab3',
+                        text: 'Tab 3',
+                        body: 'Fusce convallis, mauris imperdiet gravida bibendum, nisl turpis suscipit mauris, sed placerat ipsum urna sed risus. In convallis tellus a mauris. Curabitur non elit ut libero tristique sodales. Mauris a lacus. Donec mattis semper leo. In hac habitasse platea dictumst.'
+                    }
+                ];
+		}]);
+    </script>
+    <style type="text/css">
+        .directive
+        {
+            height: 200px;
+        }
+        .custom-content
+        {
+            margin: 0;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span style="color:#c60d0d">IntegralUI</span> Studio <span style="font-size:0.75em; font-style:italic">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content" ng-app="appModule">
+        <div class="feature" ng-controller="appCtrl">
+	        <h2 class="feature-title">TabStrip / Tab Placement</h2>
+	        <div class="feature-content">
+                <iui-tabstrip name="{{ctrlName}}" class="directive" tabs="tabs" tabstrip-placement="{{placement}}">
+                    <iui-tab ng-repeat="tab in tabs" name="{{tab.name}}" heading="{{tab.text}}">
+                        <p class="custom-content">{{tab.body}}</p>
+                    </iui-tab>
+                </iui-tabstrip>
+                <div class="control-panel" style="margin-left:50px;">
+                    <label>Choose TabStrip Placement</label><br /><br />
+                    <label><input type="radio" ng-model="placement" value="top" />Top</label><br />
+                    <label><input type="radio" ng-model="placement" value="right" />Right</label><br />
+                    <label><input type="radio" ng-model="placement" value="bottom" />Bottom</label><br />
+                    <label><input type="radio" ng-model="placement" value="left" />Left</label><br />
+                </div>
+                <br style="clear:both;"/>
+                <div class="feature-help">
+                    <p><span class="initial-space"></span>This sample demonstrates positioning of tabs on different sides. The TabStrip directive has a property <span style="color:#c60d0d">tabstripPlacement</span>, which can accept one of these values:
+                        <ul class="feature-points">
+                            <li><span style="color:#c60d0d">top</span> - tabs are placed on top side</li>
+                            <li><span style="color:#c60d0d">right</span> - tabs are placed on right side</li>
+                            <li><span style="color:#c60d0d">bottom</span> - tabs are placed on bottom side</li>
+                            <li><span style="color:#c60d0d">left</span> - tabs are placed on left side</li>
+                        </ul>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

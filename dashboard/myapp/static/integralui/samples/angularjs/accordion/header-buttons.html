@@ -1,0 +1,184 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>Accordion - Header Buttons</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/integralui.accordion.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-light.css" />
+    <script type="text/javascript" src="../../../external/angular.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.accordion.min.js"></script>
+    <script type="text/javascript">
+ 		angular
+			.module("appModule", ["integralui"])
+			.controller("appCtrl", ["$scope", "IntegralUIAccordionService", function($scope, $ctrlService){
+                $scope.ctrlName = "ctrlSample";
+                $scope.groups = [
+                    { id: 1, name: 'Group1', text: 'Header 1', locked: false },
+                    { id: 2, name: 'Group2', text: 'Header 2', locked: false },
+                    { id: 3, name: 'Group3', text: 'Header 3', locked: false }
+                ];
+
+                var getCurrentSelection = function(){
+                    return $ctrlService.selectedGroup($scope.ctrlName);
+                }
+                
+                var getNextGroup = function(group){
+                    var foundGroup = null;
+
+                    var index = $scope.groups.indexOf(group);
+                    for (var i = index+1; i < $scope.groups.length; i++){
+                        if ($scope.groups[i].locked == false){
+                            foundGroup = $scope.groups[i];
+                            break;
+                        }
+                    }
+
+                    if (!foundGroup){
+                        for (var i = index-1; i >= 0; i--){
+                            if ($scope.groups[i].locked == false){
+                                foundGroup = $scope.groups[i];
+                                break;
+                            }
+                        }
+                    }
+
+                    return foundGroup;
+                }
+               
+                $scope.onRecycle = function(group){
+                    alert("Recycle button clicked for: " + group.text);
+                }
+                
+                $scope.onLock = function(group){
+                    group.locked = !group.locked;
+
+                    if (group.locked && group == getCurrentSelection()){
+                        var nextGroup = getNextGroup(group);
+                        $ctrlService.selectedGroup($scope.ctrlName, nextGroup);
+                    }
+                }
+                
+                $scope.onDelete = function(group){
+                    $ctrlService.removeGroup($scope.ctrlName, group);
+                }
+
+                $scope.onBeforeSelect = function(e){
+                    if (e.group.locked)
+                        return false;
+                }
+		}]);
+    </script>
+    <style type="text/css">
+        .directive
+        {
+        }
+        .iui-accordion-group-header
+        {
+        }
+        .iui-accordion-group-header-selected
+        {
+            color: #c60d0d;
+            font-weight: bold;
+        }
+        .header-title
+        {
+            display: inline-block;
+            padding-top: 3px;
+            vertical-align: middle;
+        }
+        .group-content
+        {
+            padding: 25% 10px;
+            text-align: center;
+        }
+        .icons
+        {
+            background-image: url(../../../resources/header-icons.png);
+            border: thin solid transparent;
+            display: block;
+        }
+        .delete
+        {
+            background-position: -17px 0;
+        }
+        .lock
+        {
+            background-position: -34px 0;
+        }
+        .lock-open
+        {
+            background-position: -54px 0;
+        }
+        .recycle
+        {
+            background-position: -72px 0;
+        }
+        .toolbar
+        {
+            margin: 0;
+            padding: 0;
+            float: right;
+        }
+        .header-button
+        {
+            display: inline-block;
+            border: thin solid transparent;
+            margin: 0;
+            padding: 2px 2px 3px 2px;
+        }
+        .header-button:hover
+        {
+            background-color: white;
+            border-color: #969696;
+        }
+    </style>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span style="color:#c60d0d">IntegralUI</span> Studio <span style="font-size:0.75em; font-style:italic">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content" ng-app="appModule">
+        <div class="feature" ng-controller="appCtrl">
+	        <h2 class="feature-title">Accordion / Header Buttons</h2>
+	        <div class="feature-content">
+                <div class="panel">
+                    <iui-accordion name="{{ctrlName}}" class="directive" groups="groups" before-select="onBeforeSelect(e)">
+                        <iui-accordion-group ng-repeat="group in groups" name="{{group.name}}">
+                            <iui-accordion-header>
+                                <span class="header-title">{{group.text}}</span>
+                                <div class="toolbar" ng-mousedown="$event.stopPropagation();">
+                                    <div class="header-button"><span class='icons recycle' ng-click="onRecycle(group)"></span></div>
+                                    <div class="header-button"><span class='icons' ng-class="group.locked == false ? 'lock-open' : 'lock'" ng-click="onLock(group)"></span></div>
+                                    <div class="header-button"><span class='icons delete' ng-click="onDelete(group)"></span></div>
+                                </div>
+                            </iui-accordion-header>
+                            <div class="group-content">
+                                {{group.name}} Content
+                            </div>
+                        </iui-accordion-group>
+                    </iui-accordion>
+                </div>
+                <div style="float:right; width: 100px; font-size:0.8em; white-space:nowrap;">
+                </div>
+                <br style="clear:both;"/>
+                <div class="feature-help">
+                    <p><span class="initial-space"></span>An example on how to create a custom header with buttons in Accordion directive. Each group shows a title and three buttons, that when clicked will perfrom a different action:
+                        <ul class="feature-points">
+                            <li><span style="color:#c60d0d">recycle</span> - shows a popup message</li>
+                            <li><span style="color:#c60d0d">lock</span> - locks the corresponding group and prevents it from expanding</li>
+                            <li><span style="color:#c60d0d">delete</span> - removes the corresponding group from the Accordion</li>
+                        </ul>
+                    </p>
+                    <p><span class="initial-space"></span>The Accordion header is fully customizable, you can add any custom content using HTML elements or other directives.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,90 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>TabStrip - Placement</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/jquery.integralui.tabstrip.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-blue.css" />
+    <script type="text/javascript" src="../../../external/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="../../../external/jquery.ui.core.min.js"></script>
+    <script type="text/javascript" src="../../../external/jquery.ui.widget.min.js"></script>
+    <script type="text/javascript" src="../../../js/jquery.integralui.widget.min.js"></script>
+    <script type="text/javascript" src="../../../js/jquery.integralui.tabstrip.min.js"></script>
+    <script type="text/javascript">
+        var $tab = null;
+        $(document).ready(function() {
+            $tab = $('#tabstrip').tabstrip();
+        });
+
+        function changePlacement(elem){
+            var placement = "top";
+            
+            if (elem === frm.placement[1])
+                placement = "right";
+            else if (elem === frm.placement[2])
+                placement = "bottom";
+            else if (elem === frm.placement[3])
+                placement = "left";
+                
+            $tab.tabstrip("option", "tabStripPlacement", placement);
+        }
+    </script>
+    <style type="text/css">
+        .widget
+        {
+	        height: 300px;
+        }
+    </style>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span class="product-name">IntegralUI</span> Studio <span class="product-platform">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content">
+        <div class="feature">
+	        <h2 class="feature-title">TabStrip / Placement</h2>
+	        <div class="feature-content">
+                <div id="tabstrip" class="widget"> 
+                    <ul>
+                        <li><span class="icons books" data-element="icon"></span><span>Books</span></li>
+                        <li><span class="icons music" data-element="icon"></span><span>Music</span></li>
+                        <li><span>Sports</span></li>
+                        <li><span>Video Games</span></li>
+                        <li><span class="icons time" data-element="icon"></span><span>Watches</span></li>
+                    </ul>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+                <div class="control-panel" style="width:150px">
+                    <form name="frm">
+                        <label><input type="radio" id="radio-top" name="placement" checked="checked" onclick="changePlacement(this)" />Top</label><br />
+                        <label><input type="radio" id="radio-right" name="placement" onclick="changePlacement(this)" />Right</label><br />
+                        <label><input type="radio" id="radio-bottom" name="placement" onclick="changePlacement(this)" />Bottom</label><br />
+                        <label><input type="radio" id="radio-left" name="placement" onclick="changePlacement(this)" />Left</label><br />
+                    </form>
+                </div>
+                <br style="clear:both;"/>
+                <div class="feature-help">
+                    <p><span class="initial-space"></span>In this sample you can change on which side tabs are placed. The TabStrip widget has a property <span style="color:#c60d0d">tabStripPlacement</span>, which can accept one of these four values:
+                        <ul class="feature-points">
+                            <li><span style="color:#c60d0d">top</span> - tabs are placed on top side, default</li>
+                            <li><span style="color:#c60d0d">right</span> - tabs are placed on right side</li>
+                            <li><span style="color:#c60d0d">bottom</span> - tabs are placed on bottom side</li>
+                            <li><span style="color:#c60d0d">left</span> - tabs are placed on left side</li>
+                        </ul>
+                    </p>
+                    <p><span class="initial-space"></span>If the size of all tabs is longer then widget size, navigation buttons will appear, which you can use to scroll among tabs.</p>
+               </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

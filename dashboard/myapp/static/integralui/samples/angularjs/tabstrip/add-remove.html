@@ -1,0 +1,187 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>TabStrip - Add/Remove Tabs</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/integralui.tabstrip.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-flat-blue.css" />
+    <script type="text/javascript" src="../../../external/angular.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.tabstrip.min.js"></script>
+    <script type="text/javascript">
+ 		angular
+			.module("appModule", ["integralui"])
+			.controller("appCtrl", ["$scope", "IntegralUITabStripService", "$timeout", function($scope, $ctrlService, $timeout){
+                $scope.ctrlName = "ctrlSample";
+                $scope.insertPos = 0;
+                $scope.removePos = 0;
+                $scope.disableButtons = false;
+                $scope.tabs = [
+                    { id: 1, name: 'Tab1', text: 'Tab 1' },
+                    { id: 2, name: 'Tab2', text: 'Tab 2' },
+                    { id: 3, name: 'Tab3', text: 'Tab 3' }
+                ];
+                
+                var tabCount = $scope.tabs.length;
+
+                var getCurrentSelection = function(){
+                    return $ctrlService.selectedTab($scope.ctrlName);
+                }
+                
+                var createNewTab = function(){
+                    tabCount++;
+                    return { id: tabCount, name: "Tab" + tabCount, text: "Tab " + tabCount };
+                }
+               
+                $scope.add = function(){
+                    $ctrlService.addTab($scope.ctrlName, createNewTab());
+                }
+                
+                $scope.insertAfter = function(){
+                    $ctrlService.insertTabAfter($scope.ctrlName, createNewTab(), getCurrentSelection());
+                }
+                
+                $scope.insertAt = function(){
+                    $ctrlService.insertTabAt($scope.ctrlName, createNewTab(), $scope.insertPos);
+                }
+                
+                $scope.insertBefore = function(){
+                    $ctrlService.insertTabBefore($scope.ctrlName, createNewTab(), getCurrentSelection());
+                }
+                
+                $scope.remove = function(){
+                    $ctrlService.removeTab($scope.ctrlName, getCurrentSelection());
+                }
+                
+                $scope.removeAt = function(){
+                    $ctrlService.removeTabAt($scope.ctrlName,  $scope.removePos);
+                }
+                
+                $scope.clear = function(){
+                    $ctrlService.clearTabs($scope.ctrlName);
+                    tabCount = 0;
+                }
+
+                $scope.onClear = function(e){
+                    updateTabStripAppearance();
+                }
+
+                $scope.onTabAdded = function(e){
+                    updateTabStripAppearance();
+
+                    $ctrlService.selectedTab($scope.ctrlName, e.obj);
+                }
+
+                $scope.onTabRemoved = function(e){
+                    updateTabStripAppearance();
+                }
+
+                var updateTabStripAppearance = function(){
+                    var updateTimer = $timeout(function(){
+                        if ($scope.tabs.length == 0){
+                            $scope.ctrlBackground = 'white';
+                            $scope.ctrlBorder = 'thin solid gray';
+                        }
+                        else {
+                            $scope.ctrlBackground = 'transparent';
+                            $scope.ctrlBorder = 'thin solid transparent';
+                        }
+
+                        $scope.disableButtons = $scope.tabs.length > 0 ? false : true;
+
+                        $timeout.cancel(updateTimer);
+                    }, 1);
+                }
+                
+                $scope.ctrlEvents = {
+                    clear: function(){
+                        return $scope.onClear();
+                    },
+                    tabAdded: function(e){
+                        return $scope.onTabAdded(e);
+                    },
+                    tabRemoved: function(e){
+                        return $scope.onTabRemoved(e);
+                    }
+                }
+		}]);
+    </script>
+    <style type="text/css">
+        .directive
+        {
+            height: 300px;
+        }
+        button
+        {
+            margin: 5px 0;
+            width: 125px;
+        }
+        .inline-block
+        {
+            display: inline-block;
+            margin: 3px 0;
+        }
+        .inline-button
+        {
+            width: 85px;
+            margin-right: 3px
+        }
+        .tab-content
+        {
+            padding: 30% 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span style="color:#c60d0d">IntegralUI</span> Studio <span style="font-size:0.75em; font-style:italic">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content" ng-app="appModule">
+        <div class="feature" ng-controller="appCtrl">
+	        <h2 class="feature-title">TabStrip / Add Remove Tabs</h2>
+	        <div class="feature-content">
+                <iui-tabstrip name="{{ctrlName}}" class="directive" tabs="tabs" events="ctrlEvents" iui-style="background:{{ctrlBackground}};border:{{ctrlBorder}}" show-close-button="false">
+                    <iui-tab ng-repeat="tab in tabs" name="{{tab.name}}" heading="{{tab.text}}">
+                        <div class="tab-content">
+                            {{tab.name}} Content
+                        </div>
+                    </iui-tab>
+                </iui-tabstrip>
+                <div class="control-panel" align="center" style="width:150px">
+                    <button ng-click="add()">Add</button><br />
+                    <button ng-click="insertAfter()" ng-disabled="disableButtons">Insert After</button><br />
+                    <button ng-click="insertBefore()" ng-disabled="disableButtons">Insert Before</button><br />
+                    <div class="inline-block">
+                       <button class="inline-button" ng-click="insertAt()">Insert At</button><input ng-model="insertPos" type="number" min="0" max="100" style="width:35px" />
+                    </div>
+                    <button ng-click="remove()" ng-disabled="disableButtons">Remove</button><br />
+                    <div class="inline-block">
+                        <button class="inline-button" ng-click="removeAt()" ng-disabled="disableButtons">Remove At</button><input ng-model="removePos" type="number" min="0" max="100" style="width:35px" /><br />
+                    </div>
+                    <button ng-click="clear()" ng-disabled="disableButtons">Clear</button>
+                </div>
+                <br style="clear:both;"/>
+                <div class="feature-help">
+                    <p>In this sample you can create and/or modify a TabStrip using several different methods:
+                        <ul class="feature-points">
+                            <li><span style="color:#c60d0d">addTab</span> - adds a new tab</li>
+                            <li><span style="color:#c60d0d">insertTabAfter</span> - adds a new tab after specified tab (in this example the selected tab)</li>
+                            <li><span style="color:#c60d0d">insertTabAt</span> - adds a new tab at specified position</li>
+                            <li><span style="color:#c60d0d">insertTabBefore</span> - adds a new tab before specified tab (in this example the selected tab)</li>
+                            <li><span style="color:#c60d0d">removeTab</span> - removes a tab (in this sample the selected tab)</li>
+                            <li><span style="color:#c60d0d">removeTabAt</span> - removes a tab at specified position from parent collection</li>
+                            <li><span style="color:#c60d0d">clearTabs</span> - removes all tabs</li>
+                        </ul>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,246 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>Accordion - Context Menu</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/integralui.accordion.css" />
+    <link rel="stylesheet" href="../../../css/integralui.contextmenu.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-flat-blue.css" />
+    <script type="text/javascript" src="../../../external/angular.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.accordion.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.contextmenu.min.js"></script>
+    <script type="text/javascript">
+ 		angular
+			.module("appModule", ["integralui"])
+			.controller("appCtrl", ["$scope", "IntegralUIAccordionService", function($scope, $ctrlService){
+                $scope.ctrlName = "ctrlSample";
+
+                $scope.ctrlBackground = 'transparent';
+                $scope.ctrlBorder = 'thin solid transparent';
+                $scope.visibleGroups = 3;
+
+                $scope.groups = [
+                    { 
+                        name: 'group1',
+                        text: 'Group 1',
+                        body: 'Curabitur pretium tincidunt lacus. Nulla gravida orci a odio. Nullam varius, turpis et commodo pharetra, est eros bibendum elit, nec luctus magna felis sollicitudin mauris. Integer in mauris eu nibh euismod gravida. Duis ac tellus et risus vulputate vehicula. Donec lobortis risus a elit. Etiam tempor.'
+                    },
+                    { 
+                        name: 'group2',
+                        text: 'Group 2',
+                        body: 'Pellentesque malesuada nulla a mi. Duis sapien sem, aliquet nec, commodo eget, consequat quis, neque. Aliquam faucibus, elit ut dictum aliquet, felis nisl adipiscing sapien, sed malesuada diam lacus eget erat. Cras mollis scelerisque nunc. Nullam arcu. Aliquam consequat.'
+                    },
+                    { 
+                        name: 'group3',
+                        text: 'Group 3',
+                        body: 'Fusce convallis, mauris imperdiet gravida bibendum, nisl turpis suscipit mauris, sed placerat ipsum urna sed risus. In convallis tellus a mauris. Curabitur non elit ut libero tristique sodales. Mauris a lacus. Donec mattis semper leo. In hac habitasse platea dictumst.'
+                    }
+                ];
+
+                var groupCount = $scope.groups.length;
+
+                var getCurrentSelection = function(){
+                    return $ctrlService.selectedGroup($scope.ctrlName);
+                }
+                
+                var createNewGroup = function(){
+                    groupCount++;
+                    return { name: "group" + groupCount, text: "Group " + groupCount, body: 'Group ' + groupCount + " Content" };
+                }
+                
+                var getNextGroup = function(group){
+                    var foundGroup = null;
+
+                    var index = $scope.groups.indexOf(group);
+                    for (var i = index+1; i < $scope.groups.length; i++){
+                        if ($scope.groups[i].visible != false){
+                            foundGroup = $scope.groups[i];
+                            break;
+                        }
+                    }
+
+                    if (!foundGroup){
+                        for (var i = index-1; i >= 0; i--){
+                            if ($scope.groups[i].visible != false){
+                                foundGroup = $scope.groups[i];
+                                break;
+                            }
+                        }
+                    }
+
+                    return foundGroup;
+                }
+
+                var defaultMenuItems = [
+                    { text: 'Add Group', key: 'ADD_TAB' },
+                    { text: 'Insert Group Before', key: 'INSERT_TAB_BEFORE' },
+                    { text: 'Insert Group After', key: 'INSERT_TAB_AFTER' },
+                    { text: 'Remove Group', key: 'REMOVE_TAB', enabled: $scope.visibleGroups > 0 }
+                ];
+
+                var visibilityMenuItems = [];
+
+                var getCheckIcon = function(group){
+                    return group.visible != false ? 'icons check-mark' : null;
+                }
+
+                var updateMenu = function(){
+                    $scope.groupMenu.items.length = 0;
+                    $scope.visibleGroups = 0;
+
+                    for (var i = 0; i < defaultMenuItems.length; i++)
+                        $scope.groupMenu.items.push(defaultMenuItems[i]);
+
+                    visibilityMenuItems.length = 0;
+
+                    var menuItem = { type: "separator" };
+                    if ($scope.groups.length > 0){
+                        $scope.groupMenu.items.push(menuItem);
+
+                        for (var i = 0; i < $scope.groups.length; i++){
+                            menuItem = { 
+                                icon: getCheckIcon($scope.groups[i]),
+                                text: $scope.groups[i].text
+                            }
+
+                            if ($scope.groups[i].visible != false)
+                                $scope.visibleGroups++;
+
+                            visibilityMenuItems.push(menuItem);
+                            $scope.groupMenu.items.push(menuItem);
+                        }
+                    }
+
+                    $scope.groupMenu.items[1].enabled = $scope.visibleGroups > 0;
+                    $scope.groupMenu.items[2].enabled = $scope.visibleGroups > 0;
+                    $scope.groupMenu.items[3].enabled = $scope.visibleGroups > 0;
+                }
+
+                $scope.groupMenu = {
+                    itemIcon: 'icons empty',
+                    items: [],
+                    itemClick: function(e){
+                        if (e.item){
+                            $ctrlService.suspendLayout($scope.ctrlName);
+
+                            var selGroup = getCurrentSelection();
+
+                            switch (e.item.key){
+                                case 'ADD_TAB':
+                                    $ctrlService.addGroup($scope.ctrlName, createNewGroup());
+                                    break;
+
+                                case 'INSERT_TAB_BEFORE':
+                                    $ctrlService.insertGroupBefore($scope.ctrlName, createNewGroup(), getCurrentSelection());
+                                    break;
+
+                                case 'INSERT_TAB_AFTER':
+                                    $ctrlService.insertGroupAfter($scope.ctrlName, createNewGroup(), getCurrentSelection());
+                                    break;
+
+                                case 'REMOVE_TAB':
+                                    $ctrlService.removeGroup($scope.ctrlName, getCurrentSelection());
+                                    break;
+
+                                default:
+                                    var index = visibilityMenuItems.indexOf(e.item);
+                                    if (index >= 0 && index < $scope.groups.length){
+                                        $scope.groups[index].visible = $scope.groups[index].visible == undefined ? false : !$scope.groups[index].visible;
+
+                                        // Make sure correct group is selected
+                                        if ($scope.groups[index].visible != false)
+                                            $ctrlService.selectedGroup($scope.ctrlName, $scope.groups[index]);
+                                        else if ($scope.groups[index] == selGroup)
+                                            $ctrlService.selectedGroup($scope.ctrlName, getNextGroup(selGroup));
+                                    }
+                                    break;
+                            }
+
+                            updateMenu();
+
+                            $ctrlService.resumeLayout($scope.ctrlName);
+                        }
+                    }
+                }
+
+                updateMenu();
+
+                $scope.$watch("visibleGroups", function(newValue){
+                    if (newValue == 0){
+                        $scope.ctrlBackground = 'white';
+                        $scope.ctrlBorder = 'thin solid gray';
+                    }
+                    else {
+                        $scope.ctrlBackground = 'transparent';
+                        $scope.ctrlBorder = 'thin solid transparent';
+                    }
+                });
+
+
+                $scope.onGroupAdded = function(e){
+                    $ctrlService.selectedGroup($scope.ctrlName, e.obj);
+                }
+		}]);
+    </script>
+    <style type="text/css">
+        .directive
+        {
+            height: 200px;
+        }
+        .custom-content
+        {
+            margin: 0;
+            padding: 5px;
+            height: 150px;
+        }
+        .iui-contextmenu-block
+        {
+            border-radius: 0;
+            padding: 2px;
+        }
+        .icons
+        {
+            margin-right: 5px;
+            vertical-align: middle;
+        }
+        .check-mark
+        {
+            background-position: -96px -48px;
+        }
+    </style>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span style="color:#c60d0d">IntegralUI</span> Studio <span style="font-size:0.75em; font-style:italic">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content" ng-app="appModule">
+        <div class="feature" ng-controller="appCtrl">
+	        <h2 class="feature-title">Accordion / Context Menu</h2>
+	        <div class="feature-content">
+                <iui-accordion name="{{ctrlName}}" class="directive" groups="groups" iui-contextmenu="groupMenu" group-added="onGroupAdded(e)" iui-style="background:{{ctrlBackground}};border:{{ctrlBorder}}">
+                    <iui-accordion-group ng-repeat="group in groups" name="{{group.name}}">
+                        <iui-accordion-header iui-contextmenu="groupMenu">
+                            {{group.text}}
+                        </iui-accordion-header>
+                        <p class="custom-content">{{group.body}}</p>
+                    </iui-groupgroup>
+                </iui-accordion>
+                <div class="control-panel" style="margin-left:50px;">
+                </div>
+                <br style="clear:both;"/>
+                <div class="feature-help">
+                    <p><span class="initial-space"></span>In this sample you can see how to attach context menu to the Accordion and to each group.</p>
+                    <p><span class="initial-space"></span>By right-clicking on some group, a context menu will pop-up showing options specific for that group. To simplify our example, all groups have the same context menu, but you can apply a different one for a specific group, if required.</p>
+                    <p><span class="initial-space"></span>We are using the <a href="../menu/context-menu.html">IntergralUI ContextMenu</a> directive to apply a context menu to each group. This directive accepts an object with all menu options which will appear in context menu when group is right-clicked.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

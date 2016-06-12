@@ -1,0 +1,125 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>Menu - Overview</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/jquery.integralui.menu.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-blue.css" />
+    <script type="text/javascript" src="../../../external/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="../../../external/jquery.ui.core.min.js"></script>
+    <script type="text/javascript" src="../../../external/jquery.ui.widget.min.js"></script>
+    <script type="text/javascript" src="../../../js/jquery.integralui.widget.min.js"></script>
+    <script type="text/javascript" src="../../../js/jquery.integralui.menu.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var $menuBar = $('#menu').menu({
+                alignment: 'center'
+                });
+        });
+    </script>
+    <style type="text/css">
+        .widget
+        {
+	        width: 600px;
+	        height: 0;
+        }
+        .control-panel
+        {
+	        width: 250px;
+        }
+    </style>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span class="product-name">IntegralUI</span> Studio <span class="product-platform">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content">
+        <div class="feature">
+	        <h2 class="feature-title">Menu / Overview</h2>
+	        <div class="feature-content">
+                <div id="menu" class="widget">
+                    <ul>
+                        <li><span class="icons home" data-element="icon" style="margin-left:3px"></span></li>
+                        <li><span class="icons books" data-element="icon"></span><span>Books</span>
+                            <ul>
+                                <li><span>Art</span></li>
+                                <li><span class="icons business" data-element="icon"></span><span>Business</span>
+                                    <ul>
+                                        <li><span>Economics</span></li>
+                                        <li><span class="icons chart" data-element="icon"></span><span>Investing</span>
+                                             <ul>
+                                                <li><span>Bonds</span></li>
+                                                <li><span>Options</span></li>
+                                                <li><span>Stocks</span></li>
+                                            </ul>
+                                        </li>
+                                        <li><span>Management</span></li>
+                                        <li><span>Small Business</span></li>
+                                    </ul>
+                                </li>
+                                <li><hr data-element="separator" style="margin:0;height:1px;background:#ebebeb;color:#ebebeb;border: 0; border-bottom:1px solid #fafafa;" /></li>
+                                <li><span class="icons health" data-element="icon"></span><span>Health</span></li>
+                                <li><span>Literature</span></li>
+                                <li><span class="icons science" data-element="icon"></span><span>Science</span>
+                                    <ul>
+                                        <li><span>Astronomy</span></li>
+                                        <li><span>Mathematics</span></li>
+                                        <li><span>Evolution</span></li>
+                                        <li><span>Nature</span></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                        <li><span class="icons music" data-element="icon"></span><span>Music</span>
+                            <ul>
+                                <li><span>Blues</span></li>
+                                <li><span>Classic Rock</span></li>
+                                <li><span>Pop</span></li>
+                                <li><span>Jazz</span></li>
+                            </ul>
+                        </li>
+                        <li><span>Sports</span>
+                             <ul>
+                                <li><span>Baseball</span></li>
+                                <li><span>Martial Arts</span></li>
+                                <li><span>Running</span></li>
+                                <li><span>Tennis</span>
+                                    <ul>
+                                        <li><span>Accessories</span></li>
+                                        <li><span>Balls</span></li>
+                                        <li><span>Racquets</span></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                        <li><a href="http://www.lidorsystems.com">Video Games</a></li>
+                        <li><span class="icons time" data-element="icon"></span><span>Watches</span></li>
+                    </ul>
+                </div>
+                <br />
+                <div class="control-panel" style="margin-top: 50px">
+                    <h3>Sample List:</h3>
+                    <ul class="feature-list">
+                        <li><a href="alignment.html">Alignment</a></li>
+                        <li><a href="events.html">Events</a></li>
+                        <li><a href="icons.html">Icons</a></li>
+                        <li><a href="local-data.html">Local Data Binding</a></li>
+                        <li><a href="open-on-hover.html">Open on Hover</a></li>
+                        <li><a href="rtl.html">Right to Left</a></li>
+                    </ul>
+                </div>
+                <br style="clear:both;"/>
+                <div class="feature-help">
+                    <p><span class="initial-space"></span>IntegralUI Menu widget allows you to easily navigate among pages in your web app. You can create menus from HTML, locally using JavaScript or remotely using JSON data files. Each menu item can have an icon, title, custom content or can act as a separator. The content is fully customizable.</p>
+                    <p><span class="initial-space"></span>Using links in right panel, you can check out different features of Menu widget.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

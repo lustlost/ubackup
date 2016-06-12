@@ -1,0 +1,390 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>Grids - Overview</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/integralui.css" />
+    <link rel="stylesheet" href="../../../css/integralui.checkbox.css" />
+    <link rel="stylesheet" href="../../../css/integralui.treegrid.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-flat-blue.css" />
+    <script type="text/javascript" src="../../../external/angular.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.lists.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.checkbox.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.treegrid.min.js"></script>
+    <script type="text/javascript">
+ 		angular
+			.module("appModule", ["integralui"])
+			.controller("appCtrl", ["$scope", "IntegralUITreeGridService", "$timeout", function($scope, $gridService, $timeout){
+				$scope.gridName = "gridSample";
+				$scope.gridLines = 'vertical';
+				$scope.rows = [];
+
+				$scope.ctrlStyle = {
+					row: {
+						general: {
+							hovered: 'row-hovered',
+							selected: 'row-selected'
+						},
+						cell: {
+							hovered: 'row-cell-hovered'
+						}
+					}
+				}
+
+				$scope.columns = [
+					{ 
+						id: 1, 
+						editorType: 'checkbox', 
+					 	editorSettings: { 
+					 		style: {
+					 			general: 'checkbox',
+					 			box: {
+						 			general: 'checkbox-box',
+						 			checked: 'checkbox-checked',
+						 			unchecked: 'checkbox-unchecked'
+						 		}
+					 		}
+					 	},
+						contentAlignment: "right", 
+						width: 45, 
+						fixedWidth: true
+					},
+					{ id: 2, headerText: "Category/Name", width: 400 },
+					{ id: 3, headerText: "Author/Supplier", headerAlignment: "center", contentAlignment: "center", width: 125 },
+					{ id: 4, headerText: "Price", headerAlignment: "center", contentAlignment: "right", width: 120 },
+					{ id: 5, headerText: "Rating", editorType: 'image', contentAlignment: 'center', width: 120 }
+				];
+
+				$scope.flatData = [
+					{ 
+						id: 1,
+						text: "Books",
+						cells: [{ cid: 2, text: "Books" }]
+					},
+					{ 
+						id: 11,
+						pid: 1,
+						text: "History",
+						cells: [{ cid: 2, text: "History" }]
+					},
+					{ 
+						id: 111,
+						pid: 11,
+						text: "The Wright Brothers",
+						cells: [{ cid: 1, value: true }, { cid: 2, text: "The Wright Brothers" }, { cid: 3, text: "David McCullough" }, { cid: 4, text: "$18.00" }, { cid: 5, value: '../../../resources/stars-small-5.png' }]
+					},
+					{ 
+						id: 112,
+						pid: 11,
+						text: "Capital in the Twenty-First Century",
+						cells: [{ cid: 1 }, { cid: 2, text: "Capital in the Twenty-First Century" }, { cid: 3, text: "Thomas Piketty" }, { cid: 4, text: "$22.99" }, { cid: 5, value: '../../../resources/stars-small-4.png' }]
+					},
+					{ 
+						id: 12,
+						pid: 1,
+						text: "Science",
+						cells: [{ cid: 2, text: "Science" }]
+					},
+					{ 
+						id: 121,
+						pid: 12,
+						text: "Thinking, Fast and Slow",
+						cells: [{ cid: 1 }, { cid: 2, text: "Thinking, Fast and Slow" }, { cid: 3, text: "Daniel Kahneman" }, { cid: 4, text: "$9.07" }, { cid: 5, value: '../../../resources/stars-small-5.png' }]
+					},
+					{ 
+						id: 122,
+						pid: 12,
+						text: "A Brief History of Time",
+						cells: [{ cid: 1, value: true }, { cid: 2, text: "A Brief History of Time" }, { cid: 3, text: "Stephen Hawking" }, { cid: 4, text: "$19.95" }, { cid: 5, value: '../../../resources/stars-small-5.png' }]
+					},
+					{ 
+						id: 123,
+						pid: 12,
+						text: "Alan Turing: The Enigma",
+						cells: [{ cid: 1 }, { cid: 2, text: "Alan Turing: The Enigma" }, { cid: 3, text: "Andrew Hodges" }, { cid: 4, text: "$10.17" }, { cid: 5, value: '../../../resources/stars-small-3.png' }]
+					},
+					{ 
+						id: 2,
+						text: "Electronics",
+						cells: [{ cid: 2, text: "Electronics" }]
+					},
+					{ 
+						id: 21,
+						pid: 2,
+						text: "Laptops",
+						cells: [{ cid: 2, text: "Laptops" }]
+					},
+					{ 
+						id: 211,
+						pid: 21,
+						text: "Acer Aspire E 15 ES1-512-C88M",
+						cells: [{ cid: 1, value: true }, { cid: 2, text: "Acer Aspire E 15 ES1-512-C88M" }, { cid: 3, text: "Acer" }, { cid: 4, text: "$229.00" }, { cid: 5, value: '../../../resources/stars-small-4.png' }]
+					},
+					{ 
+						id: 212,
+						pid: 21,
+						text: "Lenovo Flex 2 14 14.0-Inch",
+						cells: [{ cid: 1 }, { cid: 2, text: "Lenovo Flex 2 14 14.0-Inch" }, { cid: 3, text: "Lenovo" }, { cid: 4, text: "$489.99" }, { cid: 5, value: '../../../resources/stars-small-3.png' }]
+					},
+					{ 
+						id: 213,
+						pid: 21,
+						text: "HP Stream 11",
+						cells: [{ cid: 1, value: true }, { cid: 2, text: "HP Stream 11" }, { cid: 3, text: "HP" }, { cid: 4, text: "$199.99" }, { cid: 5, value: '../../../resources/stars-small-4.png' }]
+					},
+					{ 
+						id: 214,
+						pid: 21,
+						text: "ASUS ROG GL551JW-DS74",
+						cells: [{ cid: 1 }, { cid: 2, text: "ASUS ROG GL551JW-DS74" }, { cid: 3, text: "ASUS" }, { cid: 4, text: "$1,199.00" }, { cid: 5, value: '../../../resources/stars-small-5.png' }]
+					},
+					{ 
+						id: 22,
+						pid: 2,
+						text: "Printers",
+						cells: [{ cid: 2, text: "Printers" }]
+					},
+					{ 
+						id: 221,
+						pid: 22,
+						text: "Canon PIXMA MX922 Wireless",
+						cells: [{ cid: 1, value: true }, { cid: 2, text: "Canon PIXMA MX922 Wireless" }, { cid: 3, text: "Canon" }, { cid: 4, text: "$99.99" }, { cid: 5, value: '../../../resources/stars-small-4.png' }]
+					},
+					{ 
+						id: 222,
+						pid: 22,
+						text: "Lexmark MX81x/MX71x 550-Sheet Tray",
+						cells: [{ cid: 1 }, { cid: 2, text: "Lexmark MX81x/MX71x 550-Sheet Tray" }, { cid: 3, text: "Lexmark" }, { cid: 4, text: "$253.96" }, { cid: 5, value: '../../../resources/stars-small-3.png' }]
+					},
+					{ 
+						id: 3,
+						text: "Video Games",
+						cells: [{ cid: 2, text: "Video Games" }]
+					},
+					{ 
+						id: 31,
+						pid: 3,
+						text: "PlayStation 4",
+						expanded: false,
+						cells: [{ cid: 2, text: "PlayStation 4" }]
+					},
+					{ 
+						id: 311,
+						pid: 31,
+						text: "Mortal Kombat X",
+						cells: [{ cid: 1 }, { cid: 2, text: "Mortal Kombat X" }, { cid: 3, text: "Warner Home Video - Games" }, { cid: 4, text: "$59.96" }, { cid: 5, value: '../../../resources/stars-small-4.png' }]
+					},
+					{ 
+						id: 312,
+						pid: 31,
+						text: "Bloodborne",
+						cells: [{ cid: 1 }, { cid: 2, text: "Bloodborne" }, { cid: 3, text: "Sony Computer Entertainment" }, { cid: 4, text: "$59.96" }, { cid: 5, value: '../../../resources/stars-small-5.png' }]
+					},
+					{ 
+						id: 313,
+						pid: 31,
+						text: "Destiny",
+						cells: [{ cid: 1 }, { cid: 2, text: "Destiny" }, { cid: 3, text: "Activision Inc." }, { cid: 4, text: "$35.94" }, { cid: 5, value: '../../../resources/stars-small-3.png' }]
+					},
+					{ 
+						id: 32,
+						pid: 3,
+						text: "PC Games",
+						cells: [{ cid: 2, text: "PC Games" }]
+					},
+					{ 
+						id: 311,
+						pid: 32,
+						text: "Grand Theft Auto V",
+						cells: [{ cid: 1 }, { cid: 2, text: "Grand Theft Auto V" }, { cid: 3, text: "Rockstar Games" }, { cid: 4, text: "$59.99" }, { cid: 5, value: '../../../resources/stars-small-3.png' }]
+					},
+					{ 
+						id: 312,
+						pid: 32,
+						text: "The Elder Scrolls V: Skyrim",
+						cells: [{ cid: 1, value: true }, { cid: 2, text: "The Elder Scrolls V: Skyrim" }, { cid: 3, text: "Bethesda Softworks" }, { cid: 4, text: "$39.99" }, { cid: 5, value: '../../../resources/stars-small-5.png' }]
+					}
+				];
+
+				var initTimer = $timeout(function(){
+					$gridService.expandColIndex($scope.gridName, 1);
+					$gridService.loadData($scope.gridName, $scope.flatData);
+
+					$timeout.cancel(initTimer);
+				}, 150);
+			}]);
+    </script>
+    <style type="text/css">
+		/* TreeGrid settings */
+		.iui-treegrid-column-header-cell, .iui-treegrid-column-footer-cell
+		{
+			padding: 2px 2px;
+		}
+		.iui-treegrid-row-cell-content
+		{
+			padding: 2px 2px;
+		}
+		.row-hovered
+		{
+			background-color: #efefef;
+		}
+		.row-cell-hovered
+		{
+			color: #000080;
+		}
+		.row-selected
+		{
+			background-color: #dedede;
+			color: #008000;
+		}
+		.checkbox
+		{
+			width: 32px;
+			margin: auto;
+		}
+		.checkbox-box
+		{
+	        border: 0;
+	        display: inline-block;
+			width: 32px;
+			height: 14px;
+		}
+	    .checkbox-checked
+	    {
+	        background-image: url("../../../resources/checkbox/checkbox-checked-3.png");
+	    }
+	    .checkbox-unchecked
+	    {
+	        background-image: url("../../../resources/checkbox/checkbox-unchecked-3.png");
+	    }
+
+		/* Sample settings */
+		.control-panel
+		{
+			width: 170px;
+			margin-top: 20px;
+		}
+		.feature-content
+		{
+			width: 900px;
+		}
+		.feature-list
+		{
+			width: 300px;
+		}
+        .directive
+        {
+        	width: 900px;
+        	height: 310px;
+        }
+		.feature-list
+		{
+			color: black;
+			line-height: 1.2em;
+			list-style-type: none;
+			margin: 0;
+			padding: 5px 0;
+			width: 900px;
+		}
+		.feature-list li a
+		{
+        	padding: 3px 5px;
+			text-decoration: none;
+		}
+       .feature-list li a:hover
+        {
+        	background: #9F0B0B;
+        	border: thin solid #3E0404;
+        	color: white;
+        	padding: 3px 5px;
+        	text-decoration: none;
+        }
+		.feature-list li
+		{
+			display: inline;
+			float: left;
+			padding: 3px 0;
+			width: 33.33%;
+		}
+		</style>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span class="product-name">IntegralUI</span> Studio <span class="product-platform">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content" ng-app="appModule">
+        <div class="feature" ng-controller="appCtrl">
+	        <h2 class="feature-title">Grids / Overview</h2>
+	        <div class="feature-content">
+                <iui-treegrid name="{{gridName}}" class="directive" columns="columns" rows="rows" control-style="ctrlStyle"></iui-treegrid>
+                <div class="control-panel">
+                    <h3>New Samples:</h3>
+                    <ul class="feature-list">
+                        <li><a href="cell-templates.html">Cell Templates</a></li>
+                        <li><a href="custom-appearance.html">Custom Appearance</a></li>
+                        <li><a href="grouping.html">Grouping</a></li>
+                        <li><a href="pagination.html">Pagination</a></li>
+                        <li><a href="select-rows-with-check-image.html">Select Rows with CheckBox</a></li>
+                    </ul>
+	                <br style="clear:both;"/><br/>
+                    <h3>Sample List:</h3>
+                    <ul class="feature-list">
+                        <li><a href="add-remove.html">Add/Remove</a></li>
+                        <li><a href="cells-different-colors.html">Cells in Different Colors</a></li>
+                        <li><a href="cells-with-checkbox.html">Cells with CheckBox</a></li>
+                        <li><a href="cells-with-custom-check-box.html">Cells with Custom Check Box</a></li>
+                        <li><a href="cells-with-dropdown-list.html">Cells with DropDown List</a></li>
+                        <li><a href="column-header-with-checkbox.html">CheckBox in Column Header</a></li>
+                        <li><a href="column-alignment.html">Column Alignment</a></li>
+                        <li><a href="column-dropdown-menu.html">Column with DropDown Menu</a></li>
+                        <li><a href="column-fixed-side.html">Columns Fixed on Side</a></li>
+                        <li><a href="column-fixed-width.html">Columns with Fixed Width</a></li>
+                        <li><a href="column-reorder.html">Column Reorder</a></li>
+                        <li><a href="column-templates.html">Column Templates</a></li>
+                        <li><a href="columns-different-colors.html">Columns in Different Colors</a></li>
+                        <li><a href="column-visibility.html">Column Visibility</a></li>
+                        <li><a href="combobox-checklist.html">ComboBox Editor</a></li>
+                        <li><a href="context-menu.html">Context Menu</a></li>
+                        <li><a href="data-binding.html">Data Binding</a></li>
+                        <li><a href="cells-with-custom-check-box.html">Disabled Rows</a></li>
+                        <li><a href="drag-drop.html">Drag-Drop</a></li>
+                        <li><a href="drag-drop-events-custom-conditions.html">Drag Drop Custom Conditions</a></li>
+                        <li><a href="drag-drop-to-tree-view.html">Drag Drop to TreeView</a></li>
+                        <li><a href="dropdown-editor.html">DropDown Editor</a></li>
+                        <li><a href="dynamically-add-rows.html">Dynamically Add Rows</a></li>
+                        <li><a href="dynamic-resize.html">Dynamic Resize</a></li>
+                        <li><a href="even-odd-rows.html">Even/Odd Rows</a></li>
+                        <li><a href="events.html">Events</a></li>
+                        <li><a href="expanding-column.html">Expanding Column</a></li>
+                        <li><a href="export-to-json.html">Export to JSON</a></li>
+                        <li><a href="fast-load.html">Fast Load</a></li>
+                        <li><a href="filter.html">Filter</a></li>
+                        <li><a href="highlight-rows.html">Highlighting Rows</a></li>
+                        <li><a href="incell-editor.html">InCell Editor</a></li>
+                        <li><a href="infinite-scrolling.html">Infinite Scrolling</a></li>
+                        <li><a href="label-edit.html">Label Edit</a></li>
+                        <li><a href="link-column-cell.html">Link between Columns  and Cells</a></li>
+                        <li><a href="loading-animations.html">Loading Animations</a></li>
+                        <li><a href="load-icon.html">Loading Icon</a></li>
+                        <li><a href="multi-select.html">Multiple Selection</a></li>
+                        <li><a href="selection-events.html">Selection Events</a></li>
+                        <li><a href="sorting.html">Sorting</a></li>
+                        <li><a href="sort-column-menu.html">Sorting from Column Menu</a></li>
+                    </ul>
+                </div>
+                <br style="clear:both;"/>
+                <div class="feature-help">
+                    <p><span class="initial-space"></span>IntegralUI Grids is a collection of two native AngularJS directives: Grid and TreeGrid. Both directives come with high performance during data load and update even with very large data sets. You can create and modify hierarchical data structures in multiple columns on the fly, with fast data load either from local or remote data source. They are fully customizable with option to change their appearance during run-time.</p>
+                    <p><span class="initial-space"></span>Using links from sample list above, you can check out different features.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

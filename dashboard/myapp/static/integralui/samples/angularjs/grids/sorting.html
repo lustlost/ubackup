@@ -1,0 +1,210 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>Grids - Sorting</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/integralui.css" />
+    <link rel="stylesheet" href="../../../css/integralui.treegrid.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-flat-blue.css" />
+    <script type="text/javascript" src="../../../external/angular.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.lists.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.treegrid.min.js"></script>
+    <script type="text/javascript">
+ 		angular
+			.module("appModule", ["integralui"])
+			.controller("appCtrl", ["$scope", "$timeout", "IntegralUITreeGridService", function($scope, $timeout, $gridService){
+				$scope.gridName = "gridSample";
+				$scope.gridLines = 'vertical';
+				$scope.sorting = 'none';
+
+				$scope.columns = [
+					{ id: 2, headerText: "Continents/Countries", width: 250 },
+					{ id: 3, headerText: "Population", headerAlignment: "center", contentAlignment: "right", width: 125 },
+					{ id: 4, headerText: "Date", headerAlignment: "center", contentAlignment: "center", width: 140 },
+					{ id: 6, headerText: "Land in km2", headerAlignment: "center", contentAlignment: "right", width: 125 },
+					{ id: 7, headerText: "Capital", headerAlignment: "center", width: 120 }
+				];
+
+				$scope.rows = [
+					{ 
+						id: 1,
+						text: "Africa",
+						cells: [{ cid: 2, text: "Africa" }],
+						rows: [
+							{ id: 11, pid: 1, text: "Egypt", cells: [{ cid: 2, text: "Egypt" }, { cid: 3, text: "88,311,000", value: 88311000 }, { cid: 4, text: "06 Apr 2015", value: new Date(2015, 3, 6) }, { cid: 6, text: "995,450", value: 995450 }, { cid: 7, text: "Cairo" }] },
+							{ id: 12, pid: 1, text: "Nigeria", cells: [{ cid: 2, text: "Nigeria" }, { cid: 3, text: "185,043,000", value: 185043000 }, { cid: 4, text: "01 Jul 2015", value: new Date(2015, 6, 1) }, { cid: 6, text: "910,768", value: 910768 }, { cid: 7, text: "Abuja" }] },
+							{ id: 13, pid: 1, text: "South Africa", cells: [{ cid: 2, text: "South Africa" }, { cid: 3, text: "54,002,000", value: 54002000 }, { cid: 4, text: "01 Jul 2014", value: new Date(2014, 6, 1) }, { cid: 6, text: "1,214,470", value: 1214470 }, { cid: 7, text: "Pretoria" }] }
+						]
+					},
+					{ 
+						id: 2,
+						text: "Asia",
+						cells: [{ cid: 2, text: "Asia" }],
+						rows: [
+							{ id: 21, pid: 2, text: "China", cells: [{ cid: 2, text: "China" }, { cid: 3, text: "1,369,140,000", value: 1369140000 }, { cid: 4, text: "06 Apr 2015", value: new Date(2015, 3, 6) }, { cid: 6, text: "9,326,410", value: 9326410 }, { cid: 7, text: "Beijing" }] },
+							{ id: 22, pid: 2, text: "India", cells: [{ cid: 2, text: "India" }, { cid: 3, text: "1,269,545,000", value: 1269545000 }, { cid: 4, text: "01 Jul 2015", value: new Date(2015, 6, 1) }, { cid: 6, text: "2,864,021", value: 2864021 }, { cid: 7, text: "New Delhi" }] },
+							{ id: 23, pid: 2, text: "Japan", cells: [{ cid: 2, text: "Japan" }, { cid: 3, text: "126,910,000", value: 126910000 }, { cid: 4, text: "01 Mar 2015", value: new Date(2015, 2, 1) }, { cid: 6, text: "364,485", value: 364485 }, { cid: 7, text: "Tokyo" }] },
+							{ id: 24, pid: 2, text: "Saudi Arabia", cells: [{ cid: 2, text: "Saudi Arabia" }, { cid: 3, text: "31,521,418", value: 31521418 }, { cid: 4, text: "01 Jul 2015", value: new Date(2015, 6, 1) }, { cid: 6, text: "2,149,690", value: 2149690 }, { cid: 7, text: "Riyadh" }] },
+							{ id: 25, pid: 2, text: "South Korea", cells: [{ cid: 2, text: "South Korea" }, { cid: 3, text: "51,342,881", value: 51342881 }, { cid: 4, text: "01 Jan 2015", value: new Date(2015, 0, 1) }, { cid: 6, text: "100,032", value: 100032 }, { cid: 7, text: "Seoul" }] }
+						]
+					},
+					{ 
+						id: 3,
+						text: "Europe",
+						cells: [ { cid: 2, text: "Europe" }],
+						rows: [
+							{ id: 31, pid: 3, text: "France", cells: [{ cid: 2, text: "France" }, { cid: 3, text: "66,109,000", value: 66109000 }, { cid: 4, text: "01 Mar 2015", value: new Date(2015, 2, 1) }, { cid: 6, text: "640,427", value: 640427 }, { cid: 7, text: "Paris" }] },
+							{ id: 32, pid: 3, text: "Germany", cells: [{ cid: 2, text: "Germany" }, { cid: 3, text: "80,925,000", value: 80925000 }, { cid: 4, text: "30 Jun 2014", value: new Date(2014, 5, 30) }, { cid: 6, text: "348,672", value: 348672 }, { cid: 7, text: "Berlin" }] },
+							{ id: 33, pid: 3, text: "Italy", cells: [{ cid: 2, text: "Italy" }, { cid: 3, text: "60,788,845", value: 60788845 }, { cid: 4, text: "30 Nov 2014", value: new Date(2014, 10, 30) }, { cid: 6, text: "294,140", value: 294140 }, { cid: 7, text: "Rome" }] },
+							{ id: 34, pid: 3, text: "Macedonia", cells: [{ cid: 2, text: "Macedonia" }, { cid: 3, text: "2,065,769", value: 2065769 }, { cid: 4, text: "31 Dec 2013", value: new Date(2013, 11, 31) }, { cid: 6, text: "25,433", value: 25433}, { cid: 7, text: "Skopje" }] }
+						]
+					},
+					{ 
+						id: 4,
+						text: "North America",
+						cells: [{ cid: 2, text: "North America" }],
+						rows: [
+							{ id: 41, pid: 4, text: "Canada", cells: [{ cid: 2, text: "Canada" }, { cid: 3, text: "35,702,707", value: 35702707 }, { cid: 4, text: "01 Jan 2015", value: new Date(2015, 0, 1) }, { cid: 6, text: "9,093,507", value: 9093507 }, { cid: 7, text: "Ottawa" }] },
+							{ id: 42, pid: 4, text: "Mexico", cells: [{ cid: 2, text: "Mexico" }, { cid: 3, text: "121,005,815", value: 121005815 }, { cid: 4, text: "01 Jul 2015", value: new Date(2015, 6, 1) }, { cid: 6, text: "1,943,945", value: 1943945 }, { cid: 7, text: "Mexico City" }] },
+							{ id: 43, pid: 4, text: "USA", cells: [{ cid: 2, text: "USA" }, { cid: 3, text: "320,651,000", value: 320651000 }, { cid: 4, text: "07 Apr 2015", value: new Date(2015, 3, 7) }, { cid: 6, text: "9,161,966", value: 9161966 }, { cid: 7, text: "Washington" }] }
+						]
+					},
+					{ 
+						id: 5,
+						text: "South America",
+						cells: [{ cid: 2, text: "South America" }],
+						rows: [
+							{ id: 51, pid: 5, text: "Argentina", cells: [{ cid: 2, text: "Argentina" }, { cid: 3, text: "43,131,966", value: 43131966 }, { cid: 4, text: "01 Jul 2015", value: new Date(2015, 6, 1) }, { cid: 6, text: "2,736,690", value: 2736690 }, { cid: 7, text: "Buenos Aires" }] },
+							{ id: 52, pid: 5, text: "Brazil", cells: [{ cid: 2, text: "Brazil" }, { cid: 3, text: "204,134,000", value: 204134000 }, { cid: 4, text: "08 Apr 2015", value: new Date(2015, 3, 8) }, { cid: 6, text: "8,460,415", value: 8460415 }, { cid: 7, text: "Brasília" }] }
+						]
+					}
+				];
+
+				$scope.sorting = 'none';
+				var sortColumn = null;
+				var prevColumn = null;
+
+				var getCellValue = function(row){
+					var cellValue = null;
+
+					if (sortColumn && row.cells){
+						for (var j = 0; j < row.cells.length; j++){
+							if (row.cells[j].cid == sortColumn.id){
+								cellValue = row.cells[j].value;
+								break;
+							}
+						}
+					}
+
+					return cellValue;
+				}
+
+				var comparer = function(firstRow, secondRow){
+					var x = getCellValue(firstRow);
+					var y = getCellValue(secondRow);
+
+					x = x ? x.valueOf() : null;
+					y = y ? y.valueOf() : null;
+
+					switch ($scope.sorting){
+						case 'ascending':
+							if (x < y)
+								return -1;
+							else if (x > y)
+								return 1;
+							break;
+
+						case 'descending':
+							if (x > y)
+								return -1;
+							else if (x < y)
+								return 1;
+							break;
+
+						default:
+							return 0;
+					}
+				}
+
+				$scope.onColumnClick = function(e){
+					if (e.column){
+						if (e.column != prevColumn){
+							if ($scope.sorting == 'none')
+								$scope.sorting = 'ascending';
+						}
+						else {
+							if ($scope.sorting == 'ascending')
+								$scope.sorting = 'descending';
+							else
+								$scope.sorting = 'ascending';
+						}
+
+						sortColumn = e.column;
+						prevColumn = e.column;
+
+						if (e.column.id == 4)
+							$gridService.sort($scope.gridName, e.column, $scope.sorting, comparer);
+						else
+							$gridService.sort($scope.gridName, e.column, $scope.sorting);
+					}
+				}
+
+				var initTimer = $timeout(function(){
+					sortColumn = $scope.columns[0];
+					
+					$scope.sorting = 'ascending';
+					$gridService.selectedColumn($scope.gridName, sortColumn);
+					$gridService.sort($scope.gridName, sortColumn, $scope.sorting);
+
+					prevColumn = sortColumn;
+
+					$timeout.cancel(initTimer);
+				}, 100);
+			}]);
+    </script>
+    <style type="text/css">
+		.feature-content
+		{
+			width: 750px;
+		}
+		.directive
+		{
+			border: thin solid #cecece;
+        	width: 800px;
+		}
+    </style>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span style="color:#c60d0d">IntegralUI</span> Studio <span style="font-size:0.75em; font-style:italic">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content" ng-app="appModule">
+        <div class="feature" ng-controller="appCtrl">
+	        <h2 class="feature-title">Grids / Sorting</h2>
+	        <div class="feature-content">
+	            <div style="display:inline-block">
+	                <iui-treegrid name="{{gridName}}" class="directive" columns="columns" rows="rows" show-footer="false" column-click="onColumnClick(e)" allow-cell-focus="false" sorting="sorting" grid-lines="gridLines"></iui-treegrid>
+                    <br style="clear:both;"/>
+                </div>
+                <div class="feature-help" style="margin:0">
+                    <p><span class="initial-space"></span>This sample demonstrates basic and custom sorting operations in TreeGrid.</p>
+                    <p><span class="initial-space"></span>If column cells contain a String or a Number as their value, a basic sorting is executed, using built-in sort operations, for which you only need to specify by which column rows will be sorted and the sort order.</p>
+                    <p><span class="initial-space"></span>For columns which cells contains custom values, a <span style="color:#c60d0d">comparer</span> function is required. In case of this example, 3rd column contains date values, and a custom comparer function is created and applied to the TreeGrid, in order sort operation to be executed.</p>
+                    <p>The following properties and methods are presented:</p>
+					<ul class="feature-points" style="padding-bottom:10px;width:800px">
+						<li><span style="color:#c60d0d">sorting</span> a property which determines the sort order</li>
+						<li><span style="color:#c60d0d">sort</span> a method which sorts the TreeGrid rows and its cells based on applied order</li>
+					</ul>
+                    <p><span class="initial-space"></span>For more information check out the source code of this sample.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

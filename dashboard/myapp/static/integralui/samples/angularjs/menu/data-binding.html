@@ -1,0 +1,190 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>Menu - Data Binding</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/integralui.menu.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-flat-blue.css" />
+    <script type="text/javascript" src="../../../external/angular.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.menu.min.js"></script>
+    <script type="text/javascript">
+        angular
+            .module("appModule", ["integralui"])
+            .controller("appCtrl", ["$scope", "$timeout", "IntegralUIMenuService", function($scope, $timeout, $menuService){
+                $scope.menuName = "menuSample";
+                $scope.defaultIcon = 'icons-medium empty';
+                $scope.data = [];
+
+                $scope.dataSource = [
+                    { 
+                        menuId: 1,
+                        menuText: "Books",
+                        menuIcon: "icons-medium library",
+                        children: [
+                            { menuId: 11, parentId: 1, menuText: "Art" },
+                            { 
+                                menuId: 12,
+                                parentId: 1,
+                                menuText: "Business",
+                                menuIcon: "icons-medium people",
+                                children: [
+                                    { menuId: 121, parentId: 12, menuText: "Economics" },
+                                    { 
+                                        menuId: 122,
+                                        parentId: 12,
+                                        menuText: "Investing", 
+                                        menuIcon: "icons-medium economics",
+                                        children: [
+                                            { menuId: 1221, parentId: 122, menuText: "Bonds" },
+                                            { menuId: 1222, parentId: 122, menuText: "Options" },
+                                            { menuId: 1223, parentId: 122, menuText: "Stocks" }
+                                        ]
+                                    },
+                                    { menuId: 123, parentId: 12, menuText: "Management" },
+                                    { menuId: 124, parentId: 12, menuText: "Small Business" }
+                                ]
+                            },
+                            { menuId: 13, parentId: 1, menuText: "Health", menuIcon: "icons-medium heart" },
+                            { menuId: 14, parentId: 1, menuText: "Literature" },
+                            { 
+                                menuId: 15,
+                                parentId: 1,
+                                menuText: "Science",
+                                children: [
+                                    { menuId: 151, parentId: 15, menuText: "Astronomy" },
+                                    { menuId: 152, parentId: 15, menuText: "Mathematics" },
+                                    { menuId: 153, parentId: 15, menuText: "Evolution" },
+                                    { menuId: 154, parentId: 15, menuText: "Nature" }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        menuId: 3,
+                        menuText: "Electronics",
+                        children: [
+                            { menuId: 31, parentId: 3, menuText: "Camera", menuIcon: "icons-medium camera" },
+                            { menuId: 32, parentId: 3, menuText: "Cell Phones" },
+                            { menuId: 33, parentId: 3, menuText: "Video Game Consoles" }
+                        ]
+                    },
+                    { 
+                        menuId: 4,
+                        menuText: "Music", 
+                        menuIcon: "icons-medium album",
+                        children: [
+                            { menuId: 41, parentId: 4, menuText: "Blues" },
+                            { menuId: 42, parentId: 4, menuText: "Classic Rock" },
+                            { menuId: 43, parentId: 4, menuText: "Pop" },
+                            { menuId: 44, parentId: 4, menuText: "Jazz" }
+                        ]
+                    },
+                    { 
+                        menuId: 5,
+                        menuText: "Software",
+                        menuIcon: "icons-medium software",
+                        children: [
+                            { menuId: 51, parentId: 5, menuText: "Games" },
+                            { menuId: 52, parentId: 5, menuText: "Operating Systems" },
+                            { menuId: 53, parentId: 5, menuText: "Network & Servers" },
+                            { menuId: 54, parentId: 5, menuText: "Security" }
+                        ]
+                    },
+                    { 
+                        menuId: 6,
+                        menuText: "Sports",
+                        menuIcon: "icons-medium sports",
+                        children: [
+                            { menuId: 61, parentId: 6, menuText: "Baseball" },
+                            { menuId: 62, parentId: 6, menuText: "Martial Arts" },
+                            { menuId: 63, parentId: 6, menuText: "Running" },
+                            { 
+                                menuId: 64,
+                                parentId: 6,
+                                menuText: "Tennis",
+                                children: [
+                                    { menuId: 641, parentId: 64, menuText: "Accessories" },
+                                    { menuId: 642, parentId: 64, menuText: "Balls" },
+                                    { menuId: 643, parentId: 64, menuText: "Racquets" }
+                                ]
+                            }
+                        ]
+                    }
+                ];
+
+                $scope.dataFields = {
+                    icon: 'menuIcon',
+                    id: 'menuId',
+                    items: 'children',
+                    pid: 'parentId',
+                    text: 'menuText'
+                }
+
+                var initTimer = $timeout(function(){
+                    $menuService.loadData($scope.menuName, $scope.dataSource, null, $scope.dataFields, false);
+
+                    $timeout.cancel(initTimer);
+                }, 1);
+            }]);
+    </script>
+    <style type="text/css">
+        .iui-menu
+        {
+            width: 700px;
+        }
+        .iui-menu-item-content
+        {
+            margin-right: 12px;
+        }
+        .icons-medium
+        {
+            margin: 0 7px 0 0;
+        }
+        .clock-full
+        {
+            background-position: -192px -96px;
+        }
+    </style>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span style="color:#c60d0d">IntegralUI</span> Studio <span style="font-size:0.75em; font-style:italic">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content" ng-app="appModule">
+        <div class="feature" ng-controller="appCtrl">
+	        <h2 class="feature-title">Menu / Data Binding</h2>
+	        <div class="feature-content">
+                <iui-menu name="{{menuName}}" items="data" item-icon="defaultIcon"></iui-menu>
+                <div style="clear: both;height:150px;"></div>
+	            <div class="feature-help">
+                    <p><span class="initial-space"></span>In this sample we are using an arbitrary data source to load the content of Menu. In order this to work, you need to match the data fields from your data source to the fields of menu item objects. You can use any custom names for your data, as long as you match those names with object fields, the Menu will be populated.</p>
+                    <p><span class="initial-space"></span>For purpose of data binding, we are using the <strong>dataFields</strong> attribute which accepts an object containing all names for the data fields (this property can also be used as parameter in <span class="code-func">loadData</span> method, as it is in this example case). This property allows you to link fields from your data source to the fields of menu item objects in the Menu.</p>
+                    <p><span class="initial-space"></span>Default settings for this property are:</p>
+                    <div class="code-block">
+                        <p class="code-line"><span class="code-var">dataFields</span> = {</p>
+                        <div style="padding-left:30px">
+                            <p class="code-line">enabled: <span class="code-string">'enabled'</span>,</p>
+                            <p class="code-line">hasChildren: <span class="code-string">'hasChildren'</span>,</p>
+                            <p class="code-line">icon: <span class="code-string">'icon'</span>,</p>
+                            <p class="code-line">id : <span class="code-string">'id'</span>,</p>
+                            <p class="code-line">items: <span class="code-string">'items'</span>,</p>
+                            <p class="code-line">pid : <span class="code-string">'pid'</span>,</p>
+                            <p class="code-line">style: <span class="code-string">'style'</span>,</p>
+                            <p class="code-line">text : <span class="code-string">'text'</span></p>
+                            <p class="code-line">value: <span class="code-string">'value'</span></p>
+                        </div>
+                        <p class="code-line">}</p>
+                    </div>
+                    <p style="padding-bottom:30px"><span class="initial-space"></span>For more information check out the source code of this sample.</p>
+	            </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

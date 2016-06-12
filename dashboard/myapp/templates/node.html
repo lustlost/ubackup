@@ -1,0 +1,200 @@
+{% raw %}
+
+
+<style type="text/css" media="screen">
+
+    .alert {
+        margin: 5px;
+        padding: 5px;
+    }
+</style>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>
+                        <div class="ibox-tools pull-left">
+                            <button type="button" class="btn btn-primary btn-xs" ng-click="add()" data-toggle="modal"
+                                    href="#modal-form">
+                                添加节点
+                            </button>
+                        </div>
+                    </h5>
+
+                </div>
+                <div class="ibox-content">
+                    <div class="row m-b-sm m-t-sm">
+                        <div class="col-md-1">
+                            <button type="button" id="loading-example-btn" class="btn btn-white btn-sm" ng-click="flush()"><i
+                                    class="fa fa-refresh"></i> {{data_state}}
+                            </button>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="input-group">
+                                <input type="text" placeholder="全局搜索" class="input-sm form-control" ng-model="query"> <span
+                                    class="input-group-btn">
+                                        <button type="button" class="btn btn-sm btn-primary"> 搜索</button> </span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2">
+                            <div class="btn btn-sm btn-white">
+                                <small>总数 :</small>
+                                {{ nodelist.length }}<i lass="fa fa-bolt"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="project-list">
+
+                        <table class="table table-hover">
+                            <thead>
+
+
+                            <tr>
+                                <th style="" data-field="First" tabindex="0">
+                                    <div class="th-inner ">ID</div>
+                                    <div class="fht-cell"></div>
+                                </th>
+                                <th style="" data-field="First" tabindex="0">
+                                    <div class="th-inner ">IP地址</div>
+                                    <div class="fht-cell"></div>
+                                </th>
+
+                                <th style="" data-field="sex" tabindex="0">
+                                    <div class="th-inner ">所属集群</div>
+                                    <div class="fht-cell"></div>
+                                </th>
+
+                                <th style="" data-field="Score" tabindex="0">
+                                    <div class="th-inner ">容量</div>
+                                    <div class="fht-cell"></div>
+                                </th>
+
+                                <th style="" data-field="Score" tabindex="0">
+                                    <div class="th-inner ">操作</div>
+                                    <div class="fht-cell"></div>
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            <tr ng-repeat="node in nodelist | filter:query ">
+                                 <td class="project-status">
+                                    <span class="alert">{{ node.id }}</span>
+                                </td>
+                                <td class="project-status">
+                                    <span class="alert alert-info">{{ node.ip }}</span>
+                                </td>
+
+
+                                <td class="project-title">
+                                    <span class="label label-info">{{ node.cluster.name }}</span>
+                                </td>
+
+                                <td class="project-title">
+                                    <div class="progress progress-striped active" style="margin: 1px;">
+                                        <div style="width: {{node.used/node.size * 100}}%" aria-valuemax={{node.size}} aria-valuemin="0" aria-valuenow={{node.used}}
+                                             role="progressbar" class="progress-bar {{ node.used/node.size*100 >80 && 'progress-bar-warning' || 'progress-bar-success'}}"
+                                             style="min-width: 5em; ">
+                                           {{node.used/node.size*100| number:0}}%
+                                        </div>
+
+                                    </div>
+                                     <span>{{node.used}}/{{node.size}}GB</span>
+                                </td>
+
+
+                                <td class="project-title">
+                                    <button class="btn btn-info btn-sm" data-toggle="modal" href="#modal-form"
+                                            ng-click="update(node)">
+                                        <i class="fa fa-pencil"></i>编辑
+                                    </button>
+                                    <button class="btn btn-danger btn-sm" ng-click="delete(node)">
+                                        <i class="fa fa-pencil"></i>删除
+                                    </button>
+
+
+                                </td>
+                            </tr>
+
+
+                            </tbody>
+
+                        </table>
+
+
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div id="modal-form" class="modal fade in" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="ibox-title">
+                    <h5>添加节点</h5>
+                </div>
+                <div class="ibox-content">
+                    <form class="form-horizontal m-t" id="commentForm" novalidate="novalidate" name="myForm">
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">IP地址</label>
+                            <div class="col-sm-8">
+                                <input id="cname" name="name" minlength="2" type="text" class="form-control" required=""
+                                       aria-required="true" ng-model="ip" placeholder="节点IP地址">
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">节点磁盘大小</label>
+                            <div class="col-sm-8">
+                                <input id="cname" name="name" minlength="2" type="text" class="form-control" required=""
+                                       aria-required="true" ng-model="size" placeholder="节点磁盘大小,单位GB">
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">所属集群</label>
+                            <div class="col-sm-8">
+                                <!--<select ng-model="select_cluster">-->
+                                <!--<option ng-repeat="cluster in clusterlist" value="{{cluster.id}}">{{cluster.name}}</option>-->
+                                <!--</select>-->
+                                <select ng-model="select_cluster" ng-options="cluster.name for cluster in clusterlist track by cluster.id">
+                                </select>
+                                <!--<input id="cname" name="name" minlength="2" type="text" class="form-control" required=""-->
+                                <!--aria-required="true" ng-model="容量" placeholder="节点磁盘大小,单位GB">-->
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <div class="col-sm-4 col-sm-offset-3">
+                                <button class="btn btn-primary" type="submit" data-dismiss="modal"
+                                        ng-click="addsubmit()">
+                                    提交
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endraw %}

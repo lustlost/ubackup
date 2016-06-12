@@ -1,0 +1,175 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>TreeView - Local Data Binding</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/jquery.integralui.treeview.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-blue.css" />
+    <script type="text/javascript" src="../../../external/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="../../../external/jquery.ui.core.min.js"></script>
+    <script type="text/javascript" src="../../../external/jquery.ui.widget.min.js"></script>
+    <script type="text/javascript" src="../../../js/jquery.integralui.widget.min.js"></script>
+    <script type="text/javascript" src="../../../js/jquery.integralui.treeview.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var localData = [
+            {
+                "id": "1",
+                "text": "Dairy",
+                "isExpanded": false
+            }, {
+                "id": "11",
+                "pid": "1",
+                "text": "Milk"
+            }, {
+                "id": "12",
+                "pid": "1",
+                "text": "Butter"
+            }, {
+                "id": "13",
+                "pid": "1",
+                "text": "Cheese"
+            }, {
+                "id": "14",
+                "pid": "1",
+                "text": "Yogurt"
+            }, {
+                "id": "2",
+                "text": "Fruits"
+            }, {
+                "id": "21",
+                "pid": "2",
+                "text": "Berries",
+                "isExpanded": false
+            }, {
+                "id": "211",
+                "pid": "21",
+                "text": "BlackBerries"
+            }, {
+                "id": "212",
+                "pid": "21",
+                "text": "CranBerries"
+            }, {
+                "id": "213",
+                "pid": "21",
+                "text": "StrawBerries"
+            }, {
+                "id": "22",
+                "pid": "2",
+                "text": "Pits"
+            }, {
+                "id": "23",
+                "pid": "2",
+                "text": "Core"
+            }, {
+                "id": "24",
+                "pid": "2",
+                "text": "Citrus Fruits",
+                "isExpanded": false
+            }, {
+                "id": "241",
+                "pid": "24",
+                "text": "Oranges"
+            }, {
+                "id": "242",
+                "pid": "24",
+                "text": "Lemons"
+            }, {
+                "id": "25",
+                "pid": "2",
+                "text": "Melons"
+            }, {
+                "id": "26",
+                "pid": "2",
+                "text": "Tropical Fruits"
+            }, {
+                "id": "261",
+                "pid": "26",
+                "text": "Avocados"
+            }, {
+                "id": "262",
+                "pid": "26",
+                "text": "Bananas"
+            }, {
+                "id": "263",
+                "pid": "26",
+                "text": "Dates"
+            }, {
+                "id": "3",
+                "text": "Grains"
+            }, {
+                "id": "4",
+                "text": "Meat"
+            }, {
+                "id": "41",
+                "pid": "4",
+                "text": "Beef"
+            }, {
+                "id": "42",
+                "pid": "4",
+                "text": "Lamb",
+                "isExpanded": false
+            }, {
+                "id": "421",
+                "pid": "42",
+                "text": "Lamb Breast"
+            }, {
+                "id": "422",
+                "pid": "42",
+                "text": "Lamb Leg"
+            }, {
+                "id": "423",
+                "pid": "42",
+                "text": "Lamb Ribs"
+            }, {
+                "id": "43",
+                "pid": "4",
+                "text": "Pork"
+            }, {
+                "id": "5",
+                "text": "Sweets"
+            }, {
+                "id": "6",
+                "text": "Vegetables"
+            }, {
+                "id": "7",
+                "text": "Water"
+            }]
+  
+            var $tree = $('#treeview').treeview({
+                // Map item data fields with fields from local data source
+                dataFields: {
+                    id : 'id',
+                    pid : 'pid',
+                    text : 'text',
+                    expanded: 'isExpanded',
+                    dataSource : localData }
+            });
+        });
+    </script>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span class="product-name">IntegralUI</span> Studio <span class="product-platform">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content">
+        <div class="feature">
+	        <h2 class="feature-title">TreeView / Local Data Binding</h2>
+	        <div class="feature-content">
+                <div id="treeview" class="widget"></div>
+                <br style="clear:both;"/>
+                <div class="feature-help">
+                    <p><span class="initial-space"></span>In this sample we are using a local data to load the content of TreeView. In order this to work, you need to match the data fields from local data source to the fields of item variable. You can use any names for your data, as long as you match those names with item variable fields, the TreeView will be populated.</p>
+                    <p><span class="initial-space"></span>As you can see in current view above, some items are collapsed while others are expanded. This also can be set in your local data. Additionally you can set an item icon, state image, etc.</p>
+                    <p><span class="initial-space"></span>For more information check out the source code of this sample.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

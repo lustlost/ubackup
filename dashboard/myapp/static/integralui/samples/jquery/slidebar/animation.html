@@ -1,0 +1,109 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>SlideBar - Animation</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/jquery.integralui.slidebar.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-blue.css" />
+    <script type="text/javascript" src="../../../external/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="../../../external/jquery.ui.core.min.js"></script>
+    <script type="text/javascript" src="../../../external/jquery.ui.widget.min.js"></script>
+    <script type="text/javascript" src="../../../js/jquery.integralui.widget.min.js"></script>
+    <script type="text/javascript" src="../../../js/jquery.integralui.slidebar.min.js"></script>
+    <script type="text/javascript">
+        var $bar = null;
+        $(document).ready(function() {
+            $bar = $('#slidebar').slidebar({
+                    slideWidth: 500,
+                    slideHeight: 300
+                });
+
+            $('#start').click(function(e){
+                $bar.slidebar("option", {
+                    "animationSpeed": document.frm.speed.value
+                    });
+                    
+                $bar.slidebar("startAnimation");
+            });
+
+            $('#stop').click(function(e){
+                $bar.slidebar("stopAnimation");
+            });
+        });
+         
+        function toggleAnimation(elem){
+            $bar.slidebar("option", "allowAnimation", elem.checked);
+            
+            frm.speed.disabled = !elem.checked;
+            frm.start.disabled = !elem.checked;
+            frm.stop.disabled = !elem.checked;
+        }
+        
+        function isNumberKey(e){
+            var charCode = (e.which) ? e.which : event.keyCode;
+            if (charCode > 31 && (charCode < 48 || charCode > 57))
+                return false;
+                
+            return true;
+        }
+    </script>
+    <style type="text/css">
+        .feature-content
+        {
+	        width: 850px;
+        }
+        .widget
+        {
+	        background-color: transparent;
+        }
+    </style>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span style="color:#c60d0d">IntegralUI</span> Studio <span style="font-size:0.75em; font-style:italic">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content">
+        <div class="feature">
+	        <h2 class="feature-title">SlideBar / Animation</h2>
+	        <div class="feature-content">
+                <div id="slidebar" class="widget" style="height:auto">
+                    <div>
+                        <ul>
+	                        <li><img src="../../../resources/slide1.jpg" /></li>
+	                        <li><img src="../../../resources/slide2.jpg" /></li>
+	                        <li><img src="../../../resources/slide3.jpg" /></li>
+	                        <li><img src="../../../resources/slide4.jpg" /></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="control-panel">
+                    <form name="frm">
+                        <label><input type="checkbox" name="checkAnimation" checked="checked" onclick="toggleAnimation(this)" /> Allow Animation</label><br /><br />
+                        <label>Speed: <input type="number" name="speed" min="100" max="10000" value="2000" onkeypress="return isNumberKey(event)" style="width:70px" /></label><br />
+                        <button type="button" id="start" style="margin:5px 0; width:125px">Start</button><br />
+                        <button type="button" id="stop" style="margin:5px 0; width:125px">Stop</button>
+                   </form>
+                </div>
+                <br style="clear:both;"/>
+                <div class="feature-help">
+                    <p><span class="initial-space"></span>This sample shows how to start/stop animation of slides in SlideBar widget. By clicking on check box on the right, you can change the built-in properties:</p>
+                     <ul class="feature-points">
+                        <li><span style="color:#c60d0d">allowAnimation</span> - determines whether changing of slides is animated</li>
+                        <li><span style="color:#c60d0d">animationSpeed</span> - determines the time (in miliseconds) between slide changes</li>
+                   </ul>
+                    <p><span class="initial-space"></span>Animations is controlled by two methods:</p>
+                     <ul class="feature-points">
+                        <li><span style="color:#c60d0d">startAnimation</span> - starts animation of slides</li>
+                        <li><span style="color:#c60d0d">stopAnimation</span> - stops animation of slides</li>
+                   </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

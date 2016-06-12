@@ -1,0 +1,814 @@
+{% raw %}
+<!--<script type="text/javascript">-->
+<!--var setClockScroller = function (did, f) {-->
+<!--var clockScroller = Scroller.getNewInstance({-->
+<!--width: 160,-->
+<!--amount: 30,-->
+<!--interval: 1000,-->
+<!--});-->
+<!--clockScroller.appendTo(document.getElementById(did));-->
+<!--clockScroller.setStyle({margin: "1px", padding: "1px"});-->
+<!--clockScroller.start("0");-->
+<!--setInterval(function () {-->
+<!--var num = f();-->
+<!--clockScroller.scrollTo(num);-->
+<!--}, 3000);-->
+<!--};-->
+
+<!--setClockScroller('backupCounter', function () {-->
+<!--var timestamp = Date.parse(new Date());-->
+<!--return timestamp / 1000 + 34;-->
+<!--});-->
+<!--setClockScroller('backupTransfer', function () {-->
+<!--var now = new Date();-->
+<!--var seconds = now.getSeconds();-->
+<!--return seconds * 12145;-->
+<!--});-->
+<!--setClockScroller('backupErrorCounter', function () {-->
+<!--var now = new Date();-->
+<!--var seconds = now.getSeconds();-->
+<!--return seconds + 100;-->
+<!--});-->
+<!--setClockScroller('backupQps', function () {-->
+<!--var now = new Date();-->
+<!--var seconds = now.getSeconds();-->
+<!--return seconds * 9;-->
+<!--});-->
+<!--var addlog = function (n) {-->
+<!--$("#logs").prepend('<div class="timeline-item notin" style="border-bottom:1px;display: none;">' +-->
+<!--'<div class="row">' +-->
+<!--'<div class="col-sm-1">' +-->
+<!--'<i class="fa fa-briefcase"></i>12:23:4' + n +-->
+<!--'<small class="text-navy">成功</small>' +-->
+<!--'</div>' +-->
+<!--'<div class="col-sm-11 no-top-border">' +-->
+<!--'<p>' +-->
+<!--'   产品:' +-->
+<!--'<span class="m-b-xs label label-primary"><strong>女神联盟' + n + '</strong></span>' +-->
+<!--'   类型:' +-->
+<!--'<span class="m-b-xs label label-info"><strong>Mysql' + n + '</strong></span>' +-->
+<!--'   端口:' +-->
+<!--'<span class="m-b-xs label label-warning"><strong>3306' + n + '</strong></span>' +-->
+<!--'   KEY:' +-->
+<!--'<span class="m-b-xs label label-success"><strong>123456' + n + '</strong></span>' +-->
+<!--'   IP:' +-->
+<!--'<span class="m-b-xs label label-white"><strong>1.1.1.1' + n + '</strong></span>' +-->
+<!--'   文件名:' +-->
+<!--'<span class="m-b-xs label label-danger"><strong>10.0.2.62_2016-04-09_15-01.tar.gz' + n + '</strong></span>' +-->
+<!--'    日志:' +-->
+<!--'<span class="m-b-xs label label-info"><strong>日志:ok' + n + '</strong></span>' +-->
+<!--'</p>' +-->
+
+<!--'</div>' +-->
+<!--'</div>' +-->
+<!--'<hr>' +-->
+<!--'</div>');-->
+<!--}-->
+<!--addlog(1);-->
+<!--addlog(2);-->
+<!--addlog(3);-->
+<!--addlog(4);-->
+<!--addlog(5);-->
+<!--addlog(6);-->
+<!--addlog(7);-->
+
+
+<!--setInterval(function () {-->
+<!--addlog(new Date().getSeconds())-->
+<!--$(".isin").last().remove();-->
+<!--$(".notin").each(function () {-->
+<!--$("#logs").animate({top: 20 + "px"});-->
+<!--$(this).fadeIn();-->
+<!--$(this).show();-->
+<!--$(this).removeClass("notin")-->
+<!--$(this).addClass("isin")-->
+<!--})-->
+<!--$(".isin").last().fadeOut();-->
+
+<!--}, 3000);-->
+
+
+<!--var size_by_product_option = {-->
+<!--title: {-->
+<!--text: '全部产品',-->
+<!--subtext: '单位:GB'-->
+<!--},-->
+<!--tooltip: {-->
+<!--trigger: 'axis'-->
+<!--},-->
+<!--legend: {-->
+<!--data: ['女神联盟', '骑士战歌', '大侠传', '萌萌站起来', '大皇帝']-->
+<!--},-->
+<!--toolbox: {-->
+<!--show: true,-->
+<!--feature: {-->
+<!--mark: {show: true},-->
+<!--dataView: {show: true, readOnly: false},-->
+<!--magicType: {show: true, type: ['line', 'bar', 'stack', 'tiled']},-->
+<!--restore: {show: true},-->
+<!--saveAsImage: {show: true}-->
+<!--}-->
+<!--},-->
+<!--calculable: true,-->
+<!--xAxis: [-->
+<!--{-->
+<!--type: 'category',-->
+<!--boundaryGap: false,-->
+<!--data: ['2014/6/8', '2014/6/9', '2014/6/10', '2014/6/11', '2014/6/12', '2014/6/13', '2014/6/14']-->
+<!--}-->
+<!--],-->
+<!--yAxis: [-->
+<!--{-->
+<!--type: 'value'-->
+<!--}-->
+<!--],-->
+<!--dataZoom: [{-->
+<!--type: 'inside',-->
+<!--start: 0,-->
+<!--end: 100-->
+<!--}, {-->
+<!--start: 0,-->
+<!--end: 100-->
+<!--}],-->
+<!--series: [-->
+
+<!--{-->
+<!--name: '女神联盟',-->
+<!--type: 'line',-->
+<!--smooth: true,-->
+<!--itemStyle: {normal: {areaStyle: {type: 'default'}}},-->
+<!--data: [110, 112, 121, 154, 1260, 1830, 1710]-->
+<!--},-->
+
+<!--{-->
+<!--name: '骑士战歌',-->
+<!--type: 'line',-->
+<!--smooth: true,-->
+<!--itemStyle: {normal: {areaStyle: {type: 'default'}}},-->
+<!--data: [30, 182, 434, 791, 390, 30, 10]-->
+<!--},-->
+
+<!--{-->
+<!--name: '大侠传',-->
+<!--type: 'line',-->
+<!--smooth: true,-->
+<!--itemStyle: {normal: {areaStyle: {type: 'default'}}},-->
+<!--data: [1320, 1132, 601, 234, 120, 90, 20]-->
+<!--},-->
+
+<!--{-->
+<!--name: '萌萌站起来',-->
+<!--type: 'line',-->
+<!--smooth: true,-->
+<!--itemStyle: {normal: {areaStyle: {type: 'default'}}},-->
+<!--data: [213, 4265, 534, 471, 123, 213, 123]-->
+<!--},-->
+
+<!--{-->
+<!--name: '大皇帝',-->
+<!--type: 'line',-->
+<!--smooth: true,-->
+<!--itemStyle: {normal: {areaStyle: {type: 'default'}}},-->
+<!--data: [1243, 2645, 1601, 1234, 1120, 1190, 1120]-->
+<!--}-->
+<!--]-->
+<!--};-->
+
+<!--var count_by_product_option = {-->
+<!--title: {-->
+<!--text: '全部产品',-->
+<!--subtext: '单位:次数'-->
+<!--},-->
+<!--tooltip: {-->
+<!--trigger: 'axis'-->
+<!--},-->
+<!--legend: {-->
+<!--data: ['女神联盟', '骑士战歌', '大侠传', '萌萌站起来', '大皇帝']-->
+<!--},-->
+<!--toolbox: {-->
+<!--show: true,-->
+<!--feature: {-->
+<!--mark: {show: true},-->
+<!--dataView: {show: true, readOnly: false},-->
+<!--magicType: {show: true, type: ['line', 'bar', 'stack', 'tiled']},-->
+<!--restore: {show: true},-->
+<!--saveAsImage: {show: true}-->
+<!--}-->
+<!--},-->
+<!--calculable: true,-->
+<!--xAxis: [-->
+<!--{-->
+<!--type: 'category',-->
+<!--boundaryGap: false,-->
+<!--data: ['2014/6/8', '2014/6/9', '2014/6/10', '2014/6/11', '2014/6/12', '2014/6/13', '2014/6/14']-->
+<!--}-->
+<!--],-->
+<!--yAxis: [-->
+<!--{-->
+<!--type: 'value'-->
+<!--}-->
+<!--],-->
+<!--dataZoom: [{-->
+<!--type: 'inside',-->
+<!--start: 0,-->
+<!--end: 100-->
+<!--}, {-->
+<!--start: 0,-->
+<!--end: 100-->
+<!--}],-->
+<!--series: [-->
+
+<!--{-->
+<!--name: '女神联盟',-->
+<!--type: 'line',-->
+<!--smooth: true,-->
+<!--itemStyle: {normal: {areaStyle: {type: 'default'}}},-->
+<!--data: [110, 112, 121, 154, 1260, 1830, 1710]-->
+<!--},-->
+
+<!--{-->
+<!--name: '骑士战歌',-->
+<!--type: 'line',-->
+<!--smooth: true,-->
+<!--itemStyle: {normal: {areaStyle: {type: 'default'}}},-->
+<!--data: [30, 182, 434, 791, 390, 30, 10]-->
+<!--},-->
+
+<!--{-->
+<!--name: '大侠传',-->
+<!--type: 'line',-->
+<!--smooth: true,-->
+<!--itemStyle: {normal: {areaStyle: {type: 'default'}}},-->
+<!--data: [1320, 1132, 601, 234, 120, 90, 20]-->
+<!--},-->
+
+<!--{-->
+<!--name: '萌萌站起来',-->
+<!--type: 'line',-->
+<!--smooth: true,-->
+<!--itemStyle: {normal: {areaStyle: {type: 'default'}}},-->
+<!--data: [213, 1265, 534, 471, 123, 213, 123]-->
+<!--},-->
+
+<!--{-->
+<!--name: '大皇帝',-->
+<!--type: 'line',-->
+<!--smooth: true,-->
+<!--itemStyle: {normal: {areaStyle: {type: 'default'}}},-->
+<!--data: [1243, 1645, 1601, 1234, 1120, 1190, 1120]-->
+<!--}-->
+<!--]-->
+<!--};-->
+
+<!--var size_by_cluster_option = {-->
+<!--title: {-->
+<!--text: '金华集群',-->
+<!--subtext: '单位:GB'-->
+<!--},-->
+<!--tooltip: {-->
+<!--trigger: 'axis'-->
+<!--},-->
+<!--legend: {-->
+<!--data: ['1.1.1.1', '1.1.1.2', '1.1.1.3', '1.1.1.4', '1.1.1.5']-->
+<!--},-->
+<!--toolbox: {-->
+<!--show: true,-->
+<!--feature: {-->
+<!--mark: {show: true},-->
+<!--dataView: {show: true, readOnly: false},-->
+<!--magicType: {show: true, type: ['line', 'bar', 'stack', 'tiled']},-->
+<!--restore: {show: true},-->
+<!--saveAsImage: {show: true}-->
+<!--}-->
+<!--},-->
+<!--calculable: true,-->
+<!--xAxis: [-->
+<!--{-->
+<!--type: 'category',-->
+<!--boundaryGap: false,-->
+<!--data: ['2014/6/8', '2014/6/9', '2014/6/10', '2014/6/11', '2014/6/12', '2014/6/13', '2014/6/14']-->
+<!--}-->
+<!--],-->
+<!--yAxis: [-->
+<!--{-->
+<!--type: 'value'-->
+<!--}-->
+<!--],-->
+<!--dataZoom: [{-->
+<!--type: 'inside',-->
+<!--start: 0,-->
+<!--end: 100-->
+<!--}, {-->
+<!--start: 0,-->
+<!--end: 100-->
+<!--}],-->
+<!--series: [-->
+
+<!--{-->
+<!--name: '1.1.1.1',-->
+<!--type: 'line',-->
+<!--smooth: true,-->
+<!--itemStyle: {normal: {areaStyle: {type: 'default'}}},-->
+<!--data: [110, 112, 121, 154, 1260, 1830, 1710]-->
+<!--},-->
+
+<!--{-->
+<!--name: '1.1.1.2',-->
+<!--type: 'line',-->
+<!--smooth: true,-->
+<!--itemStyle: {normal: {areaStyle: {type: 'default'}}},-->
+<!--data: [30, 182, 434, 791, 390, 30, 10]-->
+<!--},-->
+
+<!--{-->
+<!--name: '1.1.1.3',-->
+<!--type: 'line',-->
+<!--smooth: true,-->
+<!--itemStyle: {normal: {areaStyle: {type: 'default'}}},-->
+<!--data: [1320, 1132, 601, 234, 120, 90, 20]-->
+<!--},-->
+
+<!--{-->
+<!--name: '1.1.1.4',-->
+<!--type: 'line',-->
+<!--smooth: true,-->
+<!--itemStyle: {normal: {areaStyle: {type: 'default'}}},-->
+<!--data: [213, 1265, 534, 471, 123, 213, 123]-->
+<!--},-->
+
+<!--{-->
+<!--name: '1.1.1.5',-->
+<!--type: 'line',-->
+<!--smooth: true,-->
+<!--itemStyle: {normal: {areaStyle: {type: 'default'}}},-->
+<!--data: [1243, 1645, 1601, 1234, 1120, 1190, 1120]-->
+<!--}-->
+<!--]-->
+<!--};-->
+
+<!--var size_by_zdy_option = {-->
+<!--title: {-->
+<!--text: '女神联盟',-->
+<!--subtext: '单位:GB'-->
+<!--},-->
+<!--tooltip: {-->
+<!--trigger: 'axis'-->
+<!--},-->
+<!--legend: {-->
+<!--data: ['MySQL', 'Redis', 'SSDB']-->
+<!--},-->
+<!--toolbox: {-->
+<!--show: true,-->
+<!--feature: {-->
+<!--mark: {show: true},-->
+<!--dataView: {show: true, readOnly: false},-->
+<!--magicType: {show: true, type: ['line', 'bar', 'stack', 'tiled']},-->
+<!--restore: {show: true},-->
+<!--saveAsImage: {show: true}-->
+<!--}-->
+<!--},-->
+<!--calculable: true,-->
+<!--xAxis: [-->
+<!--{-->
+<!--type: 'category',-->
+<!--boundaryGap: false,-->
+<!--data: ['2014/6/8', '2014/6/9', '2014/6/10', '2014/6/11', '2014/6/12', '2014/6/13', '2014/6/14']-->
+<!--}-->
+<!--],-->
+<!--yAxis: [-->
+<!--{-->
+<!--type: 'value'-->
+<!--}-->
+<!--],-->
+<!--dataZoom: [{-->
+<!--type: 'inside',-->
+<!--start: 0,-->
+<!--end: 100-->
+<!--}, {-->
+<!--start: 0,-->
+<!--end: 100-->
+<!--}],-->
+<!--series: [-->
+
+<!--{-->
+<!--name: 'MySQL',-->
+<!--type: 'line',-->
+<!--smooth: true,-->
+<!--itemStyle: {normal: {areaStyle: {type: 'default'}}},-->
+<!--data: [110, 112, 121, 154, 1260, 1030, 710]-->
+<!--},-->
+
+<!--{-->
+<!--name: 'Redis',-->
+<!--type: 'line',-->
+<!--smooth: true,-->
+<!--itemStyle: {normal: {areaStyle: {type: 'default'}}},-->
+<!--data: [30, 182, 434, 791, 390, 30, 10]-->
+<!--},-->
+
+<!--{-->
+<!--name: 'SSDB',-->
+<!--type: 'line',-->
+<!--smooth: true,-->
+<!--itemStyle: {normal: {areaStyle: {type: 'default'}}},-->
+<!--data: [1320, 1132, 601, 234, 120, 90, 20]-->
+<!--}-->
+<!--]-->
+<!--};-->
+
+<!--var count_of_queue_option = {-->
+<!--title: {-->
+<!--text: 'QPM',-->
+<!--subtext: '每分钟入队数量'-->
+<!--},-->
+<!--tooltip: {-->
+<!--trigger: 'axis'-->
+<!--},-->
+<!--legend: {-->
+<!--data: ['金华集群', '多湖集群', '北美集群']-->
+<!--},-->
+<!--toolbox: {-->
+<!--show: true,-->
+<!--feature: {-->
+<!--mark: {show: true},-->
+<!--dataView: {show: true, readOnly: false},-->
+<!--magicType: {show: true, type: ['line', 'bar', 'stack', 'tiled']},-->
+<!--restore: {show: true},-->
+<!--saveAsImage: {show: true}-->
+<!--}-->
+<!--},-->
+<!--calculable: true,-->
+<!--xAxis: [-->
+<!--{-->
+<!--type: 'category',-->
+<!--boundaryGap: false,-->
+<!--data: ['2014/6/8', '2014/6/9', '2014/6/10', '2014/6/11', '2014/6/12', '2014/6/13', '2014/6/14','2014/6/8', '2014/6/9', '2014/6/10', '2014/6/11', '2014/6/12', '2014/6/13', '2014/6/14','2014/6/8', '2014/6/9', '2014/6/10', '2014/6/11', '2014/6/12', '2014/6/13', '2014/6/14','2014/6/8', '2014/6/9', '2014/6/10', '2014/6/11', '2014/6/12', '2014/6/13', '2014/6/14','2014/6/8', '2014/6/9', '2014/6/10', '2014/6/11', '2014/6/12', '2014/6/13', '2014/6/14','2014/6/8', '2014/6/9', '2014/6/10', '2014/6/11', '2014/6/12', '2014/6/13', '2014/6/14','2014/6/8', '2014/6/9', '2014/6/10', '2014/6/11', '2014/6/12', '2014/6/13', '2014/6/14','2014/6/8', '2014/6/9', '2014/6/10', '2014/6/11', '2014/6/12', '2014/6/13', '2014/6/14','2014/6/8', '2014/6/9', '2014/6/10', '2014/6/11', '2014/6/12', '2014/6/13', '2014/6/14','2014/6/8', '2014/6/9', '2014/6/10', '2014/6/11', '2014/6/12', '2014/6/13', '2014/6/14','2014/6/8', '2014/6/9', '2014/6/10', '2014/6/11', '2014/6/12', '2014/6/13', '2014/6/14']-->
+<!--}-->
+<!--],-->
+<!--yAxis: [-->
+<!--{-->
+<!--type: 'value'-->
+<!--}-->
+<!--],-->
+<!--dataZoom: [{-->
+<!--type: 'inside',-->
+<!--start: 0,-->
+<!--end: 100-->
+<!--}, {-->
+<!--start: 0,-->
+<!--end: 100-->
+<!--}],-->
+<!--series: [-->
+
+<!--{-->
+<!--name: '金华集群',-->
+<!--type: 'line',-->
+<!--smooth: true,-->
+<!--itemStyle: {normal: {areaStyle: {type: 'default'}}},-->
+<!--data: [66, 21, 32, 43, 32, 23, 45,66, 21, 32, 43, 32, 23, 45,66, 21, 32, 43, 32, 23, 45,66, 21, 32, 43, 32, 23, 45,66, 21, 32, 43, 32, 23, 45,66, 21, 32, 43, 32, 23, 45,66, 21, 32, 43, 32, 23, 45,66, 21, 32, 43, 32, 23, 45]-->
+<!--},-->
+
+<!--{-->
+<!--name: '多湖集群',-->
+<!--type: 'line',-->
+<!--smooth: true,-->
+<!--itemStyle: {normal: {areaStyle: {type: 'default'}}},-->
+<!--data: [30, 82, 34, 91, 90, 30, 10,30, 82, 34, 91, 90, 30, 10,30, 82, 34, 91, 90, 30, 10,30, 82, 34, 91, 90, 30, 10,30, 82, 34, 91, 90, 30, 10,30, 82, 34, 91, 90, 30, 10,30, 82, 34, 91, 90, 30, 10,30, 82, 34, 91, 90, 30, 10]-->
+<!--},-->
+
+<!--{-->
+<!--name: '北美集群',-->
+<!--type: 'line',-->
+<!--smooth: true,-->
+<!--itemStyle: {normal: {areaStyle: {type: 'default'}}},-->
+<!--data: [20, 32, 11, 34, 20, 90, 20,20, 32, 11, 34, 20, 90, 20,20, 32, 11, 34, 20, 90, 20,20, 32, 11, 34, 20, 90, 20,20, 32, 11, 34, 20, 90, 20,20, 32, 11, 34, 20, 90, 20,20, 32, 11, 34, 20, 90, 20,20, 32, 11, 34, 20, 90, 20]-->
+<!--}-->
+<!--]-->
+<!--};-->
+
+<!--var not_consume_of_queue_option = {-->
+<!--title: {-->
+<!--text: '队列阻塞计数',-->
+<!--subtext: '等待异地传输的备份个数'-->
+<!--},-->
+<!--tooltip: {-->
+<!--trigger: 'axis'-->
+<!--},-->
+<!--legend: {-->
+<!--data: ['金华集群', '多湖集群', '北美集群']-->
+<!--},-->
+<!--toolbox: {-->
+<!--show: true,-->
+<!--feature: {-->
+<!--mark: {show: true},-->
+<!--dataView: {show: true, readOnly: false},-->
+<!--magicType: {show: true, type: ['line', 'bar', 'stack', 'tiled']},-->
+<!--restore: {show: true},-->
+<!--saveAsImage: {show: true}-->
+<!--}-->
+<!--},-->
+<!--calculable: true,-->
+<!--xAxis: [-->
+<!--{-->
+<!--type: 'category',-->
+<!--boundaryGap: false,-->
+<!--data: ['2014/6/8', '2014/6/9', '2014/6/10', '2014/6/11', '2014/6/12', '2014/6/13', '2014/6/14','2014/6/8', '2014/6/9', '2014/6/10', '2014/6/11', '2014/6/12', '2014/6/13', '2014/6/14','2014/6/8', '2014/6/9', '2014/6/10', '2014/6/11', '2014/6/12', '2014/6/13', '2014/6/14','2014/6/8', '2014/6/9', '2014/6/10', '2014/6/11', '2014/6/12', '2014/6/13', '2014/6/14','2014/6/8', '2014/6/9', '2014/6/10', '2014/6/11', '2014/6/12', '2014/6/13', '2014/6/14','2014/6/8', '2014/6/9', '2014/6/10', '2014/6/11', '2014/6/12', '2014/6/13', '2014/6/14','2014/6/8', '2014/6/9', '2014/6/10', '2014/6/11', '2014/6/12', '2014/6/13', '2014/6/14']-->
+<!--}-->
+<!--],-->
+<!--yAxis: [-->
+<!--{-->
+<!--type: 'value'-->
+<!--}-->
+<!--],-->
+<!--dataZoom: [{-->
+<!--type: 'inside',-->
+<!--start: 0,-->
+<!--end: 100-->
+<!--}, {-->
+<!--start: 0,-->
+<!--end: 100-->
+<!--}],-->
+<!--series: [-->
+
+<!--{-->
+<!--name: '金华集群',-->
+<!--type: 'line',-->
+<!--smooth: true,-->
+<!--itemStyle: {normal: {areaStyle: {type: 'default'}}},-->
+<!--data: [1, 3, 4, 21, 12, 34, 11,1, 3, 4, 21, 12, 34, 11,1, 3, 4, 21, 12, 34, 11,1, 3, 4, 21, 12, 34, 11,1, 3, 4, 21, 12, 34, 11,1, 3, 4, 21, 12, 34, 11,1, 3, 4, 21, 12, 34, 11]-->
+<!--},-->
+
+<!--{-->
+<!--name: '多湖集群',-->
+<!--type: 'line',-->
+<!--smooth: true,-->
+<!--itemStyle: {normal: {areaStyle: {type: 'default'}}},-->
+<!--data: [22, 23, 34, 10, 7, 8, 9,22, 23, 34, 10, 7, 8, 9,22, 23, 34, 10, 7, 8, 9,22, 23, 34, 10, 7, 8, 9,22, 23, 34, 10, 7, 8, 9,22, 23, 34, 10, 7, 8, 9,22, 23, 34, 10, 7, 8, 9]-->
+<!--},-->
+
+<!--{-->
+<!--name: '北美集群',-->
+<!--type: 'line',-->
+<!--smooth: true,-->
+<!--itemStyle: {normal: {areaStyle: {type: 'default'}}},-->
+<!--data: [10, 0, 0, 6, 4, 2, 1,10, 0, 0, 6, 4, 2, 1,10, 0, 0, 6, 4, 2, 1,10, 0, 0, 6, 4, 2, 1,10, 0, 0, 6, 4, 2, 1,10, 0, 0, 6, 4, 2, 1,10, 0, 0, 6, 4, 2, 1]-->
+<!--}-->
+<!--]-->
+<!--};-->
+
+<!--$("#cpwd").on('shown.bs.tab', function (e) {-->
+<!--var size_by_product = echarts.init(document.getElementById("size_by_product"), 'macarons');-->
+<!--var count_by_product = echarts.init(document.getElementById("count_by_product"), 'macarons');-->
+
+<!--size_by_product.setOption(size_by_product_option);-->
+<!--size_by_product.resize();-->
+<!--count_by_product.setOption(count_by_product_option);-->
+<!--count_by_product.resize();-->
+
+<!--size_by_cluster.setOption(size_by_cluster_option);-->
+<!--size_by_cluster.resize();-->
+<!--});-->
+
+<!--$("#jqwd").on('shown.bs.tab', function (e) {-->
+<!--var size_by_cluster = echarts.init(document.getElementById("size_by_cluster"), 'macarons');-->
+<!--size_by_cluster.setOption(size_by_cluster_option);-->
+<!--size_by_cluster.resize();-->
+
+<!--var size_by_cluster_2 = echarts.init(document.getElementById("size_by_cluster_2"), 'macarons');-->
+<!--var size_by_cluster_option_2 = size_by_cluster_option-->
+<!--size_by_cluster_option_2.title.text = '多湖集群'-->
+<!--size_by_cluster_2.setOption(size_by_cluster_option_2);-->
+<!--size_by_cluster_2.resize();-->
+
+<!--});-->
+
+<!--$("#zdywd").on('shown.bs.tab', function (e) {-->
+<!--var size_by_zdy = echarts.init(document.getElementById("size_by_zdy"), 'macarons');-->
+<!--size_by_zdy.setOption(size_by_zdy_option);-->
+<!--size_by_zdy.resize();-->
+
+
+<!--});-->
+
+<!--$("#dlwd").on('shown.bs.tab', function (e) {-->
+<!--var count_of_queue = echarts.init(document.getElementById("count_of_queue"), 'macarons');-->
+<!--count_of_queue.setOption(count_of_queue_option);-->
+<!--count_of_queue.resize();-->
+
+<!--var not_consume_of_queue = echarts.init(document.getElementById("not_consume_of_queue"), 'macarons');-->
+<!--not_consume_of_queue.setOption(not_consume_of_queue_option);-->
+<!--not_consume_of_queue.resize();-->
+
+
+<!--});-->
+
+
+<!--</script>-->
+
+
+<script>
+    function setIframeHeight(iframe) {
+        if (iframe) {
+            var iframeWin = iframe.contentWindow || iframe.contentDocument.parentWindow;
+            if (iframeWin.document.body) {
+                iframe.height = iframeWin.document.documentElement.scrollHeight || iframeWin.document.body.scrollHeight;
+            }
+        }
+    }
+    ;
+
+    window.onload = function () {
+        setIframeHeight(document.getElementById('external-frame'));
+    };
+</script>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12"><h3>一天备份统计</h3></div>
+        <div class="col-sm-12">
+            <iframe src="http://ubackup.uuzu.com:5601/goto/12f07acfd972a2ba87f9d2347f7d9d67" onload="setIframeHeight(this)" width="100%" height="2000px"></iframe>
+            <!--<div class="tabs-container">-->
+            <!--<ul class="nav nav-tabs">-->
+            <!--<li class="active"><a data-toggle="tab" data-target="#tab-1" aria-expanded="false">实时统计</a>-->
+            <!--</li>-->
+            <!--<li class=""><a id="cpwd" data-toggle="tab" data-target="#tab-2" aria-expanded="true">产品纬度</a>-->
+            <!--</li>-->
+
+            <!--<li class=""><a id="jqwd" data-toggle="tab" data-target="#tab-3" aria-expanded="true">集群纬度</a>-->
+            <!--</li>-->
+            <!--<li class=""><a id="zdywd" data-toggle="tab" data-target="#tab-4" aria-expanded="true">产品/备份类型</a>-->
+            <!--</li>-->
+            <!--<li class=""><a id="dlwd" data-toggle="tab" data-target="#tab-5" aria-expanded="true">队列</a>-->
+            <!--</li>-->
+            <!--</ul>-->
+            <!--<div class="tab-content">-->
+            <!--<div id="tab-1" class="tab-pane active">-->
+            <!--<div class="panel-body" style="min-height: 850px;">-->
+            <!--<div class="row">-->
+            <!--<div class="col-sm-3">-->
+            <!--<div class="widget style1">-->
+            <!--<div class="row">-->
+            <!--<div class="col-xs-4 text-center">-->
+            <!--<i class="fa fa-trophy fa-5x"></i>-->
+            <!--</div>-->
+            <!--<div class="col-xs-8 text-center">-->
+            <!--<span> 总计备份次数 </span>-->
+            <!--<h2 class="font-bold" id="backupCounter"></h2>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--<div class="col-sm-3">-->
+            <!--<div class="widget style1 navy-bg">-->
+            <!--<div class="row">-->
+
+            <!--<div class="col-xs-8 text-center">-->
+            <!--<span> 总计异地传输(GB) </span>-->
+            <!--<h2 class="font-bold" id="backupTransfer"></h2>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--<div class="col-sm-3">-->
+            <!--<div class="widget style1 lazur-bg">-->
+            <!--<div class="row">-->
+            <!--<div class="col-xs-8 text-center">-->
+            <!--<span> 总计错误次数 </span>-->
+            <!--<h2 class="font-bold" id="backupErrorCounter"></h2>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--<div class="col-sm-3">-->
+            <!--<div class="widget style1 yellow-bg">-->
+            <!--<div class="row">-->
+
+            <!--<div class="col-xs-8 text-center">-->
+            <!--<span> 当前QPS </span>-->
+            <!--<h2 class="font-bold" id="backupQps"></h2>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--<div class="row animated fadeInRight">-->
+            <!--<div class="col-sm-12">-->
+            <!--<div class="ibox float-e-margins">-->
+            <!--<div class="ibox-title">-->
+            <!--<h5>实时备份列表</h5>-->
+            <!--</div>-->
+
+            <!--<div id="logs" class="ibox-content timeline">-->
+
+
+            <!--</div>-->
+
+            <!--</div>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--<div id="tab-2" class="tab-pane">-->
+            <!--<div class="panel-body">-->
+            <!--<div class="row">-->
+            <!--<div class="col-sm-12" style="height: 400px;" id="size_by_product">-->
+            <!--</div>-->
+            <!--</div>-->
+
+            <!--<div class="row">-->
+            <!--<div class="col-sm-12" style="height: 400px;" id="count_by_product">-->
+            <!--</div>-->
+            <!--</div>-->
+
+            <!--</div>-->
+            <!--</div>-->
+            <!--<div id="tab-3" class="tab-pane">-->
+            <!--<div class="panel-body">-->
+            <!--<div class="row">-->
+            <!--<div class="col-sm-12" style="height: 400px;" id="size_by_cluster">-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--<div class="row">-->
+            <!--<div class="col-sm-12" style="height: 400px;" id="size_by_cluster_2">-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--<div id="tab-4" class="tab-pane">-->
+            <!--<div class="panel-body">-->
+
+            <!--<div class="row m-b-sm m-t-sm">-->
+
+
+            <!--<div class="col-md-1">-->
+
+            <!--<div class="input-group input-group-sm">-->
+
+            <!--<select class="form-control m-b" name="account">-->
+            <!--<option value="0">[产品]全部</option>-->
+            <!--<option value="1">女神联盟</option>-->
+            <!--<option value="1">少年三国志</option>-->
+            <!--<option value="1">骑士战歌</option>-->
+            <!--</select>-->
+
+            <!--</div>-->
+
+            <!--</div>-->
+
+            <!--<div class="col-md-1">-->
+
+            <!--<div class="input-group input-group-sm">-->
+
+            <!--<select class="form-control m-b" name="account">-->
+            <!--<option value="0">[类型]全部</option>-->
+            <!--<option value="1">MySQL</option>-->
+            <!--<option value="1">Redis</option>-->
+            <!--<option value="1">SSDB</option>-->
+            <!--</select>-->
+
+            <!--</div>-->
+
+            <!--</div>-->
+
+            <!--<div class="col-md-1">-->
+            <!--<button type="button" id="loading-example-btn" class="btn btn-white btn-sm"><i-->
+            <!--class="fa fa-refresh"></i> 生成-->
+            <!--</button>-->
+            <!--</div>-->
+
+            <!--</div>-->
+
+            <!--<div class="row">-->
+            <!--<div class="col-sm-12" style="height: 400px;" id="size_by_zdy">-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--<div class="row">-->
+            <!--<div class="col-sm-12" style="height: 400px;" id="count_by_zdy">-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--</div>-->
+
+            <!--<div id="tab-5" class="tab-pane">-->
+            <!--<div class="panel-body">-->
+            <!--<div class="row">-->
+            <!--<div class="col-sm-12" style="height: 400px;" id="count_of_queue">-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--<div class="row">-->
+            <!--<div class="col-sm-12" style="height: 400px;" id="not_consume_of_queue">-->
+            <!--</div>-->
+            <!--</div>-->
+
+            <!--</div>-->
+            <!--</div>-->
+            <!--</div>-->
+
+
+            <!--</div>-->
+        </div>
+    </div>
+
+</div>
+
+
+{% endraw %}

@@ -1,0 +1,107 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>Accordion - Expand Direction</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/jquery.integralui.accordion.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-blue.css" />
+    <script type="text/javascript" src="../../../external/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="../../../external/jquery.ui.core.min.js"></script>
+    <script type="text/javascript" src="../../../external/jquery.ui.widget.min.js"></script>
+    <script type="text/javascript" src="../../../js/jquery.integralui.widget.min.js"></script>
+    <script type="text/javascript" src="../../../js/jquery.integralui.accordion.min.js"></script>
+    <script type="text/javascript">
+        var $bar = null;
+        $(document).ready(function() {
+            
+            $bar = $('#accordion').accordion({
+                groupSpacing: 3
+            });
+        });
+        
+        // Create the content of group panel
+        var generateGroupContent = function(){
+            return "<div class='group-content-panel'>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.</div>";
+        }
+
+        function changeDirection(elem){
+            var groups = $bar.accordion("getCurrentList");
+            for (var i = 0; i < groups.length; i++){
+                if (!groups[i].content)
+                    groups[i].content = generateGroupContent();
+            }
+            
+            var direction = "up";
+            
+            if (elem === frm.direction[1])
+                direction = "right";
+            else if (elem === frm.direction[2])
+                direction = "down";
+            else if (elem === frm.direction[3])
+                direction = "left";
+
+            $bar.accordion("option", "expandDirection", direction);
+            
+            if (elem === frm.direction[1] || elem === frm.direction[3])
+                $bar.accordion("option", "headerContentOrientation", "vertical");
+            else
+                $bar.accordion("option", "headerContentOrientation", "horizontal");
+        }
+    </script>
+    <style type="text/css">
+        .group-content-panel
+        {
+            padding: 5px;
+            position: relative;
+        }
+    </style>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span class="product-name">IntegralUI</span> Studio <span class="product-platform">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content">
+        <div class="feature">
+	        <h2 class="feature-title">Accordion / Expand Direction</h2>
+	        <div class="feature-content">
+                <div id="accordion" class="widget"> 
+                    <h3>Books</h3>
+                    <div></div>
+                    <h3>Music</h3>
+                    <div></div>
+                    <h3>Sports</h3>
+                    <div></div>
+                    <h3>Video Games</h3>
+                    <div></div>
+                    <h3>Watches</h3>
+                    <div></div>
+                </div>
+                <div class="control-panel" style="width:150px">
+                    <form name="frm">
+                        <label><input type="radio" id="radio-top" name="direction" onclick="changeDirection(this)" />Up</label><br />
+                        <label><input type="radio" id="radio-right" name="direction" onclick="changeDirection(this)" />Right</label><br />
+                        <label><input type="radio" id="radio-bottom" name="direction" checked="checked" onclick="changeDirection(this)" />Down</label><br />
+                        <label><input type="radio" id="radio-left" name="direction" onclick="changeDirection(this)" />Left</label><br />
+                    </form>
+                </div>
+                <br style="clear:both;"/>
+                <div class="feature-help">
+                    <p><span class="initial-space"></span>In this sample you can change direction on which group expand. The Accordion widget has a property <span style="color:#c60d0d">expandDirection</span>, which can accept one of these four values:
+                        <ul class="feature-points">
+                            <li><span style="color:#c60d0d">up</span> - groups expand its content upwards</li>
+                            <li><span style="color:#c60d0d">right</span> - groups expands its content to the right</li>
+                            <li><span style="color:#c60d0d">down</span> - groups expand its content downwards</li>
+                            <li><span style="color:#c60d0d">left</span> - groups expands its content to the left</li>
+                        </ul>
+                    </p>
+               </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

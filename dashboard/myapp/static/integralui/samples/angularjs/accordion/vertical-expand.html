@@ -1,0 +1,134 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>Accordion - Vertical Expand</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/integralui.accordion.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-flat-blue.css" />
+    <script type="text/javascript" src="../../../external/angular.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.accordion.min.js"></script>
+    <script type="text/javascript">
+ 		angular
+			.module("appModule", ["integralui"])
+			.controller("appCtrl", ["$scope", "IntegralUIAccordionService", function($scope, $ctrlService){
+                $scope.ctrlName = "ctrlSample";
+                $scope.expandMode = 'down';
+
+                $scope.groups = [
+                    { 
+                        name: 'group1',
+                        icon: 'library',
+                        text: 'Books',
+                        body: 'Curabitur pretium tincidunt lacus. Nulla gravida orci a odio. Nullam varius, turpis et commodo pharetra, est eros bibendum elit, nec luctus magna felis sollicitudin mauris. Integer in mauris eu nibh euismod gravida. Duis ac tellus et risus vulputate vehicula. Donec lobortis risus a elit. Etiam tempor.'
+                    },
+                    { 
+                        name: 'group2',
+                        icon: 'album',
+                        text: 'Music',
+                        body: 'Pellentesque malesuada nulla a mi. Duis sapien sem, aliquet nec, commodo eget, consequat quis, neque. Aliquam faucibus, elit ut dictum aliquet, felis nisl adipiscing sapien, sed malesuada diam lacus eget erat. Cras mollis scelerisque nunc. Nullam arcu. Aliquam consequat.'
+                    },
+                    { 
+                        name: 'group3',
+                        icon: 'star-empty',
+                        text: 'Favorites',
+                        body: 'Fusce convallis, mauris imperdiet gravida bibendum, nisl turpis suscipit mauris, sed placerat ipsum urna sed risus. In convallis tellus a mauris. Curabitur non elit ut libero tristique sodales. Mauris a lacus. Donec mattis semper leo. In hac habitasse platea dictumst.'
+                    }
+                ];
+		}]);
+    </script>
+    <style type="text/css">
+        .feature-content
+        {
+            width: 650px;
+        }
+        .directive
+        {
+            width: 400px;
+            height: auto;
+        }
+        .box
+        {
+            background-image: url(../../../resources/icons.png);
+            background-repeat: no-repeat;
+            display: inline-block;
+            overflow: hidden;
+            padding: 0;
+            margin: 0 1px 2px 0;
+            width: 16px;
+            height: 16px;
+            vertical-align: middle;
+        }
+        .expand
+        {
+            background-position: -80px 0;
+        }
+        .collapse
+        {
+            background-position: -224px -80px;
+        }
+        .custom-content
+        {
+            margin: 0;
+            padding: 5px;
+        }
+        .group-icon
+        {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+        }
+        .iui-accordion-group
+        {
+            margin: 1px;
+            height: 200px;
+        }
+        .iui-accordion-group-header
+        {
+            height: 20px;
+            padding: 5px 7px;
+        }
+        .iui-accordion-group-content
+        {
+            width: 300px;
+            overflow: auto;
+        }
+    </style>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span style="color:#c60d0d">IntegralUI</span> Studio <span style="font-size:0.75em; font-style:italic">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content" ng-app="appModule">
+        <div class="feature" ng-controller="appCtrl">
+	        <h2 class="feature-title">Accordion / Vertical Expand</h2>
+	        <div class="feature-content">
+                <iui-accordion name="{{ctrlName}}" class="directive" groups="groups" expand-direction="{{expandMode}}">
+                    <iui-accordion-group ng-repeat="group in groups" name="{{group.name}}" heading="{{group.text}}">
+                        <p class="custom-content">{{group.body}}</p>
+                    </iui-accordion-group>
+                </iui-accordion>
+                <div class="control-panel">
+                    <label>Choose Expand Direction</label><br /><br />
+                    <label><input type="radio" ng-model="expandMode" value="up" />Up</label><br />
+                    <label><input type="radio" ng-model="expandMode" value="down" />Down</label><br />
+                </div>
+                <br style="clear:both;"/>
+                <div class="feature-help">
+                    <p><span class="initial-space"></span>This sample demonstrates expanding of groups vertically, downwards or upwards. The Accordion directive has a property <span style="color:#c60d0d">expandDirection</span>, which can accept one of these values:
+                        <ul class="feature-points">
+                            <li><span style="color:#c60d0d">up</span> - groups expands its content upwards</li>
+                            <li><span style="color:#c60d0d">down</span> - groups expands its content downwards</li>
+                        </ul>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

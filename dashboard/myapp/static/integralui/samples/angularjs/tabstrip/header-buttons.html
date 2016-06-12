@@ -1,0 +1,129 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>TabStrip - Header Buttons</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/integralui.tabstrip.css" />
+    <link rel="stylesheet" href="../../../css/integralui.checkbox.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-flat-blue.css" />
+    <script type="text/javascript" src="../../../external/angular.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.tabstrip.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.checkbox.min.js"></script>
+    <script type="text/javascript">
+ 		angular
+			.module("appModule", ["integralui"])
+			.controller("appCtrl", ["$scope", "IntegralUITabStripService", function($scope, $ctrlService){
+                $scope.ctrlName = "ctrlSample";
+
+                $scope.tabs = [
+                    { id: 1, name: 'Tab1', text: 'Tab 1', checked: false },
+                    { id: 2, name: 'Tab2', text: 'Tab 2', checked: false },
+                    { id: 3, name: 'Tab3', text: 'Tab 3', checked: false }
+                ];
+               
+                $scope.onCheckedChanged = function(e, tab){
+                    alert("CheckBox value changed to " + tab.checked + " for the " + tab.text);
+                }
+               
+                $scope.onDelete = function(tab){
+                    $ctrlService.removeTab($scope.ctrlName, tab);
+                }
+		}]);
+    </script>
+    <style type="text/css">
+        .directive
+        {
+            height: 300px;
+        }
+        .iui-checkbox
+        {
+            display: inline-block;
+            margin-bottom: 3px;
+            vertical-align: middle;
+        }
+        .iui-tab-header
+        {
+            padding-right: 2px;
+        }
+        .header-title
+        {
+            display: inline-block;
+            margin: 0 5px;
+            vertical-align: middle;
+        }
+        .tab-content
+        {
+            padding: 30% 10px;
+            text-align: center;
+        }
+        .icons
+        {
+            background-image: url(../../../resources/header-icons.png);
+            border: thin solid transparent;
+            display: block;
+        }
+        .delete
+        {
+            background-position: -17px 0;
+        }
+        .toolbar
+        {
+            display: inline-block;
+            margin: 0;
+            padding: 0;
+            vertical-align: middle;
+        }
+        .header-button
+        {
+            display: inline-block;
+            border: thin solid transparent;
+            margin: 0;
+            padding: 2px 2px 3px 2px;
+        }
+        .header-button:hover
+        {
+            background-color: white;
+            border-color: #969696;
+        }
+    </style>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span style="color:#c60d0d">IntegralUI</span> Studio <span style="font-size:0.75em; font-style:italic">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content" ng-app="appModule">
+        <div class="feature" ng-controller="appCtrl">
+	        <h2 class="feature-title">TabStrip / Header Buttons</h2>
+	        <div class="feature-content">
+                <iui-tabstrip name="{{ctrlName}}" class="directive" tabs="tabs">
+                    <iui-tab ng-repeat="tab in tabs" name="{{tab.name}}">
+                        <iui-tab-header>
+                            <iui-checkbox checked="tab.checked" checked-changed="onCheckedChanged(e, tab)" ng-mousedown="$event.stopPropagation();"></iui-checkbox>
+                            <span class="header-title">{{tab.text}}</span>
+                            <div class="toolbar" ng-mousedown="$event.stopPropagation();">
+                                <div class="header-button"><span class='icons delete' ng-click="onDelete(tab)"></span></div>
+                            </div>
+                        </iui-tab-header>
+                        <div class="tab-content">
+                            {{tab.name}} Content
+                        </div>
+                    </iui-tab>
+                </iui-tabstrip>
+                <div style="float:right; width: 100px; font-size:0.8em; white-space:nowrap;">
+                </div>
+                <br style="clear:both;"/>
+                <div class="feature-help">
+                    <p><span class="initial-space"></span>An example on how to create a custom tabs with checkbox and a button in its header. Each tab has a checkbox, label and close button in header.</p>
+                    <p><span class="initial-space"></span>The tab header is fully customizable, you can add any custom content using HTML elements or other directives.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

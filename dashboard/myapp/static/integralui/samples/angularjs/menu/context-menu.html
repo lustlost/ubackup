@@ -1,0 +1,116 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>Context Menu - Multi Level</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/integralui.contextmenu.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-flat-blue.css" />
+    <script type="text/javascript" src="../../../external/angular.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.contextmenu.min.js"></script>
+    <script type="text/javascript">
+        angular
+            .module("appModule", ["integralui"])
+            .controller("appCtrl", ["$scope", "$timeout", function($scope, $timeout){
+                $scope.menuName = "menuSample";
+                $scope.defaultIcon = 'icons-medium empty';
+
+                $scope.data = [
+                    { id: 1, text: "Context Menu", type: "header" },
+                    { 
+                        id: 2,
+                        text: "New",
+                        icon: "icons-medium new-document",
+                        items: [
+                            { id: 21, pid: 1, text: "Project", icon: "icons-medium solution" },
+                            { id: 22, pid: 1, text: "Window" }
+                        ]
+                    },
+                    { id: 3, text: "Open" },
+                    { id: 4, text: "Save As...", icon: "icons-medium save" },
+                    { id: 5, text: "Save All" },
+                    { id: 6, type: "separator" },
+                    { 
+                        id: 7, 
+                        text: "Social", 
+                        icon: "icons-medium people",
+                        items: [
+                            { id: 71, pid: 1, text: "Facebook", icon: "icons-medium facebook" },
+                            { id: 72, pid: 1, text: "Google Plus", icon: "icons-medium google-plus" },
+                            { id: 73, pid: 1, text: "Twitter", icon: "icons-medium twitter" }
+                        ]
+                    },
+                    { id: 8, text: "Favorites" },
+                    { id: 9, type: "separator" },
+                    { id: 10, text: "Page Setup" },
+                    { id: 11, text: "Print", icon: "icons-medium print" },
+                ];
+
+
+                $scope.menuOptions = {
+                    itemIcon: 'icons-medium empty',
+                    items: $scope.data,
+                    itemClick: function(e){
+                        alert("Menu item: " + e.item.text + " is clicked.");
+                    }
+                }
+
+            }]);
+    </script>
+    <style type="text/css">
+        .block
+        {
+            background: white;
+            border: thin solid gray;
+            width: 600px;
+            height: 300px;
+        }
+        .block span
+        {
+            color: #808080;
+            cursor: default;
+            display: block;
+            margin: 130px auto;
+            text-align: center;
+        }
+        .icons-medium
+        {
+            margin: 0 7px 0 0;
+        }
+        .iui-contextmenu-item
+        {
+            width: 150px;
+        }
+        .header-item
+        {
+            margin-top: 2px;
+        }
+    </style>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span style="color:#c60d0d">IntegralUI</span> Studio <span style="font-size:0.75em; font-style:italic">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content" ng-app="appModule">
+        <div class="feature" ng-controller="appCtrl">
+	        <h2 class="feature-title">Context Menu / Multi Level</h2>
+	        <div class="feature-content">
+                <div class="block" iui-contextmenu="menuOptions">
+                    <span>Right click to open the context menu</span>
+                </div>
+	            <div class="feature-help">
+                    <p><span class="initial-space"></span>IntegralUI ContextMenu is a native AngularJS directive that allows you to create and add a context menu to a HTML element. ContextMenu directive can be attached to any other AngularJS directive or HTML element.</p>
+                    <p><span class="initial-space"></span>In case of this example, we have a &lt;div&gt; element, which when right-clicked will display a multi level context menu. ContextMenu can have different types of menu items: <span style="color:#c60d0d">header</span>, <span style="color:#c60d0d">item</span> and <span style="color:#c60d0d">separator</span>.</p>
+                    <p><span class="initial-space"></span>Whenever a menu item is clicked, the <span style="color:#c60d0d">itemClick</span> event is fired which you can handle in your code and set a custom operation. In case of this example, a pop-up window will appear stating the name of the clicked item.</p>
+                    <p style="padding-bottom:30px"><span class="initial-space"></span>For more information check out the source code of this sample.</p>
+	            </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

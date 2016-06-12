@@ -1,0 +1,287 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>TreeView - Events</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/jquery.integralui.treeview.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-blue.css" />
+    <script type="text/javascript" src="../../../external/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="../../../external/jquery.ui.core.min.js"></script>
+    <script type="text/javascript" src="../../../external/jquery.ui.widget.min.js"></script>
+    <script type="text/javascript" src="../../../js/jquery.integralui.widget.min.js"></script>
+    <script type="text/javascript" src="../../../js/jquery.integralui.treeview.min.js"></script>
+    <script type="text/javascript">
+        var $item = null;
+        $(document).ready(function() {
+            var localData = [
+            {
+                "id": "1",
+                "text": "Dairy",
+                "isExpanded": false
+            }, {
+                "id": "11",
+                "pid": "1",
+                "text": "Milk"
+            }, {
+                "id": "12",
+                "pid": "1",
+                "text": "Butter"
+            }, {
+                "id": "13",
+                "pid": "1",
+                "text": "Cheese"
+            }, {
+                "id": "14",
+                "pid": "1",
+                "text": "Yogurt"
+            }, {
+                "id": "2",
+                "text": "Fruits"
+            }, {
+                "id": "21",
+                "pid": "2",
+                "text": "Berries",
+                "isExpanded": false
+            }, {
+                "id": "211",
+                "pid": "21",
+                "text": "BlackBerries"
+            }, {
+                "id": "212",
+                "pid": "21",
+                "text": "CranBerries"
+            }, {
+                "id": "213",
+                "pid": "21",
+                "text": "StrawBerries"
+            }, {
+                "id": "22",
+                "pid": "2",
+                "text": "Pits"
+            }, {
+                "id": "23",
+                "pid": "2",
+                "text": "Core"
+            }, {
+                "id": "24",
+                "pid": "2",
+                "text": "Citrus Fruits",
+                "isExpanded": false
+            }, {
+                "id": "241",
+                "pid": "24",
+                "text": "Oranges"
+            }, {
+                "id": "242",
+                "pid": "24",
+                "text": "Lemons"
+            }, {
+                "id": "25",
+                "pid": "2",
+                "text": "Melons"
+            }, {
+                "id": "26",
+                "pid": "2",
+                "text": "Tropical Fruits"
+            }, {
+                "id": "261",
+                "pid": "26",
+                "text": "Avocados"
+            }, {
+                "id": "262",
+                "pid": "26",
+                "text": "Bananas"
+            }, {
+                "id": "263",
+                "pid": "26",
+                "text": "Dates"
+            }, {
+                "id": "3",
+                "text": "Grains"
+            }, {
+                "id": "4",
+                "text": "Meat"
+            }, {
+                "id": "41",
+                "pid": "4",
+                "text": "Beef"
+            }, {
+                "id": "42",
+                "pid": "4",
+                "text": "Lamb",
+                "isExpanded": false
+            }, {
+                "id": "421",
+                "pid": "42",
+                "text": "Lamb Breast"
+            }, {
+                "id": "422",
+                "pid": "42",
+                "text": "Lamb Leg"
+            }, {
+                "id": "423",
+                "pid": "42",
+                "text": "Lamb Ribs"
+            }, {
+                "id": "43",
+                "pid": "4",
+                "text": "Pork"
+            }, {
+                "id": "5",
+                "text": "Sweets"
+            }, {
+                "id": "6",
+                "text": "Vegetables"
+            }, {
+                "id": "7",
+                "text": "Water"
+            }]
+    
+            var $tree = $('#treeview').treeview({
+                allowDrag: true,
+                // Map item data fields with fields from local data source
+                dataFields: {
+                    id : 'id',
+                    pid : 'pid',
+                    text : 'text',
+                    expanded: 'isExpanded',
+                    dataSource : localData }
+            });
+            
+            $eventLog = $("#eventLog");
+            // Make text in event log to become unselectable
+            $eventLog
+                .attr('unselectable', 'on')
+                .css('user-select', 'none')
+                .on('selectstart', false);
+           
+            $tree
+                .on({
+                    "aftercollapse": function(e){
+                        $eventLog.append("<li><span style='color:#c60d0d'>aftercollapse</span> event was fired for item: <i>" + e.object.text + "</i></li>"); 
+                    },
+                    "afterexpand": function(e){
+                        $eventLog.append("<li><span style='color:#c60d0d'>afterexpand</span> event was fired for item: <i>" + e.object.text + "</i></li>"); 
+                    },
+                    "afterselect": function(e){
+                        $eventLog.append("<li><span style='color:#c60d0d'>afterselect</span> event was fired for item: <i>" + e.object.text + "</i></li>"); 
+                    },
+                    "beforecollapse": function(e){
+                       $eventLog.append("<li><span style='color:#c60d0d'>beforecollapse</span> event was fired for item: <i>" + e.object.text + "</i></li>"); 
+                    },
+                    "beforeexpand": function(e){
+                       $eventLog.append("<li><span style='color:#c60d0d'>beforeexpand</span> event was fired for item: <i>" + e.object.text + "</i></li>"); 
+                    },
+                    "beforeselect": function(e){
+                       $eventLog.append("<li><span style='color:#c60d0d'>beforeselect</span> event was fired for item: <i>" + e.object.text + "</i></li>"); 
+                    },
+                    "clear": function(e){
+                       $eventLog.append("<li><span style='color:#c60d0d'>clear</span> event was fired when all items are removed</li>"); 
+                    },
+                    "dragenter": function(e){
+                        $eventLog.append("<li><span style='color:#c60d0d'>dragenter</span> event was fired when item is dragged into TreeView space"); 
+                    },
+                    "dragleave": function(e){
+                        $eventLog.append("<li><span style='color:#c60d0d'>dragleave</span> event was fired when dragged item leaves TreeView space"); 
+                    },
+                    "dragover": function(e){
+                        $eventLog.append("<li><span style='color:#c60d0d'>dragover</span> event was fired when item is dragged over TreeView space"); 
+                    },
+                    "dragdrop": function(e){
+                        $eventLog.append("<li><span style='color:#c60d0d'>dragdrop</span> event was fired when drag-drop operation is completed"); 
+                    },
+                    "itemadding": function(e){
+                       $eventLog.append("<li><span style='color:#c60d0d'>itemadding</span> event was fired before <i>" + e.object.text + "</i> is added</li>"); 
+                    },
+                    "itemadded": function(e){
+                        $eventLog.append("<li><span style='color:#c60d0d'>itemadded</span> event was fired after <i>" + e.object.text + "</i> is added</li>"); 
+                    },
+                    "itemremoving": function(e){
+                       $eventLog.append("<li><span style='color:#c60d0d'>itemremoving</span> event was fired before <i>" + e.object.text + "</i> is removed</li>"); 
+                    },
+                    "itemremoved": function(e){
+                        $eventLog.append("<li><span style='color:#c60d0d'>itemremoved</span> event was fired after <i>" + e.object.text + "</i> is removed</li>"); 
+                    },
+                    "itemclick": function(e){
+                        $eventLog.append("<li><span style='color:#c60d0d'>itemclick</span> event was fired when <i>" + e.object.text + "</i> was clicked</li>"); 
+                    },
+                    "itemdblclick": function(e){
+                        $eventLog.append("<li><span style='color:#c60d0d'>itemdblclick</span> event was fired when <i>" + e.object.text + "</i> was double-clicked</li>"); 
+                    },
+                    "itemhover": function(e){
+                        $eventLog.append("<li><span style='color:#c60d0d'>itemhover</span> event was fired when the mouse cursor hovers over <i>" + e.object.text + "</i> space</li>"); 
+                    },
+                    "itemrightclick": function(e){
+                        $eventLog.append("<li><span style='color:#c60d0d'>itemrightclick</span> event was fired when <i>" + e.object.text + "</i> was clicked using right mouse button</li>"); 
+                    },
+                    "selectionchanged": function(e){
+                       $eventLog.append("<li><span style='color:#c60d0d'>selectionchanged</span> event was fired when selection changes</li>"); 
+                    },
+                    "scrollposchanged": function(e){
+                       $eventLog.append("<li><span style='color:#c60d0d'>scrollposchanged</span> event was fired when position of scrollbar has changed</li>"); 
+                    }
+                });
+          
+            $('#clear').click(function(e){
+               $eventLog.empty();
+           });
+        });
+    </script>
+</head>
+<body oncontextmenu="return false;">
+	<div class="header">
+        <div class="header-content">
+		    <h1><span style="color:#c60d0d">IntegralUI</span> Studio <span style="font-size:0.75em; font-style:italic">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content">
+        <div class="feature">
+	        <h2 class="feature-title">TreeView / Events</h2>
+	        <div class="feature-content" style="width:750px">
+                <div id="treeview" class="widget"></div>
+                <div class="control-panel" style="width:300px;">
+                    <div style="background: white; border: thin solid gray; border-radius:3px; width: 350px; height: 400px">
+                        <form name="frm">
+                            <button type="button" id="clear" style="float:right;margin:3px 12px; width:50px">Clear</button>
+                            <p style="margin:0 10px; padding: 3px; border-bottom: thin solid #c5c5c5">Event log:</p>
+                        </form>
+                        <ul id="eventLog"</ul>
+                    </div>
+                </div>
+                <br style="clear:both;"/>
+                <div class="feature-help">
+                    <p><span class="initial-space"></span>This sample presents most of events that are fired from TreeView widget. Depending on action, a specific event is fired, which you can handle by simple creating an event handler. Here is list of events that are supported:</p>
+                     <ul class="feature-points">
+                        <li><span style="color:#c60d0d">aftercollapse</span> - Occurs after an item is collapsed</li>
+                        <li><span style="color:#c60d0d">afterexpand</span> - Occurs after an item is expanded</li>
+                        <li><span style="color:#c60d0d">afterselect</span> - Occurs after an item is selected</li>
+                        <li><span style="color:#c60d0d">beforecollapse</span> - Occurs before an item is collapsed</li>
+                        <li><span style="color:#c60d0d">beforeexpand</span> - Occurs before an item is expanded</li>
+                        <li><span style="color:#c60d0d">beforeselect</span> - Occurs before an item is selected</li>
+                        <li><span style="color:#c60d0d">clear</span> - Occurs when all items are removed</li>
+                        <li><span style="color:#c60d0d">dragenter</span> - Occurs when item is dragged into TreeView space</li>
+                        <li><span style="color:#c60d0d">dragleave</span> - Occurs when dragged item leaves TreeView space</li>
+                        <li><span style="color:#c60d0d">dragover</span> - Occurs when item is dragged over TreeView space</li>
+                        <li><span style="color:#c60d0d">dragdrop</span> - Occurs when drag-drop operation is completed</li>
+                        <li><span style="color:#c60d0d">itemadding</span> - Occurs before a new item is added</li>
+                        <li><span style="color:#c60d0d">itemadded</span> - Occurs after a new item is added</li>
+                        <li><span style="color:#c60d0d">itemclick</span> - Occurs when item is clicked</li>
+                        <li><span style="color:#c60d0d">itemdblclick</span> - Occurs when item is double-clicked</li>
+                        <li><span style="color:#c60d0d">itemhover</span> - Occurs when the mouse cursor hovers over an item space</li>
+                        <li><span style="color:#c60d0d">itemremoving</span> - Occurs before item is removed</li>
+                        <li><span style="color:#c60d0d">itemremoved</span> - Occurs after item is removed</li>
+                        <li><span style="color:#c60d0d">itemrightclick</span> - Occurs when item is clicked using right mouse button</li>
+                        <li><span style="color:#c60d0d">scrollposchanged</span> - Occurs when position of scrollbar has changed</li>
+                        <li><span style="color:#c60d0d">selectionchanged</span> - Occurs when selection changes</li>
+                    </ul>
+                    <p><span class="initial-space"></span>Depending on some conditions, when handling some of above events you can prevent the default action to proceed, by canceling the operation.</p>
+                    <p><span class="initial-space"></span>In this sample event log will not register add/remove events, because this kind of operation is not demonstrated here.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

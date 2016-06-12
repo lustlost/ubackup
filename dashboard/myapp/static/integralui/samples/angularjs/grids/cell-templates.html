@@ -1,0 +1,547 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>Grids - Cell Templates</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/integralui.css" />
+    <link rel="stylesheet" href="../../../css/integralui.grid.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-flat-blue.css" />
+    <script type="text/javascript" src="../../../external/angular.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.lists.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.grid.min.js"></script>
+    <script type="text/javascript">
+ 		angular
+			.module("appModule", ["integralui"])
+			.controller("appCtrl", ["$scope", "IntegralUIGridService", function($scope, $gridService){
+				$scope.gridName = "gridSample";
+
+				$scope.columns = [
+					{ id: 1, headerText: "Company", width: 240},
+					{ id: 2, headerText: "Price", width: 80, contentAlignment: 'right', cellTemplateUrl: "'cell-price.html'" },
+					{ id: 3, headerText: "Change", width: 70, contentAlignment: 'center' },
+					{ id: 4, headerText: "Change %", width: 120, minWidth: 120, headerAlignment: 'center', cellTemplateUrl: "'cell-change.html'" },
+					{ id: 5, headerText: "Volume", width: 110, headerAlignment: 'center', contentAlignment: 'right' },
+					{ id: 6, headerText: "Country", width: 130 },
+					{ id: 7, width: 75, cellTemplateUrl: "'cell-button.html'" }
+				];
+
+				$scope.onDeleteRow = function(obj){
+					var row = $gridService.findRowById($scope.gridName, obj.id);
+					if (row)
+						$gridService.removeRow($scope.gridName, row);
+				}
+
+				var getProgressWidth = function(value){
+					return Math.floor(value * 5 / 3);
+				}
+
+				$scope.rows = [
+					{ 
+						id: 1,
+						cells: [
+							{ cid: 1, text: "Lacus Aliquam Consulting" },
+							{
+								cid: 2, 
+								templateObj: {
+									indicator: true,
+									text: "$32.46"
+								}
+							},
+							{ cid: 3, text: "+5.23" },
+							{
+								cid: 4, 
+								templateObj: {
+									progress: getProgressWidth(7.15),
+									text: "+7.15%"
+								}
+							},
+							{ cid: 5, text: "2,749,325" },
+							{ cid: 6, text: "Brazil" },
+							{ 
+								cid: 7, 
+								templateObj: {
+									id: 1, 
+									onDeleteRow: function(obj){ return $scope.onDeleteRow(obj) }
+								}
+							}
+						]
+					},
+					{ 
+						id: 2,
+						cells: [
+							{ cid: 1, text: "Augue LLC" },
+							{
+								cid: 2, 
+								templateObj: {
+									indicator: true,
+									text: "$7.43"
+								}
+							},
+							{ cid: 3, text: "+2.83" },
+							{
+								cid: 4, 
+								templateObj: {
+									progress: getProgressWidth(18.5),
+									text: "+18.50%"
+								}
+							},
+							{ cid: 5, text: "12,251,937" },
+							{ cid: 6, text: "Germany" },
+							{ 
+								cid: 7, 
+								templateObj: {
+									id: 2, 
+									onDeleteRow: function(obj){ return $scope.onDeleteRow(obj) }
+								}
+							}
+						]
+					},
+					{ 
+						id: 3,
+						cells: [
+							{ cid: 1, text: "Porttitor Corp." },
+							{
+								cid: 2, 
+								templateObj: {
+									indicator: false,
+									text: "$196.53"
+								}
+							},
+							{ cid: 3, text: "-1.47" },
+							{
+								cid: 4, 
+								templateObj: {
+									indicator: false,
+									progress: getProgressWidth(4.2),
+									text: "-4.21%"
+								}
+							},
+							{ cid: 5, text: "2,763,552" },
+							{ cid: 6, text: "Italy" },
+							{ 
+								cid: 7, 
+								templateObj: {
+									id: 3, 
+									onDeleteRow: function(obj){ return $scope.onDeleteRow(obj) }
+								}
+							}
+						]
+					},
+					{ 
+						id: 5,
+						cells: [
+							{ cid: 1, text: "Varius Orci In PC" },
+							{
+								cid: 2, 
+								templateObj: {
+									indicator: false,
+									text: "$59.27"
+								}
+							},
+							{ cid: 3, text: "-3.39" },
+							{
+								cid: 4, 
+								templateObj: {
+									indicator: false,
+									progress: getProgressWidth(6.92),
+									text: "-6.92%"
+								}
+							},
+							{ cid: 5, text: "7,920,374" },
+							{ cid: 6, text: "India" },
+							{ 
+								cid: 7, 
+								templateObj: {
+									id: 5, 
+									onDeleteRow: function(obj){ return $scope.onDeleteRow(obj) }
+								}
+							}
+						]
+					},
+					{ 
+						id: 6,
+						cells: [
+							{ cid: 1, text: "Hymenaeos Corporation" },
+							{
+								cid: 2, 
+								templateObj: {
+									indicator: true,
+									text: "$44.67"
+								}
+							},
+							{ cid: 3, text: "+8.67" },
+							{
+								cid: 4, 
+								templateObj: {
+									progress: getProgressWidth(12.68),
+									text: "+12.68%"
+								}
+							},
+							{ cid: 5, text: "3,399,847" },
+							{ cid: 6, text: "Canada" },
+							{ 
+								cid: 7, 
+								templateObj: {
+									id: 6, 
+									onDeleteRow: function(obj){ return $scope.onDeleteRow(obj) }
+								}
+							}
+						]
+					},
+					{ 
+						id: 7,
+						cells: [
+							{ cid: 1, text: "Id Risus PC" },
+							{
+								cid: 2, 
+								templateObj: {
+									indicator: true,
+									text: "$69.23"
+								}
+							},
+							{ cid: 3, text: "+3.51" },
+							{
+								cid: 4, 
+								templateObj: {
+									progress: getProgressWidth(5.59),
+									text: "+5.59%"
+								}
+							},
+							{ cid: 5, text: "15,973,926" },
+							{ cid: 6, text: "France" },
+							{ 
+								cid: 7, 
+								templateObj: {
+									id: 7, 
+									onDeleteRow: function(obj){ return $scope.onDeleteRow(obj) }
+								}
+							}
+						]
+					},
+					{ 
+						id: 8,
+						cells: [
+							{ cid: 1, text: "Urna Institute" },
+							{
+								cid: 2, 
+								templateObj: {
+									indicator: true,
+									text: "$77.79"
+								}
+							},
+							{ cid: 3, text: "+0.79" },
+							{
+								cid: 4, 
+								templateObj: {
+									progress: getProgressWidth(3.24),
+									text: "+3.24%"
+								}
+							},
+							{ cid: 5, text: "9,732,775" },
+							{ cid: 6, text: "USA" },
+							{ 
+								cid: 7, 
+								templateObj: {
+									id: 8, 
+									onDeleteRow: function(obj){ return $scope.onDeleteRow(obj) }
+								}
+							}
+						]
+					},
+					{ 
+						id: 9,
+						cells: [
+							{ cid: 1, text: "Viverra LLC" },
+							{
+								cid: 2, 
+								templateObj: {
+									indicator: false,
+									text: "$9.76"
+								}
+							},
+							{ cid: 3, text: "-9.25" },
+							{
+								cid: 4, 
+								templateObj: {
+									indicator: false,
+									progress: getProgressWidth(24.31),
+									text: "-24.31%"
+								}
+							},
+							{ cid: 5, text: "6,892,784" },
+							{ cid: 6, text: "Argentina" },
+							{ 
+								cid: 7, 
+								templateObj: {
+									id: 9, 
+									onDeleteRow: function(obj){ return $scope.onDeleteRow(obj) }
+								}
+							}
+						]
+					},
+					{ 
+						id: 4,
+						cells: [
+							{ cid: 1, text: "Magna Sed Limited" },
+							{
+								cid: 2, 
+								templateObj: {
+									text: "$78.60"
+								}
+							},
+							{ cid: 3, text: "+0.07" },
+							{
+								cid: 4, 
+								templateObj: {
+									progress: getProgressWidth(0),
+									text: "+0.00%"
+								}
+							},
+							{ cid: 5, text: "5,198,276" },
+							{ cid: 6, text: "Germany" },
+							{ 
+								cid: 7, 
+								templateObj: {
+									id: 4, 
+									onDeleteRow: function(obj){ return $scope.onDeleteRow(obj) }
+								}
+							}
+						]
+					},
+					{ 
+						id: 10,
+						cells: [
+							{ cid: 1, text: "Proin Ltd" },
+							{
+								cid: 2, 
+								templateObj: {
+									indicator: true,
+									text: "$290.32"
+								}
+							},
+							{ cid: 3, text: "+1.28" },
+							{
+								cid: 4, 
+								templateObj: {
+									progress: getProgressWidth(4.92),
+									text: "+4.92%"
+								}
+							},
+							{ cid: 5, text: "5,999,324" },
+							{ cid: 6, text: "USA" },
+							{ 
+								cid: 7, 
+								templateObj: {
+									id: 10, 
+									onDeleteRow: function(obj){ return $scope.onDeleteRow(obj) }
+								}
+							}
+						]
+					},
+					{ 
+						id: 11,
+						cells: [
+							{ cid: 1, text: "Id Consulting" },
+							{
+								cid: 2, 
+								templateObj: {
+									indicator: false,
+									text: "$54.99"
+								}
+							},
+							{ cid: 3, text: "-2.39" },
+							{
+								cid: 4, 
+								templateObj: {
+									indicator: false,
+									progress: getProgressWidth(6.12),
+									text: "-6.12%"
+								}
+							},
+							{ cid: 5, text: "3,542,897" },
+							{ cid: 6, text: "Mexico" },
+							{ 
+								cid: 7, 
+								templateObj: {
+									id: 11, 
+									onDeleteRow: function(obj){ return $scope.onDeleteRow(obj) }
+								}
+							}
+						]
+					},
+					{ 
+						id: 12,
+						cells: [
+							{ cid: 1, text: "Mi Felis Ltd" },
+							{
+								cid: 2, 
+								templateObj: {
+									indicator: true,
+									text: "$27.85"
+								}
+							},
+							{ cid: 3, text: "+3.17" },
+							{
+								cid: 4, 
+								templateObj: {
+									progress: getProgressWidth(2.67),
+									text: "+2.67%"
+								}
+							},
+							{ cid: 5, text: "1,945,483" },
+							{ cid: 6, text: "France" },
+							{ 
+								cid: 7, 
+								templateObj: {
+									id: 12, 
+									onDeleteRow: function(obj){ return $scope.onDeleteRow(obj) }
+								}
+							}
+						]
+					}
+				];
+
+			}]);
+    </script>
+    <style type="text/css">
+		.control-panel
+		{
+			margin-left: 35px;
+			width: 250px;
+		}
+		.feature-content
+		{
+			width: 700px;
+		}
+		
+		/* Grid settings */
+        .directive
+        {
+        	border: thin solid #dadada;
+        	width: 900px;
+        	height2: 300px;
+        }
+		.iui-grid-column-header-cell, .iui-grid-column-footer-cell
+		{
+			padding: 2px 2px;
+		}
+		.iui-grid-row-cell-content
+		{
+			padding: 3px 2px;
+		}
+
+		/* Price Cell */
+		.icons
+		{
+			float: left;
+			margin-top: 1px;
+		}
+		.price-up
+		{
+		    background-position: -64px -32px;
+		}
+		.price-down
+		{
+		    background-position: -80px -32px;
+		}
+
+		/* Change Cell */
+        .change-cell > span
+        {
+        	display: inline-block;
+        	margin: 0 2px 0 0;
+        	overflow: hidden;
+        	padding: 0;
+        	text-align: right;
+        	vertical-align: middle;
+        	width: 60px;
+        }
+        .change-cell > p
+        {
+        	display: inline-block;
+        	margin: 0;
+        	padding: 0;
+        	height: 16px;
+        	vertical-align: middle;
+        }
+        .progress-blue
+        {
+        	background: #0080ef;
+        }
+        .progress-red
+        {
+        	background: #ef8000;
+        }
+
+		/* Button Cell */
+        .button-cell
+        {
+        	text-align: center;
+        }
+        .button-cell button
+        {
+        	background: #004896;
+        	border: 0;
+        	color: white;
+        	padding: 5px;
+        	width: 75px;
+        }
+        .button-cell button:hover
+        {
+        	background: #0080ef;
+        }
+    </style>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span style="color:#c60d0d">IntegralUI</span> Studio <span style="font-size:0.75em; font-style:italic">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content" ng-app="appModule">
+        <div class="feature" ng-controller="appCtrl">
+			<script type="text/ng-template" id="'cell-price.html'">
+				<div class="price-cell">
+					<span ng-class="obj.indicator == true ? 'icons price-up' : obj.indicator == false ? 'icons price-down' : 'icons'"></span>
+					{{obj.text}}
+				</div>
+			</script>
+			<script type="text/ng-template" id="'cell-change.html'">
+				<div class="change-cell">
+					<span>{{obj.text}}</span>
+					<p iui-style="width:{{obj.progress}}px" ng-class="{ 'progress-blue': obj.indicator != false, 'progress-red': obj.indicator == false }"></p>
+				</div>
+			</script>
+			<script type="text/ng-template" id="'cell-button.html'">
+				<div class="button-cell">
+					<button ng-click="obj.onDeleteRow(obj)">Delete</button>
+				</div>
+			</script>
+	        <h2 class="feature-title">Grids / Cell Templates</h2>
+	        <div class="feature-content">
+                <iui-grid name="{{gridName}}" class="directive" columns="columns" rows="rows" show-footer="false"></iui-grid>
+                <br style="clear:both;"/>
+                <div class="feature-help">
+                    <p><span class="initial-space"></span>An example of a Grid where some of the cells are using custom template for their content.</p>
+                    <p><span class="initial-space"></span>Each grid column has a field that allows you to set the location for the template by which cell content is created.
+                        <ul class="feature-points">
+                            <li><span style="color:#c60d0d">cellTemplateUrl</span> - a column object field that holds the template location for all cells in specified column</li>
+                        </ul>
+                    </p>
+                    <p><span class="initial-space"></span>In order to apply the template to a cell, cell object must contain a field named:
+                        <ul class="feature-points">
+                            <li><span style="color:#c60d0d">templateObj</span> - an object that holds all custom settings for the specified cell</li>
+                        </ul>
+                    </p>
+                    <p><span class="initial-space"></span>This object also holds a reference to all event handlers for events thrown from the HTML elements in the template.</p>
+                    <p style="padding-bottom:30px"><span class="initial-space"></span>For more information check out the source code of this sample.</p>
+               </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

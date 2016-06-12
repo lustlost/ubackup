@@ -1,0 +1,142 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>TreeView - Context Menu</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/integralui.css" />
+    <link rel="stylesheet" href="../../../css/integralui.contextmenu.css" />
+    <link rel="stylesheet" href="../../../css/integralui.treeview.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-flat-blue.css" />
+    <script type="text/javascript" src="../../../external/angular.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.lists.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.treeview.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.contextmenu.min.js"></script>
+    <script type="text/javascript">
+ 		angular
+			.module("appModule", ["integralui"])
+			.controller("appCtrl", ["$scope", "IntegralUITreeViewService", function($scope, $treeService){
+				$scope.data = [];
+				$scope.treeName = "treeSample";
+				
+				// Context menu data for TreeView
+				$scope.treeContextMenu = [
+					{ text: "TreeView Actions", type: "header" },
+					{ key: 'ADD_ROOT', text: "Add Item", itemClick: function(e){ return $scope.processMenuItemClicks(e.item); } },
+					{ key: 'CLEAR_ALL', text: "Clear All", enabled: false, itemClick: function(e){ return $scope.processMenuItemClicks(e.item); } }
+				]
+				
+				// Context menu data for Tree Items
+				$scope.itemContextMenu = [
+					{ text: "Add", type: "header" },
+					{ key: 'ADD_ITEM', text: "Add Item", itemClick: function(e){ return $scope.processMenuItemClicks(e.item); } },
+					{ key: 'INSERT_BEFORE_ITEM', text: "Insert Item Before", itemClick: function(e){ return $scope.processMenuItemClicks(e.item); } },
+					{ key: 'INSERT_AFTER_ITEM', text: "Insert Item After", itemClick: function(e){ return $scope.processMenuItemClicks(e.item); } },
+					{ type: "separator" },
+					{ text: "Remove", type: "header" },
+					{ key: 'REMOVE_ITEM', text: "Remove Item", itemClick: function(e){ return $scope.processMenuItemClicks(e.item); } },
+					{ key: 'CLEAR_CHILD', text: "Clear All Children", enabled: false, itemClick: function(e){ return $scope.processMenuItemClicks(e.item); } }
+				]
+				
+				// Help methods to create and get the currently selected item
+				var itemCount = 0;
+				var createNewItem = function(){
+					itemCount++;
+					
+					var item = {
+						id: itemCount,
+						text: "Item" + itemCount,
+						contextMenu: $scope.itemContextMenu
+					}
+					
+					return item;
+				}
+				
+				var getCurrentSelection = function(){
+					return $treeService.selectedItem($scope.treeName);
+				}
+				
+				// Different actions depending on which menu option is clicked
+				$scope.processMenuItemClicks = function(item){
+					if (item){
+						var selItem = getCurrentSelection();
+						
+						switch (item.key){
+							case 'ADD_ROOT':
+								$treeService.addItem($scope.treeName, createNewItem());
+								break;
+								
+							case 'ADD_ITEM':
+								$treeService.addItem($scope.treeName, createNewItem(), selItem);
+								break;
+								
+							case 'INSERT_BEFORE_ITEM':
+								$treeService.insertItemBefore($scope.treeName, createNewItem(), selItem);
+								break;
+								
+							case 'INSERT_AFTER_ITEM':
+								$treeService.insertItemAfter($scope.treeName, createNewItem(), selItem);
+								break;
+								
+							case 'REMOVE_ITEM':
+								$treeService.removeItem($scope.treeName, selItem);
+								break;
+								
+							case 'CLEAR_CHILD':
+								$treeService.clearItems($scope.treeName, selItem);
+								break;
+								
+							case 'CLEAR_ALL':
+								$treeService.clearItems($scope.treeName);
+								break;
+						}
+					}
+				}
+
+				var isThereChildren = function(item){
+					return item && item.items && item.items.length > 0 ? true : false;
+				}
+				
+				$scope.onItemRightClick = function(e){
+					if (e.item){
+						for (var i = 0; i < $scope.itemContextMenu.length; i++){
+							if ($scope.itemContextMenu[i].key === 'CLEAR_CHILD')
+								$scope.itemContextMenu[i].enabled = isThereChildren(e.item);
+						}
+					}
+					else
+						$scope.treeContextMenu[2].enabled = $treeService.getList($scope.treeName).length > 0;
+				}
+		}]);
+    </script>
+    <style type="text/css">
+		.directive
+		{
+		}
+    </style>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span style="color:#c60d0d">IntegralUI</span> Studio <span style="font-size:0.75em; font-style:italic">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content" ng-app="appModule">
+        <div class="feature" ng-controller="appCtrl">
+	        <h2 class="feature-title">TreeView / Context Menu</h2>
+	        <div class="feature-content">
+                <iui-treeview name="{{treeName}}" class="directive" items="data" iui-contextmenu menu-items="treeContextMenu" selection-changed="onSelectionChanged(e)" item-rightclick="onItemRightClick(e)"></iui-treeview>
+            </div>
+			<br style="clear:both;"/>
+			<div class="feature-help" style="color:black;font-size:0.75em;width:700px">
+				<p><span class="initial-space"></span>In this sample you can see how to attach context menu to the TreeView and each tree view item. Right-click to open general context menu for the TreeView.</p>
+				<p><span class="initial-space"></span>By right-clicking on some item, a context menu will pop-up showing options specific for that item. To simplify our example, all items have the same context menu, but you can apply a different one for a specific item,if required.</p>
+				<p><span class="initial-space"></span>Each tree item has a <span style="color:#c60d0d">contextMenu</span> field, which accepts an array object with all menu options which will appear in context menu when item is right-clicked.</p>
+			</div>
+        </div>
+    </div>
+</body>
+</html>

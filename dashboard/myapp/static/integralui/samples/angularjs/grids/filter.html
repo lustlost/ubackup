@@ -1,0 +1,611 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>Grids - Filter</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/integralui.css" />
+    <link rel="stylesheet" href="../../../css/integralui.checkbox.css" />
+    <link rel="stylesheet" href="../../../css/integralui.treegrid.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-flat-blue.css" />
+    <script type="text/javascript" src="../../../external/angular.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.lists.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.checkbox.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.treegrid.min.js"></script>
+    <script type="text/javascript">
+ 		angular
+			.module("appModule", ["integralui"])
+			.controller("appCtrl", ["$scope", "IntegralUITreeGridService", "IntegralUIFilter", "$timeout", function($scope, $gridService, $filterService, $timeout){
+				$scope.gridName = "gridSample";
+				$scope.gridLines = 'vertical';
+				$scope.rows = [];
+
+				$scope.filterAuthors = [ '', 'equals', 'does not equal', 'begins with', 'does not begin with', 'ends with', 'does not end with', 'contains', 'does not contain' ];
+				$scope.authorValues = [ '', '' ];
+				$scope.selAuthor = [
+					$scope.filterAuthors[0],
+					$scope.filterAuthors[0]
+				];
+				$scope.authorCombinator = 'And';
+
+				$scope.filterPrices = [ '', 'equals', 'does not equal', 'greater than', 'greater than or equal to', 'less than', 'less than or equal to' ];
+				$scope.priceValues = [ '', '' ];
+				$scope.selPrice = [
+					$scope.filterPrices[0],
+					$scope.filterPrices[0]
+				];
+				$scope.priceCombinator = 'And';
+
+				$scope.columns = [
+					{ id: 2, headerText: "Category/Name", width: 400, allowFilter: true, filterTemplate: "'categories.html'" },
+					{ id: 3, headerText: "Author/Supplier", headerAlignment: "center", contentAlignment: "center", width: 225, allowFilter: true, filterTemplate: "'authors.html'" },
+					{ id: 4, headerText: "Price", headerAlignment: "center", contentAlignment: "right", width: 120, allowFilter: true, filterTemplate: "'prices.html'" }
+				];
+
+				$scope.flatData = [
+					{ 
+						id: 1,
+						text: "Books",
+						cells: [{ cid: 2, text: "Books" }]
+					},
+					{ 
+						id: 11,
+						pid: 1,
+						text: "History",
+						cells: [{ cid: 2, text: "History" }]
+					},
+					{ 
+						id: 111,
+						pid: 11,
+						text: "The Wright Brothers",
+						cells: [{ cid: 2, text: "The Wright Brothers", value: true }, { cid: 3, text: "David McCullough" }, { cid: 4, text: "$18.00", value: 18.00 }]
+					},
+					{ 
+						id: 112,
+						pid: 11,
+						text: "Capital in the Twenty-First Century",
+						cells: [{ cid: 2, text: "Capital in the Twenty-First Century", value: true }, { cid: 3, text: "Thomas Piketty" }, { cid: 4, text: "$22.99", value: 22.99 }]
+					},
+					{ 
+						id: 12,
+						pid: 1,
+						text: "Science",
+						cells: [{ cid: 2, text: "Science" }]
+					},
+					{ 
+						id: 121,
+						pid: 12,
+						text: "Thinking, Fast and Slow",
+						cells: [{ cid: 2, text: "Thinking, Fast and Slow", value: true }, { cid: 3, text: "Daniel Kahneman" }, { cid: 4, text: "$9.07", value: 9.07 }]
+					},
+					{ 
+						id: 122,
+						pid: 12,
+						text: "A Brief History of Time",
+						cells: [{ cid: 2, text: "A Brief History of Time", value: true }, { cid: 3, text: "Stephen Hawking" }, { cid: 4, text: "$19.95", value: 19.95 }]
+					},
+					{ 
+						id: 123,
+						pid: 12,
+						text: "Alan Turing: The Enigma",
+						cells: [{ cid: 2, text: "Alan Turing: The Enigma", value: true }, { cid: 3, text: "Andrew Hodges" }, { cid: 4, text: "$10.17", value: 10.17 }]
+					},
+					{ 
+						id: 2,
+						text: "Electronics",
+						cells: [{ cid: 2, text: "Electronics" }]
+					},
+					{ 
+						id: 21,
+						pid: 2,
+						text: "Laptops",
+						cells: [{ cid: 2, text: "Laptops" }]
+					},
+					{ 
+						id: 211,
+						pid: 21,
+						text: "Acer Aspire E 15 ES1-512-C88M",
+						cells: [{ cid: 2, text: "Acer Aspire E 15 ES1-512-C88M", value: true }, { cid: 3, text: "Acer" }, { cid: 4, text: "$229.00", value: 229.00 }]
+					},
+					{ 
+						id: 212,
+						pid: 21,
+						text: "Lenovo Flex 2 14 14.0-Inch",
+						cells: [{ cid: 2, text: "Lenovo Flex 2 14 14.0-Inch", value: true }, { cid: 3, text: "Lenovo" }, { cid: 4, text: "$489.99", value: 489.99 }]
+					},
+					{ 
+						id: 213,
+						pid: 21,
+						text: "HP Stream 11",
+						cells: [{ cid: 2, text: "HP Stream 11", value: true }, { cid: 3, text: "HP" }, { cid: 4, text: "$199.99", value: 199.99 }]
+					},
+					{ 
+						id: 214,
+						pid: 21,
+						text: "ASUS ROG GL551JW-DS74",
+						cells: [{ cid: 2, text: "ASUS ROG GL551JW-DS74", value: true }, { cid: 3, text: "ASUS" }, { cid: 4, text: "$1,199.00", value: 1199.00}]
+					},
+					{ 
+						id: 22,
+						pid: 2,
+						text: "Printers",
+						cells: [{ cid: 2, text: "Printers" }]
+					},
+					{ 
+						id: 221,
+						pid: 22,
+						text: "Canon PIXMA MX922 Wireless",
+						cells: [{ cid: 2, text: "Canon PIXMA MX922 Wireless", value: true }, { cid: 3, text: "Canon" }, { cid: 4, text: "$99.99", value: 99.99 }]
+					},
+					{ 
+						id: 222,
+						pid: 22,
+						text: "Lexmark MX81x/MX71x 550-Sheet Tray",
+						cells: [{ cid: 2, text: "Lexmark MX81x/MX71x 550-Sheet Tray", value: true }, { cid: 3, text: "Lexmark" }, { cid: 4, text: "$253.96", value: 253.96 }]
+					},
+					{ 
+						id: 3,
+						text: "Video Games",
+						cells: [{ cid: 2, text: "Video Games" }]
+					},
+					{ 
+						id: 31,
+						pid: 3,
+						text: "PlayStation 4",
+						cells: [{ cid: 2, text: "PlayStation 4" }]
+					},
+					{ 
+						id: 311,
+						pid: 31,
+						text: "Mortal Kombat X",
+						cells: [{ cid: 2, text: "Mortal Kombat X", value: true }, { cid: 3, text: "Warner Home Video - Games" }, { cid: 4, text: "$59.96", value: 59.96 }]
+					},
+					{ 
+						id: 312,
+						pid: 31,
+						text: "Bloodborne",
+						cells: [{ cid: 2, text: "Bloodborne", value: true }, { cid: 3, text: "Sony Computer Entertainment" }, { cid: 4, text: "$59.96", value: 59.96 }]
+					},
+					{ 
+						id: 313,
+						pid: 31,
+						text: "Destiny",
+						cells: [{ cid: 2, text: "Destiny", value: true }, { cid: 3, text: "Activision Inc." }, { cid: 4, text: "$35.94", value: 35.94 }]
+					},
+					{ 
+						id: 31,
+						pid: 3,
+						text: "PC Games",
+						cells: [{ cid: 2, text: "PC Games" }]
+					},
+					{ 
+						id: 311,
+						pid: 31,
+						text: "Grand Theft Auto V",
+						cells: [{ cid: 2, text: "Grand Theft Auto V", value: true }, { cid: 3, text: "Rockstar Games" }, { cid: 4, text: "$59.99", value: 59.99 }]
+					},
+					{ 
+						id: 312,
+						pid: 31,
+						text: "The Elder Scrolls V: Skyrim",
+						cells: [{ cid: 2, text: "The Elder Scrolls V: Skyrim", value: true }, { cid: 3, text: "Bethesda Softworks" }, { cid: 4, text: "$39.99", value: 39.99 } ]
+					}
+				];
+
+				$scope.categories = [];
+				var resetCategories = function(){
+					$scope.categories.length = 0;
+
+					for (var i = 0; i < $scope.flatData.length; i++){
+						switch ($scope.flatData[i].id.toString().length){
+							case 1:
+								$scope.categories.push({ checked: true, text: $scope.flatData[i].text, indent: 0 });
+								break;
+							case 2:
+								$scope.categories.push({ checked: true, text: $scope.flatData[i].text, indent: 15 });
+								break;
+						}
+					}
+				}
+
+				var initTimer = $timeout(function(){
+					resetCategories();
+
+					$gridService.loadData($scope.gridName, $scope.flatData);
+
+					$timeout.cancel(initTimer);
+				}, 100);
+
+
+				$scope.applyCategories = function(){
+					var checkList = [];
+					for (var i = 0; i < $scope.categories.length; i++){
+						if ($scope.categories[i].checked)
+							checkList.push($scope.categories[i].text);
+					}
+						
+					var conditions = { value: checkList, operation: '=', join: '|' }
+					var params = {
+						callback: function(value){
+							if (typeof value == 'string' || value instanceof String)
+								return $filterService.match(value, conditions);
+							else if (value)
+								return true;
+
+							return false;
+						}
+					}
+
+					$gridService.filter($scope.gridName, $scope.columns[0], params);
+				}
+
+				$scope.cancelCategoriesFilter = function(){
+					resetCategories();
+
+					$gridService.filter($scope.gridName, $scope.columns[0]);
+				}
+
+
+				var getFormula = function(conditions, flag){
+					var formula = '';
+
+					var firstSymbol = conditions[0].negative ? '!a' : 'a';
+					var secondSymbol = conditions[1].negative ? '!b' : 'b';
+
+					var combinator = !flag ? $scope.authorCombinator : $scope.priceCombinator;
+					if (combinator == 'And')
+						formula = '(' + firstSymbol + ' & ' + secondSymbol + ')';
+					else
+						formula = '(' + firstSymbol + ' | ' + secondSymbol + ')';
+
+					return formula;
+				}
+				
+				var getAuthorOperation = function(option){
+					var index = $scope.filterAuthors.indexOf(option);
+					switch (index){
+						case 1: //equals
+							return '=';
+
+						case 2: //does not equal
+							return '!=';
+
+						case 3: //begins with
+							return '->';
+
+						case 4: //does not begin with
+							return '->';
+
+						case 5: //ends with
+							return '<-';
+
+						case 6: //does not end with
+							return '<-';
+
+						case 7: //contains
+							return '[]';
+
+						case 8: //does not contain
+							return '[]';
+					}
+
+					return '';
+				}
+				
+				var getPriceOperation = function(option){
+					var index = $scope.filterPrices.indexOf(option);
+					switch (index){
+						case 1: //equals
+							return '=';
+
+						case 2: //does not equal
+							return '!=';
+
+						case 3: //greater than
+							return '>';
+
+						case 4: //greater than or equal to
+							return '>=';
+
+						case 5: //less than
+							return '<';
+
+						case 6: //less than or equal to
+							return '<=';
+					}
+
+					return '';
+				}
+
+				$scope.onAuthorCombinatorAnd = function(){
+					$scope.authorCombinator = 'And';
+				}
+
+				$scope.onAuthorCombinatorOr = function(){
+					$scope.authorCombinator = 'Or';
+					
+				}
+
+				$scope.applyAuthors = function(){
+					var filterConditions = [];
+					for (var i = 0; i < 2; i++){
+						if ($scope.selAuthor[i] != '' && $scope.authorValues[i] != ''){
+							var currentOperation = getAuthorOperation($scope.selAuthor[i]);
+
+							filterConditions.push({ 
+								value: $scope.authorValues[i],
+								operation: currentOperation,
+								negative: $scope.filterAuthors.indexOf($scope.selAuthor[i]) % 2 == 0
+							});
+						}
+					}
+
+					if (filterConditions.length > 0){
+						var params = {}
+
+						if (filterConditions.length == 1){
+							params.conditions = filterConditions[0];
+						}
+						else {
+							params.conditions = filterConditions;
+							params.formula = getFormula(filterConditions);
+						}
+
+						$gridService.filter($scope.gridName, $scope.columns[1], params);
+					}
+					else
+						$gridService.filter($scope.gridName, $scope.columns[1]);
+				}
+
+				$scope.cancelAuthorsFilter = function(){
+					$scope.authorValues = [ '', '' ];
+					$scope.selAuthor = [
+						$scope.filterAuthors[0],
+						$scope.filterAuthors[0]
+					];
+					$scope.authorCombinator = 'And';
+
+					$gridService.filter($scope.gridName, $scope.columns[1]);
+				}
+
+				$scope.applyPrices = function(){
+					var filterConditions = [];
+					for (var i = 0; i < 2; i++){
+						if ($scope.selPrice[i] != '' && $scope.priceValues[i] != -1){
+							var currentOperation = getPriceOperation($scope.selPrice[i]);
+
+							filterConditions.push({ 
+								value: $scope.priceValues[i],
+								operation: currentOperation,
+								negative: $scope.filterPrices.indexOf($scope.selPrice[i]) == 2
+							});
+						}
+					}
+
+					if (filterConditions.length > 0){
+						var params = {}
+
+						if (filterConditions.length == 1){
+							params.conditions = filterConditions[0];
+						}
+						else {
+							params.conditions = filterConditions;
+							params.formula = getFormula(filterConditions, true);
+						}
+
+						$gridService.filter($scope.gridName, $scope.columns[2], params);
+					}
+					else
+						$gridService.filter($scope.gridName, $scope.columns[2]);
+				}
+
+				$scope.cancelPriceFilter = function(){
+					$scope.priceValues = [ '', '' ];
+					$scope.selPrice = [
+						$scope.filterPrices[0],
+						$scope.filterPrices[0]
+					];
+					$scope.priceCombinator = 'And';
+
+					$gridService.filter($scope.gridName, $scope.columns[2]);
+				}
+
+				$scope.onPriceCombinatorAnd = function(){
+					$scope.priceCombinator = 'And';
+				}
+
+				$scope.onPriceCombinatorOr = function(){
+					$scope.priceCombinator = 'Or';
+					
+				}
+			}]);
+    </script>
+    <style type="text/css">
+		/* TreeGrid settings */
+		.iui-treegrid-column-header-cell, .iui-treegrid-column-footer-cell
+		{
+			padding: 2px 2px;
+		}
+		.iui-treegrid-row-cell-content
+		{
+			padding: 2px 2px;
+		}
+		.iui-filter-window
+		{
+	    	font-size: 0.75em;
+	    }
+
+		/* Filter Template Categories */
+	    .filter-categories
+	    {
+			cursor: default;
+	    	padding: 5px;
+	    }
+	    .filter-list
+	    {
+			margin: 0;
+			overflow: auto;
+			padding: 1px;
+			margin: 0 0 15px 0;
+	    }
+	    .filter-list li
+	    {
+			list-style-type: none;
+			border: thin solid transparent;
+			padding: 1px 3px;
+	    }
+	    .filter-list li:hover
+	    {
+			background: white;
+			border: thin solid gray;
+	    }
+	    .item-checkbox
+	    {
+	    	display: inline-block;
+	    	vertical-align: middle;
+	    }
+	    .item-label
+	    {
+	    	display: inline-block;
+	    	vertical-align: middle;
+	    }
+	    .inline-button
+	    {
+	    	display: inline-block;
+	    	width: 75px;
+	    }
+
+		/* Filter Template Author */
+	    .filter-author
+	    {
+			cursor: default;
+	    	padding: 5px;
+	    	width: 275px;
+	    }
+	    select
+	    {
+	    	margin-right: 15px;
+	    	width: 150px;
+	    }
+	    .inline-radio
+	    {
+	    	margin-right: 15px;
+	    }
+		.filter-button
+		{
+			display: inline-block;
+			margin: 5px;
+			width: 100px;
+			height: 22px;
+		}
+		.inline-block
+		{
+			display: inline-block;
+			margin: 3px 0;
+		}
+
+		/* Filter Template Price */
+	    .filter-prices
+	    {
+			cursor: default;
+	    	padding: 5px 10px;
+	    	width: 275px;
+	    }
+
+
+		/* Sample settings */
+        .directive
+        {
+        	width: 800px;
+        	height: 430px;
+        }
+	</style>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span class="product-name">IntegralUI</span> Studio <span class="product-platform">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content" ng-app="appModule">
+        <div class="feature" ng-controller="appCtrl">
+			<script type="text/ng-template" id="categories.html">
+				<div class="filter-categories">
+		           	<label>Choose categories: </label>
+					<ul class="filter-list">
+						<li ng-repeat="item in categories" iui-style="padding-left:{{item.indent}}px">
+							<input class="item-checkbox" type="checkbox" ng-model="item.checked" /><span class="item-label">{{item.text}}</span>
+						</li>
+					</ul>
+					<div>
+						<button class="inline-button" ng-click="applyCategories()">Apply</button>
+						<button class="inline-button" ng-click="cancelCategoriesFilter()">Cancel</button>
+					</div>
+				</div>
+			</script>
+			<script type="text/ng-template" id="authors.html">
+ 				<div class="filter-author">
+		           	<label>Show rows where: </label>
+					<div class="inline-block" style="margin-top:10px">
+	                	<select ng-model="selAuthor[0]" ng-options="option for option in filterAuthors"></select><input ng-model="authorValues[0]" type="text" style="width:105px"/>
+					</div>
+					<div class="inline-block" style="width:125px;margin:5px 15px">
+						<label class="inline-radio"><input type="radio" ng-model="authorCombinator" value="And" ng-click="onAuthorCombinatorAnd()" />And</label><label class="inline-radio"><input type="radio" ng-model="authorCombinator" value="Or" ng-click="onAuthorCombinatorOr()" />Or</label>
+					</div>
+					<div class="inline-block">
+	                	<select ng-model="selAuthor[1]" ng-options="option for option in filterAuthors"></select><input ng-model="authorValues[1]" type="text" style="width:105px"/>
+					</div>
+
+					<div class="inline-block" style="margin-top:25px;text-align:center;width:275px;">
+						<button class="filter-button" ng-click="applyAuthors()">Apply</button>
+						<button class="filter-button" ng-click="cancelAuthorsFilter()">Cancel</button>
+					</div>
+				</div>
+			</script>
+			<script type="text/ng-template" id="prices.html">
+ 				<div class="filter-prices">
+		           	<label>Show rows where: </label>
+					<div class="inline-block" style="margin-top:10px">
+	                	<select ng-model="selPrice[0]" ng-options="option for option in filterPrices"></select><input ng-model="priceValues[0]" type="number" style="width:105px"/>
+					</div>
+					<div class="inline-block" style="width:125px;margin:5px 15px">
+						<label class="inline-radio"><input type="radio" ng-model="priceCombinator" value="And" ng-click="onPriceCombinatorAnd()" />And</label><label class="inline-radio"><input type="radio" ng-model="priceCombinator" value="Or" ng-click="onPriceCombinatorOr()" />Or</label>
+					</div>
+					<div class="inline-block">
+	                	<select ng-model="selPrice[1]" ng-options="option for option in filterPrices"></select><input ng-model="priceValues[1]" type="number" style="width:105px"/>
+					</div>
+
+					<div class="inline-block" style="margin-top:25px;text-align:center;width:275px;">
+						<button class="filter-button" ng-click="applyPrices()">Apply</button>
+						<button class="filter-button" ng-click="cancelPriceFilter()">Cancel</button>
+					</div>
+				</div>
+			</script>
+	        <h2 class="feature-title">Grids / Filter</h2>
+	        <div class="feature-content">
+                <iui-treegrid name="{{gridName}}" class="directive" columns="columns" rows="rows" allow-filter="true" show-footer="false" allow-cell-focus="false"></iui-treegrid>
+                <br style="clear:both;"/>
+                <div class="feature-help">
+                    <p><span class="initial-space"></span>This sample shows how to filter the TreeGrid content using multiple different conditions in different combinations for each column separately.</p>
+                    <p><span class="initial-space"></span>By clicking on the filter button in column header, a pop-up window will appear with filtering options for that column. In this example, each column has a different filtering options, which are created using custom templates.</p>
+                    <p>The following properties and methods are presented:</p>
+					<ul class="feature-points" style="padding-bottom:10px;width:800px">
+						<li><span style="color:#c60d0d">allowFilter</span> - a property which determines whether filtering is allowed</li>
+						<li><span style="color:#c60d0d">filterParams</span> - a column field which holds an object with specified filtering settings</li>
+						<li><span style="color:#c60d0d">filterTemplate</span> - a column field which represents a template used to create a pop-up window</li>
+						<li><span style="color:#c60d0d">filter</span> - a method which filters the content of TreeGrid using specified column and filtering parameters</li>
+					</ul>
+                    <p><span class="initial-space"></span>By default, filtering is executed using the cell's value field to match the specified criteria. If this field value is empty, then the value of cell's text field is used.</p>
+                    <p><span class="initial-space"></span>For filtering operations we are using the <strong>IntegralUIFilter service</strong>, which provides many ways to set string, numeric or custom filtering using multiple conditions with multiple AND / OR combinations. For more information about filtering options, check out this sample: <a href="../services/filter-service.html">Filter Service</a>.</p>
+                    <p style="margin:10px 50px;"><strong>NOTE</strong> Only built-in filtering operations are presented in this sample. In order to create a custom filtering operation, you would need to create a function in your code and apply it to the callback field of column filtering parameter.</p>
+                    <p style="margin-bottom:30px"><span class="initial-space"></span>Additional information is available in this sample source code.</p>
+                    <p style="margin:10px 0 30px 0;color:#c60d0d;font-weight:bold">This offline sample may not work using <u>Chrome browser</u>. You can try using any other browser: FireFox, IE, Opera, Safari. This happens due to restrictions of Chrome when loading templates locally. The <a href="http://www.lidorsystems.com/products/web/studio/samples/treegrid/filtering.aspx">online version of this sample</a> works without problems.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

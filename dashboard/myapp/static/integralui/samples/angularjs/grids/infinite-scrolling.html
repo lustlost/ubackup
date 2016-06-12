@@ -1,0 +1,157 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>Grids - Infinite Scrolling</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/integralui.css" />
+    <link rel="stylesheet" href="../../../css/integralui.treegrid.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-flat-blue.css" />
+    <script type="text/javascript" src="../../../external/angular.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.lists.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.treegrid.min.js"></script>
+    <script type="text/javascript">
+ 		angular
+			.module("appModule", ["integralui"])
+			.controller("appCtrl", ["$scope", "IntegralUITreeGridService", "$timeout", function($scope, $gridService, $timeout){
+				$scope.gridName = "gridSample";
+				var rowCount = 0;
+
+				$scope.columns = [
+					{ headerText: "Header 1", width: 250 },
+					{ headerText: "Header 2", width: 150 },
+					{ headerText: "Header 3", width: 180 },
+					{ headerText: "Header 4", width: 120 },
+					{ headerText: "Header 5", width: 200 }
+				];
+
+				$scope.rows = [];
+
+				// Create row cells
+				var createCells = function(i){
+					var cells = [];
+					
+					for (var j = 1; j <= $scope.columns.length; j++)
+						cells.push({ text: "Item" + i + j });
+
+					return cells;
+				}
+
+				// Create a simple row
+				var createRow = function(i){
+					var row = {
+						id: i,
+						text: "Item" + i,
+						cells: createCells(i)
+					}
+
+					rowCount++;
+
+					return row;
+				}
+
+				var initTimer = $timeout(function(){
+					load();
+
+					$timeout.cancel(initTimer);
+				}, 100);
+
+				// Create a function that will load additional data
+				var load = function(){
+					// Starts a loading animation
+					$gridService.beginLoad($scope.gridName, null, { type: 'circular', opacity: '0.4' });
+					// Supress callbacks from scrollPosChanged event handler
+					supressCallback = true;
+
+					var loadTimer = $timeout(function(){
+						// Suspend the grid layout to increase performance
+						$gridService.suspendLayout($scope.gridName);
+
+						// Load additional data into the grid
+						var maxCount = rowCount+25;
+						for (var i = rowCount+1; i <= maxCount; i++)
+							$scope.rows.push(createRow(i));
+
+						// Resume the layout and update the grid
+						$gridService.resumeLayout($scope.gridName);
+
+						$timeout.cancel(loadTimer);
+					}, 1000);
+				}
+
+				var maxScrollPos = { x: 0, y: 0 }
+				var supressCallback = false;
+				var topRow = null;
+
+				$scope.onLoadComplete = function(){
+					// Stop the loading animation
+					$gridService.endLoad($scope.gridName);
+
+					// After short delay, make sure the current view of the grid remains the same as prior data load
+					var scrollTimer = $timeout(function(){
+						// Use the top row to scroll to it
+						if (topRow)
+							$gridService.scrollTo($scope.gridName, topRow);
+
+						// Update the maximum scroll position
+						maxScrollPos = $gridService.getMaxScrollPos($scope.gridName);
+						supressCallback = false;
+
+						$timeout.cancel(scrollTimer);
+					}, 50);
+				}
+
+				$scope.onScrollPosChanged = function(e){
+					if (!supressCallback && e.scrollPos.y > 0 && e.scrollPos.y >= (maxScrollPos.y * 0.80)){
+						// Retrieve the top visible row in current view
+						topRow = $gridService.topRow($scope.gridName);
+
+						// Load additional data into the Grid
+						load();
+					}
+				}
+			}]);
+    </script>
+    <style type="text/css">
+		.control-panel
+		{
+			margin-left: 35px;
+			width: 250px;
+		}
+		.feature-content
+		{
+			width: 900px;
+		}
+        .directive
+        {
+        	border: thin solid #dadada;
+        	width: 800px;
+        	height: 400px;
+        }
+    </style>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span class="product-name">IntegralUI</span> Studio <span class="product-platform">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content" ng-app="appModule">
+        <div class="feature" ng-controller="appCtrl">
+	        <h2 class="feature-title">Grids / Infinite Scrolling</h2>
+	        <div class="feature-content">
+                <iui-treegrid name="{{gridName}}" class="directive" columns="columns" rows="rows" show-footer="false" load-complete="onLoadComplete()" scrollpos-changed="onScrollPosChanged(e)"></iui-treegrid>
+                <div class="control-panel">
+                </div>
+                <br style="clear:both;"/>
+                <div class="feature-help">
+                    <p><span class="initial-space"></span>This sample presents how to create infinite scrolling in the TreeGrid. Whenever scroll position is close to the end, additional data will be loaded into the TreeGrid. Loading process is accompanied by a circular animation.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

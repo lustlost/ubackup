@@ -1,0 +1,149 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>Grids - Dynamic Resize</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/integralui.css" />
+    <link rel="stylesheet" href="../../../css/integralui.treegrid.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-flat-blue.css" />
+    <script type="text/javascript" src="../../../external/angular.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.lists.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.treegrid.min.js"></script>
+    <script type="text/javascript">
+ 		angular
+			.module("appModule", ["integralui"])
+			.controller("appCtrl", ["$scope", "IntegralUITreeGridService", function($scope, $gridService){
+				$scope.gridName = "gridSample";
+
+				$scope.columns = [
+					{ name: 'Column1', headerText: 'Header1', footerText: 'Footer1', width: "35%" },
+					{ name: 'Column2', headerText: 'Header2', footerText: 'Footer2', width: "45%" },
+					{ name: 'Column3', headerText: 'Header3', footerText: 'Footer3', width: "20%" }
+				];
+
+				$scope.rows = [
+					{ 
+						id: 1,
+						text: "Item1",
+						cells: [{ text: "Item11" }, { text: "Item12" }, { text: "Item13" }],
+						rows: [
+							{ id: 11, pid: 1, text: "Item11", cells: [{ text: "Item111" }, { text: "Item112" }, { text: "Item113" }] },
+							{ 
+								id: 12,
+								pid: 1,
+								text: "Item12",
+								cells: [{ text: "Item121" }, { text: "Item122" }, { text: "Item123" }],
+								rows: [
+									{ id: 121, pid: 12, text: "Item121", cells: [{ text: "Item1211" }, { text: "Item1212" }, { text: "Item1213" }] },
+									{ 
+										id: 122,
+										pid: 12,
+										text: "Item122", 
+										cells: [{ text: "Item1221" }, { text: "Item1222" }, { text: "Item1223" }],
+										expanded: false,
+										rows: [
+											{ id: 1221, pid: 122, text: "Item1221", cells: [{ text: "Item12211" }, { text: "Item12212" }, { text: "Item12213" }] },
+											{ id: 1222, pid: 122, text: "Item1222", cells: [{ text: "Item12221" }, { text: "Item12222" }, { text: "Item12223" }] }
+										]
+									},
+									{ id: 123, pid: 12, text: "Item123", cells: [{ text: "Item1231" }, { text: "Item1232" }, { text: "Item1233" }] }
+								]
+							},
+							{ id: 13, pid: 1, text: "Item13", cells: [{ text: "Item131" }, { text: "Item132" }, { text: "Item133" }] },
+							{
+								id: 14,
+								pid: 1,
+								text: "Item14",
+								cells: [{ text: "Item141" }, { text: "Item142" }, { text: "Item143" }],
+								rows: [
+									{ id: 141, pid: 14, text: "Item141", cells: [{ text: "Item1411" }, { text: "Item1412" }, { text: "Item1413" }] },
+									{ id: 142, pid: 14, text: "Item142", cells: [{ text: "Item1421" }, { text: "Item1422" }, { text: "Item1423" }] }
+								]
+							}
+						]
+					},
+					{
+						id: 2,
+						text: "Item2",
+						cells: [{ text: "Item21" }, { text: "Item22" }, { text: "Item23" }],
+						expanded: false,
+						rows: [
+							{ id: 21, pid: 2, text: "Item21", cells: [{ text: "Item211" }, { text: "Item212" }, { text: "Item213" }] },
+							{ id: 22, pid: 2, text: "Item22", cells: [{ text: "Item221" }, { text: "Item222" }, { text: "Item223" }] },
+							{
+								id: 23,
+								pid: 2,
+								text: "Item23", 
+								cells: [{ text: "Item231" }, { text: "Item232" }, { text: "Item233" }],
+								expanded: false,
+								rows: [
+									{ id: 231, pid: 23, text: "Item231", cells: [{ text: "Item2311" }, { text: "Item2312" }, { text: "Item2313" }] },
+									{ id: 232, pid: 23, text: "Item232", cells: [{ text: "Item2321" }, { text: "Item2322" }, { text: "Item2323" }] }
+								]
+							}
+						]
+					},
+					{ id: 3, text: "Item3", cells: [{ text: "Item31" }, { text: "Item32" }, { text: "Item33" }] }
+				];
+
+				$scope.ctrlResize = {
+					minWidth: 400,
+					width: 0.4,
+					ref: 'window'
+				}
+			}]);
+    </script>
+    <style type="text/css">
+    	.iui-treegrid-column-header-cell, .iui-treegrid-column-footer-cell, .iui-treegrid-row-cell-content
+    	{
+    		padding: 0;
+    	}
+		.control-panel
+		{
+			margin-left: 35px;
+			width: 250px;
+		}
+		.feature-content
+		{
+			width: 800px;
+		}
+        .directive
+        {
+        	border: thin solid #dadada;
+        	width: 800px;
+        	height: 350px;
+        }
+    </style>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span style="color:#c60d0d">IntegralUI</span> Studio <span style="font-size:0.75em; font-style:italic">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content" ng-app="appModule">
+        <div class="feature" ng-controller="appCtrl">
+	        <h2 class="feature-title">Grids / Dynamic Resize</h2>
+	        <div class="feature-content">
+                <iui-treegrid name="{{gridName}}" class="directive" columns="columns" rows="rows" allow-focus="false" iui-resize="ctrlResize"></iui-treegrid>
+                <br style="clear:both;"/>
+                <div class="feature-help">
+                    <p><span class="initial-space"></span>This sample shows how columns in TreeGrid can occupy the whole space. Additionally, the TreeGrid will resize whenever a window size changes.</p>
+                    <p><span class="initial-space"></span>By default columns can have its width set in pixels, but in case of this example their width is set in percentage based on the TreeGrid width. So whenever TreeGrid is resized, the columns will also resize proportionally.</p>
+                    <p><span class="initial-space"></span>The following directive is used:</p>
+                        <ul class="feature-points">
+                            <li><span style="color:#c60d0d">IntegralUI Resize</span> - allows resizing of ANY element based on its parent, page or window. The tag for this directive is <strong>iui-resize</strong>.</li>
+                        </ul>
+                    </p>
+                    <p><span class="initial-space"></span>The resize directive accepts an object which holds specification on how the corresponding element will resize. Both element width and height values can be set, using as a reference their <span style="color:#c60d0d">'parent'</span>, the <span style="color:#c60d0d">'page'</span> (inner window area), or the <span style="color:#c60d0d">'window'</span> (outer window area including the window frame).</p>
+                    <p><span class="initial-space"></span>For more information check out the source code of this sample.</p>
+               </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

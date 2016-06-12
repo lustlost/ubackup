@@ -1,0 +1,123 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>Menu - Overview</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/integralui.menu.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-flat-blue.css" />
+    <script type="text/javascript" src="../../../external/angular.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.menu.min.js"></script>
+    <script type="text/javascript">
+        angular
+            .module("appModule", ["integralui"])
+            .controller("appCtrl", ["$scope", "$timeout", "IntegralUIMenuService", function($scope, $timeout, $menuService){
+                $scope.menuName = "menuSample";
+                $scope.defaultIcon = 'icons-medium empty';
+                $scope.data = [];
+
+                var flatList = [
+                    { "id": 1, "text": "File", "icon": "" },
+                    { "id": 11, "pid": 1, "text": "New", "icon": "icons-medium new-document" },
+                    { "id": 111, "pid": 11, "text": "Project", "icon": "" },
+                    { "id": 112, "pid": 11, "text": "Window", "icon": "" },
+                    { "id": 12, "pid": 1, "text": "Open" },
+                    { "id": 13, "pid": 1, "text": "Save As...", "icon": "icons-medium save" },
+                    { "id": 14, "pid": 1, "text": "Save All" },
+                    { "id": 15, "pid": 1, "type": "separator" },
+                    { "id": 16, "pid": 1, "text": "Page Setup" },
+                    { "id": 17, "pid": 1, "text": "Print", "icon": "icons-medium print" },
+                    { "id": 18, "pid": 1, "type": "separator" },
+                    { "id": 19, "pid": 1, "text": "Exit" },
+                    { "id": 2, "text": "Edit", "icon": "" },
+                    { "id": 21, "pid": 2, "text": "Undo" },
+                    { "id": 22, "pid": 2, "text": "Redo" },
+                    { "id": 23, "pid": 2, "type": "separator" },
+                    { "id": 24, "pid": 2, "text": "Cut" },
+                    { "id": 25, "pid": 2, "text": "Copy", "icon": "icons-medium copy" },
+                    { "id": 26, "pid": 2, "text": "Paste" },
+                    { "id": 27, "pid": 2, "text": "Delete", "icon": "icons-medium delete-document" },
+                    { "id": 3, "text": "View", "icon": "" },
+                    { "id": 31, "pid": 3, "text": "Print Layout" },
+                    { "id": 32, "pid": 3, "text": "Zoom", "icon": "icons-medium zoom" },
+                    { "id": 321, "pid": 32, "text": "Zoom In", "icon": "icons-medium zoom-in" },
+                    { "id": 322, "pid": 32, "text": "Zoom Out", "icon": "icons-medium zoom-out" },
+                    { "id": 323, "pid": 32, "type": "separator" },
+                    { "id": 324, "pid": 32, "text": "Restore" },
+                    { "id": 33, "pid": 3, "type": "separator" },
+                    { "id": 34, "pid": 3, "text": "Full Screen" },
+                    { "id": 4, "text": "Help", "icon": "" },
+                    { "id": 41, "pid": 4, "text": "Search", "icon": "" },
+                    { "id": 42, "pid": 4, "text": "Documents", "icon": "" },
+                    { "id": 43, "pid": 4, "type": "separator", "icon": "" },
+                    { "id": 44, "pid": 4, "text": "About", "icon": "" }
+                ];
+
+                var initTimer = $timeout(function(){
+                    $menuService.loadData($scope.menuName, flatList);
+                    $menuService.updateLayout($scope.menuName);
+                }, 1);
+            }]);
+    </script>
+    <style type="text/css">
+        .control-panel
+        {
+	        width: 250px;
+        }
+        .icons-medium
+        {
+            margin: 0 7px 0 0;
+        }
+        .iui-menu
+        {
+            width: 600px;
+        }
+       .iui-menu-item-root-content
+        {
+            width: 50px;
+            text-align: center;
+        }
+        .iui-menu-item
+        {
+            width: 125px;
+        }
+    </style>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span class="product-name">IntegralUI</span> Studio <span class="product-platform">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content" ng-app="appModule">
+        <div class="feature" ng-controller="appCtrl">
+	        <h2 class="feature-title">Menu / Overview</h2>
+	        <div class="feature-content">
+                <iui-menu name="{{menuName}}" items="data" item-icon="defaultIcon" show-dropdown-icon="true"></iui-menu>
+                <br />
+                <div class="control-panel" style="margin-top: 50px">
+                    <h3>Sample List:</h3>
+                    <ul class="feature-list">
+                        <li><a href="context-menu.html">Context Menu</a></li>
+                        <li><a href="context-menu-checkbox-radio-buttons.html">Context Menu with CheckBox and Radio Button</a></li>
+                        <li><a href="events.html">Events</a></li>
+                        <li><a href="icons.html">Icons</a></li>
+                        <li><a href="data-binding.html">Data Binding</a></li>
+                        <li><a href="rtl.html">Right to Left</a></li>
+                        <li><a href="vertical-menu.html">Vertical Menu</a></li>
+                    </ul>
+                </div>
+                <br style="clear:both;"/>
+                <div class="feature-help">
+                    <p><span class="initial-space"></span>IntegralUI Menu is a native AngularJS directive that allows you to easily navigate among pages in your web app. You can create menus from HTML, locally using JavaScript or remotely using JSON data files. Each menu item can have an icon, label or can act as a separator.</p>
+                    <p><span class="initial-space"></span>Using below links, you can check out different features of Menu directive.</p>
+                    <p><span class="initial-space"></span>By default whenever root menu item is hovered, the submenu appear when menu is clicked. You can enable showing of submenus by setting the <span style="color:#c60d0d">openOnHover</span> property to <span style="color:#c60d0d">true</span>.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

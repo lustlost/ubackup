@@ -1,0 +1,210 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>Accordion - Events</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/integralui.accordion.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-flat-blue.css" />
+    <script type="text/javascript" src="../../../external/angular.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.accordion.min.js"></script>
+    <script type="text/javascript">
+ 		angular
+			.module("appModule", ["integralui"])
+			.controller("appCtrl", function($scope){
+                $scope.ctrlName = "ctrlSample";
+                $scope.ctrlEnabled = true;
+
+                $scope.groups = [
+                    { id: 1, name: 'Group1', text: 'Header 1' },
+                    { id: 2, name: 'Group2', text: 'Header 2' },
+                    { id: 3, name: 'Group3', text: 'Header 3' }
+                ];
+
+                $scope.eventLog = [];
+                
+                $scope.onBeforeCollapse = function(e){
+                    $scope.eventLog.unshift({ name: "beforeCollapse", info: " event was fired before group is collapsed: ", value: e.group.text }); 
+                }
+                
+                $scope.onBeforeExpand = function(e){
+                    $scope.eventLog.unshift({ name: "beforeExpand", info: " event was fired before group is expanded: ", value: e.group.text }); 
+                }
+                
+                $scope.onBeforeSelect = function(e){
+                    $scope.eventLog.unshift({ name: "beforeSelect", info: " event was fired before group is selected: ", value: e.group.text }); 
+                }
+                
+                $scope.onAfterCollapse = function(e){
+                    $scope.eventLog.unshift({ name: "afterCollapse", info: " event was fired after group is collapsed: ", value: e.group.text }); 
+                }
+                
+                $scope.onAfterExpand = function(e){
+                    $scope.eventLog.unshift({ name: "afterExpand", info: " event was fired after group is expanded: ", value: e.group.text }); 
+                }
+                
+                $scope.onAfterSelect = function(e){
+                    $scope.eventLog.unshift({ name: "afterSelect", info: " event was fired after group is selected: ", value: e.group.text }); 
+                }
+                
+                $scope.onGroupClick = function(e){
+                    $scope.eventLog.unshift({ name: "groupClick", info: " event was fired when group header is clicked: ", value: e.group.text }); 
+                    $scope.$apply();
+                }
+                
+                $scope.onGroupDblClick = function(e){
+                    $scope.eventLog.unshift({ name: "groupDblClick", info: " event was fired when group header is double-clicked: ", value: e.group.text }); 
+                    $scope.$apply();
+                }
+                
+                $scope.onGroupHover = function(e){
+                    $scope.eventLog.unshift({ name: "groupHover", info: " event was fired when group header is hovered: ", value: e.group.text }); 
+                    $scope.$apply();
+                }
+                
+                $scope.onGroupRightClick = function(e){
+                    $scope.eventLog.unshift({ name: "groupRightClick", info: " event was fired when group header is right-clicked: ", value: e.group.text }); 
+                    $scope.$apply();
+                }
+                
+                $scope.onEnabledChanged = function(e){
+                    $scope.eventLog.unshift({ name: "enabledChanged", info: " event was fired when Accordion becomes enabled or disabled, enabled property value set to: ", value: e.enabled }); 
+                }
+                
+                $scope.ctrlEvents = {
+                    beforeCollapse: function(e){
+                        return $scope.onBeforeCollapse(e);
+                    },
+                    beforeExpand: function(e){
+                        return $scope.onBeforeExpand(e);
+                    },
+                    beforeSelect: function(e){
+                        return $scope.onBeforeSelect(e);
+                    },
+                    afterCollapse: function(e){
+                        return $scope.onAfterCollapse(e);
+                    },
+                    afterExpand: function(e){
+                        return $scope.onAfterExpand(e);
+                    },
+                    afterSelect: function(e){
+                        return $scope.onAfterSelect(e);
+                    },
+                    groupClick: function(e){
+                        return $scope.onGroupClick(e);
+                    },
+                    groupDblClick: function(e){
+                        return $scope.onGroupDblClick(e);
+                    },
+                    groupHover: function(e){
+                        return $scope.onGroupHover(e);
+                    },
+                    groupRightClick: function(e){
+                        return $scope.onGroupRightClick(e);
+                    },
+                    enabledChanged: function(e){
+                        return $scope.onEnabledChanged(e);
+                    }
+                }
+
+                $scope.clearEventLog = function(){
+                    $scope.eventLog.length = 0;
+                }
+		});
+    </script>
+    <style type="text/css">
+        .feature-content
+        {
+            width: 900px;
+        }
+        .directive
+        {
+        }
+        .control-panel
+        {
+            padding-left: 20px;
+            width: 250px;
+        }
+        .panel
+        {
+            width: 300px;
+            height: 100px;
+        }
+        .group-content
+        {
+            padding: 25% 10px;
+            text-align: center;
+        }
+        .event-block
+        {
+            width: 450px;
+            height: 332px;
+        }
+        .event-log
+        {
+            height: 302px;
+        }
+    </style>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span style="color:#c60d0d">IntegralUI</span> Studio <span style="font-size:0.75em; font-style:italic">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content" ng-app="appModule">
+        <div class="feature" ng-controller="appCtrl">
+	        <h2 class="feature-title">Accordion - Events</h2>
+	        <div class="feature-content">
+                <iui-accordion name="{{ctrlName}}" class="directive" groups="groups" enabled="ctrlEnabled" events="ctrlEvents">
+                    <iui-accordion-group ng-repeat="group in groups" name="{{group.name}}" heading="{{group.text}}">
+                        <div class="group-content">
+                            {{group.name}} Content
+                        </div>
+                    </iui-accordion-group>
+                </iui-accordion>
+                <div class="control-panel" style="width:300px;">
+                    <div class="event-block">
+                        <button type="button" ng-click="clearEventLog()" style="float:right;margin:3px 12px; width:50px">Clear</button>
+                        <p style="margin:0 10px; padding: 3px; border-bottom: thin solid #c5c5c5">Event log:</p>
+                        <ul class="event-log">
+                            <li ng-repeat="ev in eventLog"><span class="event-name">{{ev.name}}</span>{{ev.info}}<span class="event-value">{{ev.value}}</span></li>
+                        </ul>
+                    </div>
+                </div>
+                <br style="clear:both;"/><br/>
+                <label><input type="checkbox" ng-model="ctrlEnabled" /> Enabled</label><br />
+                <div class="feature-help">
+                    <p><span class="initial-space"></span>This sample presents most of events that are fired from Accordion directive. Depending on action, a specific event is fired, which you can handle by simple creating an event handler. From control panel, you can change whether Accordion is enabled or disabled.</p>
+                    <p><span class="initial-space"></span>Here is list of events that are supported:</p>
+                    <ul class="feature-points">
+                        <li><span style="color:#c60d0d">afterCollapse</span> - Occurs after group is collapsed</li>
+                        <li><span style="color:#c60d0d">afterExpand</span> - Occurs after group is expanded</li>
+                        <li><span style="color:#c60d0d">afterSelect</span> - Occurs after group is selected</li>
+                        <li><span style="color:#c60d0d">beforeCollapse</span> - Occurs before group is collapsed</li>
+                        <li><span style="color:#c60d0d">beforeExpand</span> - Occurs before group is expanded</li>
+                        <li><span style="color:#c60d0d">beforeSelect</span> - Occurs before group is selected</li>
+                        <li><span style="color:#c60d0d">clear</span> - Occurs when all groups are removed</li>
+                        <li><span style="color:#c60d0d">groupAdding</span> - Occurs before group is added</li>
+                        <li><span style="color:#c60d0d">groupAdded</span> - Occurs after group is added</li>
+                        <li><span style="color:#c60d0d">groupClick</span> - Occurs when group is clicked</li>
+                        <li><span style="color:#c60d0d">groupDblClick</span> - Occurs when group is double clicked</li>
+                        <li><span style="color:#c60d0d">groupHover</span> - Occurs when group is hovered</li>
+                        <li><span style="color:#c60d0d">groupRemoving</span> - Occurs before group is removed</li>
+                        <li><span style="color:#c60d0d">groupRemoved</span> - Occurs after group is removed</li>
+                        <li><span style="color:#c60d0d">groupRightClick</span> - Occurs when group is right-clicked</li>
+                        <li><span style="color:#c60d0d">enabledChanged</span> - Occurs when accordion is enabled or disabled</li>
+                        <li><span style="color:#c60d0d">styleChanged</span> - Occurs when accordion style has changed</li>
+                    </ul>
+                    <p><span class="initial-space"></span>Depending on some conditions, when handling some of above events you can prevent the default action to proceed, by canceling the operation.</p>
+                    <p><span class="initial-space"></span>In this sample event log will not register add/remove of groups nor style changes events, because changes to the Accordion appearance are not demonstrated here.</p>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

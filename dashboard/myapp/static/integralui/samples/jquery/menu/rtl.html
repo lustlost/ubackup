@@ -1,0 +1,121 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>Menu - Right to Left</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/jquery.integralui.menu.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-blue.css" />
+    <script type="text/javascript" src="../../../external/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="../../../external/jquery.ui.core.min.js"></script>
+    <script type="text/javascript" src="../../../external/jquery.ui.widget.min.js"></script>
+    <script type="text/javascript" src="../../../js/jquery.integralui.widget.min.js"></script>
+    <script type="text/javascript" src="../../../js/jquery.integralui.menu.min.js"></script>
+    <script type="text/javascript">
+        var $menu = null;
+        $(document).ready(function() {
+            $menu = $('#menu').menu({
+                    alignment: 'right',
+                    rtl: true
+                });
+        });
+          
+        function toggleRTL(elem){
+            $menu.menu("option", "alignment", elem.checked ? 'right' : 'left');
+            $menu.menu("option", "rtl", elem.checked);
+        }
+        
+        function toggleIcons(elem){
+            $menu.menu("option", "showIcons", elem.checked);
+        }
+    </script>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span style="color:#c60d0d">IntegralUI</span> Studio <span style="font-size:0.75em; font-style:italic">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content">
+        <div class="feature">
+	        <h2 class="feature-title">Menu / RTL</h2>
+	        <div class="feature-content">
+                <div id="menu" class="widget" style="width:500px; height:0">
+                    <ul>
+                        <li><span class="icons books" data-element="icon"></span><span>Books</span>
+                            <ul>
+                                <li><span>Art</span></li>
+                                <li><span class="icons business" data-element="icon"></span><span>Business</span>
+                                    <ul>
+                                        <li><span>Economics</span></li>
+                                        <li><span class="icons chart" data-element="icon"></span><span>Investing</span>
+                                             <ul>
+                                                <li><span>Bonds</span></li>
+                                                <li><span>Options</span></li>
+                                                <li><span>Stocks</span></li>
+                                            </ul>
+                                        </li>
+                                        <li><span>Management</span></li>
+                                        <li><span>Small Business</span></li>
+                                    </ul>
+                                </li>
+                                <li><hr data-element="separator" style="margin:0;height:1px;background:#ebebeb;color:#ebebeb;border: 0; border-bottom:1px solid #fafafa;" /></li>
+                                <li><span class="icons health" data-element="icon"></span><span>Health</span></li>
+                                <li><span>Literature</span></li>
+                                <li><span class="icons science" data-element="icon"></span><span>Science</span>
+                                    <ul>
+                                        <li><span>Astronomy</span></li>
+                                        <li><span>Mathematics</span></li>
+                                        <li><span>Evolution</span></li>
+                                        <li><span>Nature</span></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                        <li><span class="icons music" data-element="icon"></span><span>Music</span>
+                            <ul>
+                                <li><span>Blues</span></li>
+                                <li><span>Classic Rock</span></li>
+                                <li><span>Pop</span></li>
+                                <li><span>Jazz</span></li>
+                            </ul>
+                        </li>
+                        <li><span>Sports</span>
+                             <ul>
+                                <li><span>Baseball</span></li>
+                                <li><span>Martial Arts</span></li>
+                                <li><span>Running</span></li>
+                                <li><span>Tennis</span>
+                                    <ul>
+                                        <li><span>Accessories</span></li>
+                                        <li><span>Balls</span></li>
+                                        <li><span>Racquets</span></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                        <li><span class="icons time" data-element="icon"></span><span>Watches</span></li>
+                    </ul>
+                </div>
+                <div style="float:right; width: 100px; font-size:0.8em; white-space:nowrap;">
+                    <form name="frm">
+                        <label><input type="checkbox" name="checkRTL" checked="checked" onclick="toggleRTL(this)" /> Right to Left</label><br />
+                        <label><input type="checkbox" name="checkIcons" checked="checked" onclick="toggleIcons(this)" /> Show Icons</label><br />
+                   </form>
+                </div>
+                <div style="clear: both; height: 1px;"></div>
+            </div>
+            <div style="margin-top: 300px;font-size:0.75em; color:#000000; padding-right:25%">
+                <p>In this sample all menus are aligned in right-to-left style. By clicking on check boxes on the right, you can change the built-in properties:
+                    <ul class="feature-points">
+                        <li><span style="color:#c60d0d">rtl</span> - determines whether menu items are shown in left-to-right or right-to-left style</li>
+                        <li><span style="color:#c60d0d">showIcons</span> - determines whether an icon is shown before the menu item label</li>
+                    </ul>
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

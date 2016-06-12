@@ -1,0 +1,78 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>TabStrip - Open New Tab</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/jquery.integralui.tabstrip.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-blue.css" />
+    <script type="text/javascript" src="../../../external/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="../../../external/jquery.ui.core.min.js"></script>
+    <script type="text/javascript" src="../../../external/jquery.ui.widget.min.js"></script>
+    <script type="text/javascript" src="../../../js/jquery.integralui.widget.min.js"></script>
+    <script type="text/javascript" src="../../../js/jquery.integralui.tabstrip.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var $tabCtrl = $('#tabstrip').tabstrip();
+            
+            $tabCtrl.tabstrip("suspendLayout");
+            
+            // Initally qe are creating two normal tabs and one empty tab
+            $tabCtrl.tabstrip("addTab", { text: "Tab1" });
+            $tabCtrl.tabstrip("addTab", { text: "Tab2" });
+           
+            // We are creating a tab with empty header and applying a unique jey which will be used to process clicks
+            $tabCtrl.tabstrip("addTab", { headerContent: "<span style='display: inline-block; width:16px'></span>", key: "NEW_TAB" });
+            
+            // Set selection to the first tab
+            $tabCtrl.tabstrip("option", "selectedIndex", 0);
+            
+            $tabCtrl.tabstrip("resumeLayout");
+            
+            // To add a new tab whenever an empty tab is clicked we are handling the 'tabclicked' event
+            $tabCtrl.on("tabclick", function(e){
+                if (e.object && e.object.key === "NEW_TAB"){
+                    var newTab = { text: "Tab" + getTabCount() }
+                    $tabCtrl.tabstrip("insertTabBefore", newTab, e.object);
+             
+                    // Set selection to the new tab
+                    $tabCtrl.tabstrip("option", "selectedTab", newTab);
+               }
+            });
+            
+            getTabCount = function(){
+                return $tabCtrl.tabstrip("getList").length;
+            }
+            
+            // Prevent selection of empty tab    
+            $tabCtrl.on("beforeselect", function(e){
+                if (e.object && e.object.key === "NEW_TAB")
+                    return false;
+            });
+        });
+    </script>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span class="product-name">IntegralUI</span> Studio <span class="product-platform">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content">
+        <div class="feature">
+	        <h2 class="feature-title">TabStrip / Open New Tab</h2>
+	        <div class="feature-content">
+                <div id="tabstrip" class="widget"></div>
+                <br style="clear:both;"/>
+                <div class="feature-help">
+                    <p><span class="initial-space"></span>In this sample we are using a local data to load the content of TabStrip. In order this to work, you need to match the data fields from local data source to the fields of tab variable. You can use any names for your data, as long as you match those names with tab variable fields, the TabStrip will be populated.</p>
+                    <p><span class="initial-space"></span>You can set tab text, icon, content etc.</p>
+                    <p><span class="initial-space"></span>For more information check out the source code of this sample.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,138 @@
+.iui-list
+{
+	background-color: white;
+	border: solid thin gray;
+	border-radius: 3px;
+	padding: 3px;
+    color: black;
+	cursor: default;
+	overflow: hidden;
+	position: relative;
+	
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+}
+.iui-list div /*Compatibility with Bootstrap */
+{
+	-webkit-box-sizing: content-box; /* Safari/Chrome, other WebKit */
+	-moz-box-sizing: content-box;    /* Firefox, other Gecko */
+	box-sizing: content-box; 
+}
+.iui-list-rtl
+{
+	direction: rtl;
+}
+.iui-list-block
+{
+	margin: 0;
+	overflow: hidden;
+	padding: 1px;
+	position: absolute;
+	top: 1px;
+	left: 2px;
+}
+.iui-list-block-rtl
+{
+	direction: rtl;
+}
+.iui-list-block-shift-left
+{
+	/*margin-left: 16px !important;*/
+	padding-left: 15px;
+}
+.iui-list-block-shift-right
+{
+	margin-right: 16px;
+}
+.iui-list-item-block
+{
+	padding: 0 0 0 15px;
+}
+.iui-list-item-block-rtl
+{
+	padding: 0 15px 0 0;
+}
+.iui-list-item
+{
+	display: block;
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	white-space: nowrap;
+}
+.iui-list-item-content
+{
+	display: inline-block;
+	border-radius: 3px;
+	margin: 0;
+	vertical-align: middle;
+}
+
+/* Pagination Styles */
+.iui-pagination-panel
+{
+	background-color: #f0f0f0;
+	border-top: thin solid #d5d5d5;
+	margin: 0;
+	padding: 3px;
+	position: absolute;
+	bottom: 0;
+	white-space: nowrap;
+}
+.iui-pagination-panel-button
+{
+	background-color: #dedede;
+    background-image: url(../resources/icons-x24.png);
+    background-repeat: no-repeat;
+	display: inline-block;
+	border: thin solid #bebebe;
+	border-radius: 3px;
+	height: 24px;
+	margin: 2px;
+    overflow: hidden;
+	padding: 0;
+	width: 24px;
+}
+.iui-pagination-panel-button:hover
+{
+	background-color: #cecece;
+}
+.iui-pagination-first
+{
+    background-position: -96px -120px;
+}
+.iui-pagination-prev
+{
+    background-position: -120px -120px;
+}
+.iui-pagination-next
+{
+    background-position: -144px -120px;
+}
+.iui-pagination-last
+{
+    background-position: -168px -120px;
+}
+.iui-pagination-panel-input
+{
+	display: inline-block;
+	border: thin solid #bebebe;
+	border-radius: 3px;
+	height: 24px;
+	margin: 2px;
+	padding: 0 5px;
+	width: 40px;
+	vertical-align: top;
+}
+.iui-pagination-panel-label
+{
+	display: inline-block;
+	height: 24px;
+	margin: 2px 5px;
+	padding: 2px 0;
+	vertical-align: top;
+}
+

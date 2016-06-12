@@ -1,0 +1,192 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>Accordion - Add/Remove Groups</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/integralui.accordion.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-flat-blue.css" />
+    <script type="text/javascript" src="../../../external/angular.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.accordion.min.js"></script>
+    <script type="text/javascript">
+ 		angular
+			.module("appModule", ["integralui"])
+			.controller("appCtrl", ["$scope", "IntegralUIAccordionService", "$timeout", function($scope, $ctrlService, $timeout){
+                $scope.ctrlName = "ctrlSample";
+                $scope.insertPos = 0;
+                $scope.removePos = 0;
+                $scope.disableButtons = false;
+                $scope.groups = [
+                    { id: 1, name: 'Group1', text: 'Header 1' },
+                    { id: 2, name: 'Group2', text: 'Header 2' },
+                    { id: 3, name: 'Group3', text: 'Header 3' }
+                ];
+                
+                var groupCount = $scope.groups.length;
+
+                var getCurrentSelection = function(){
+                    return $ctrlService.selectedGroup($scope.ctrlName);
+                }
+                
+                var createNewGroup = function(){
+                    groupCount++;
+                    return { id: groupCount, name: "Group" + groupCount, text: "Header " + groupCount };
+                }
+               
+                $scope.add = function(){
+                    $ctrlService.addGroup($scope.ctrlName, createNewGroup());
+                }
+                
+                $scope.insertAfter = function(){
+                    $ctrlService.insertGroupAfter($scope.ctrlName, createNewGroup(), getCurrentSelection());
+                }
+                
+                $scope.insertAt = function(){
+                    $ctrlService.insertGroupAt($scope.ctrlName, createNewGroup(), $scope.insertPos);
+                }
+                
+                $scope.insertBefore = function(){
+                    $ctrlService.insertGroupBefore($scope.ctrlName, createNewGroup(), getCurrentSelection());
+                }
+                
+                $scope.remove = function(){
+                    $ctrlService.removeGroup($scope.ctrlName, getCurrentSelection());
+                }
+                
+                $scope.removeAt = function(){
+                    $ctrlService.removeGroupAt($scope.ctrlName,  $scope.removePos);
+                }
+                
+                $scope.clear = function(){
+                    $ctrlService.clearGroups($scope.ctrlName);
+                    $scope.disableButtons = true;
+                    groupCount = 0;
+                }
+
+                $scope.onClear = function(e){
+                    updateAccordionAppearance();
+                }
+
+                $scope.onGroupAdded = function(e){
+                    updateAccordionAppearance();
+
+                    $ctrlService.selectedGroup($scope.ctrlName, e.obj);
+                }
+
+                $scope.onGroupRemoved = function(e){
+                    updateAccordionAppearance();
+                }
+
+                var updateAccordionAppearance = function(){
+                    var updateTimer = $timeout(function(){
+                        if ($scope.groups.length == 0){
+                            $scope.ctrlBackground = 'white';
+                            $scope.ctrlBorder = 'thin solid gray';
+                        }
+                        else {
+                            $scope.ctrlBackground = 'transparent';
+                            $scope.ctrlBorder = 'thin solid transparent';
+                        }
+
+                        $scope.disableButtons = $scope.groups.length > 0 ? false : true;
+
+                        $timeout.cancel(updateTimer);
+                    }, 1);
+                }
+                
+               
+                $scope.ctrlEvents = {
+                    clear: function(){
+                        return $scope.onClear();
+                    },
+                    groupAdded: function(e){
+                        return $scope.onGroupAdded(e);
+                    },
+                    groupRemoved: function(e){
+                        return $scope.onGroupRemoved(e);
+                    }
+                }
+		}]);
+    </script>
+    <style type="text/css">
+        .feature-content
+        {
+            width: 850px;
+        }
+        .directive
+        {
+        }
+        button
+        {
+            margin: 5px 0;
+            width: 125px;
+        }
+        .inline-block
+        {
+            display: inline-block;
+            margin: 3px 0;
+        }
+        .inline-button
+        {
+            width: 85px;
+            margin-right: 3px
+        }
+        .group-content
+        {
+            padding: 25% 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span style="color:#c60d0d">IntegralUI</span> Studio <span style="font-size:0.75em; font-style:italic">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content" ng-app="appModule">
+        <div class="feature" ng-controller="appCtrl">
+	        <h2 class="feature-title">Accordion / Add Remove Groups</h2>
+	        <div class="feature-content">
+                <iui-accordion name="{{ctrlName}}" class="directive" groups="groups" events="ctrlEvents" iui-style="background:{{ctrlBackground}};border:{{ctrlBorder}}">
+                    <iui-accordion-group ng-repeat="group in groups" name="{{group.name}}" heading="{{group.text}}">
+                        <div class="group-content">
+                            {{group.name}} Content
+                        </div>
+                    </iui-accordion-group>
+                </iui-accordion>
+                <div class="control-panel" align="center" style="width:150px">
+                    <button ng-click="add()">Add</button><br />
+                    <button ng-click="insertAfter()" ng-disabled="disableButtons">Insert After</button><br />
+                    <button ng-click="insertBefore()" ng-disabled="disableButtons">Insert Before</button><br />
+                    <div class="inline-block">
+                       <button class="inline-button" ng-click="insertAt()">Insert At</button><input ng-model="insertPos" type="number" min="0" max="100" style="width:35px" />
+                    </div>
+                    <button ng-click="remove()" ng-disabled="disableButtons">Remove</button><br />
+                    <div class="inline-block">
+                        <button class="inline-button" ng-click="removeAt()" ng-disabled="disableButtons">Remove At</button><input ng-model="removePos" type="number" min="0" max="100" style="width:35px" /><br />
+                    </div>
+                    <button ng-click="clear()" ng-disabled="disableButtons">Clear</button>
+                </div>
+                <br style="clear:both;"/>
+                <div class="feature-help">
+                    <p>In this sample you can create and/or modify a Accordion using several different methods:
+                        <ul class="feature-points">
+                            <li><span style="color:#c60d0d">addGroup</span> - adds a new group</li>
+                            <li><span style="color:#c60d0d">insertGroupAfter</span> - adds a new group after specified group (in this example the selected group)</li>
+                            <li><span style="color:#c60d0d">insertGroupAt</span> - adds a new group at specified position</li>
+                            <li><span style="color:#c60d0d">insertGroupBefore</span> - adds a new group before specified group (in this example the selected group)</li>
+                            <li><span style="color:#c60d0d">removeGroup</span> - removes a group (in this sample the selected group)</li>
+                            <li><span style="color:#c60d0d">removeGroupAt</span> - removes a group at specified position from parent collection</li>
+                            <li><span style="color:#c60d0d">clearGroups</span> - removes all groups</li>
+                        </ul>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,178 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>ComboBox - Events</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/integralui.css" />
+    <link rel="stylesheet" href="../../../css/integralui.lists.css" />
+    <link rel="stylesheet" href="../../../css/integralui.combobox.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-flat-blue.css" />
+    <script type="text/javascript" src="../../../external/angular.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.lists.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.combobox.min.js"></script>
+    <script type="text/javascript">
+ 		angular
+			.module("appModule", ["integralui"])
+			.controller("appCtrl", function($scope){
+                $scope.ctrlName = "ctrlSample";
+                $scope.ctrlEnabled = true;
+
+                $scope.data = [
+                    { text: "Item1" },
+                    { text: "Item2" },
+                    { text: "Item3" },
+                    { text: "Item4" },
+                    { text: "Item5" },
+                    { text: "Item6" },
+                    { text: "Item7" }
+                ];
+
+                
+                $scope.eventLog = [];
+                
+                $scope.onDropDownClosing = function(e){
+                    $scope.eventLog.unshift({ name: "dropdownClosing", info: " event was fired before dropdown list is closed" }); 
+                    $scope.$apply();
+                }
+                
+                $scope.onDropDownClosed = function(e){
+                    $scope.eventLog.unshift({ name: "dropdownClosed", info: " event was fired after dropdown list is closed" }); 
+                    $scope.$apply();
+                }
+                
+                $scope.onDropDownOpening = function(e){
+                    $scope.eventLog.unshift({ name: "dropdownOpening", info: " event was fired before dropdown list is opened" }); 
+                    $scope.$apply();
+                }
+                
+                $scope.onDropDownOpened = function(e){
+                    $scope.eventLog.unshift({ name: "dropdownOpened", info: " event was fired after dropdown list is opened" }); 
+                    $scope.$apply();
+                }
+                
+                $scope.onComboClick = function(e){
+                    $scope.eventLog.unshift({ name: "click", info: " event was fired when combo box is clicked." }); 
+                    $scope.$apply();
+                }
+                
+                $scope.onEnabledChanged = function(e){
+                    $scope.eventLog.unshift({ name: "enabledChanged", info: " event was fired when ComboBox becomes enabled or disabled, enabled property value set to: ", value: e.enabled }); 
+                }
+                 
+                $scope.onSelectedItemChanged = function(e){
+                    $scope.eventLog.unshift({ name: "selectedItemChanged", info: " event was fired when selected item in ComboBox has changed to: ", value: e.item ? e.item.text : '' }); 
+                    $scope.$apply();
+                }
+               
+                $scope.ctrlEvents = {
+                    dropdownClosing: function(){
+                        return $scope.onDropDownClosing();
+                    },
+                    dropdownClosed: function(){
+                        return $scope.onDropDownClosed();
+                    },
+                    dropdownOpening: function(){
+                        return $scope.onDropDownOpening();
+                    },
+                    dropdownOpened: function(){
+                        return $scope.onDropDownOpened();
+                    },
+                    click: function(e){
+                        return $scope.onComboClick(e);
+                    },
+                    enabledChanged: function(e){
+                        return $scope.onEnabledChanged(e);
+                    },
+                    selectedItemChanged: function(e){
+                        return $scope.onSelectedItemChanged(e);
+                    }
+                }
+
+                $scope.clearEventLog = function(){
+                    $scope.eventLog.length = 0;
+                }
+		});
+    </script>
+    <style type="text/css">
+        .iui-list
+        {
+            font-size: 0.75em;
+        }
+        .control-panel
+        {
+            padding-left: 20px;
+            width: 250px;
+        }
+        .panel
+        {
+            width: 300px;
+            height: 100px;
+        }
+        .event-panel
+        {
+            width: 600px;
+        }
+        .event-block
+        {
+            width: 700px;
+            height: 200px;
+        }
+        .event-log
+        {
+            height: 168px;
+        }
+    </style>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span style="color:#c60d0d">IntegralUI</span> Studio <span style="font-size:0.75em; font-style:italic">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content" ng-app="appModule">
+        <div class="feature" ng-controller="appCtrl">
+	        <h2 class="feature-title">ComboBox - Events</h2>
+	        <div class="feature-content">
+                <div class="panel">
+                    <iui-combobox name="{{ctrlName}}" items="data" max-dropdown-items="4" enabled="ctrlEnabled" events="ctrlEvents"></iui-combobox>
+                </div>
+                <div class="control-panel">
+                    <label><input type="checkbox" ng-model="ctrlEnabled" /> Enabled</label><br />
+                </div>
+                <br style="clear:both;"/>
+                <div class="event-panel">
+                    <div class="event-block">
+                        <button type="button" ng-click="clearEventLog()" style="float:right;margin:3px 12px; width:50px">Clear</button>
+                        <p style="margin:0 10px; padding: 3px; border-bottom: thin solid #c5c5c5">Event log:</p>
+                        <ul class="event-log">
+                            <li ng-repeat="ev in eventLog"><span class="event-name">{{ev.name}}</span>{{ev.info}}<span class="event-value">{{ev.value}}</span></li>
+                        </ul>
+                    </div>
+                </div>
+                <br style="clear:both;"/>
+                <div class="feature-help">
+                    <p><span class="initial-space"></span>This sample presents most of events that are fired from ComboBox directive. Depending on action, a specific event is fired, which you can handle by simple creating an event handler. From control panel on right side, you can change whether ComboBox is enabled or disabled.</p>
+                    <p><span class="initial-space"></span>Here is list of events that are supported:</p>
+                    <ul class="feature-points">
+                        <li><span style="color:#c60d0d">dropdownClosing</span> - Occurs before dropdown list is closed</li>
+                        <li><span style="color:#c60d0d">dropdownClosed</span> - Occurs after dropdown list is closed</li>
+                        <li><span style="color:#c60d0d">dropdownOpening</span> - Occurs before dropdown list is opened</li>
+                        <li><span style="color:#c60d0d">dropdownOpened</span> - Occurs after dropdown list is opened</li>
+                        <li><span style="color:#c60d0d">click</span> - Occurs when ComboBox clicked</li>
+                        <li><span style="color:#c60d0d">enabledChanged</span> - Occurs when control is enabled or disabled</li>
+                        <li><span style="color:#c60d0d">selectedItemChanged</span> - Occurs when selected item in ComboBox has changed</li>
+                        <li><span style="color:#c60d0d">styleChanged</span> - Occurs when control style has changed</li>
+                    </ul>
+                    <p><span class="initial-space"></span>Depending on some conditions, when handling some of above events you can prevent the default action to proceed, by canceling the operation.</p>
+                    <p><span class="initial-space"></span>In this sample event log will not register style changes events, because changes to the ComboBox appearance are not demonstrated here.</p>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

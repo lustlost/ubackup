@@ -1,0 +1,323 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>Grids - Column with DropDown Menu</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/integralui.css" />
+    <link rel="stylesheet" href="../../../css/integralui.treegrid.css" />
+    <link rel="stylesheet" href="../../../css/integralui.contextmenu.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-flat-blue.css" />
+    <script type="text/javascript" src="../../../external/angular.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.lists.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.treegrid.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.contextmenu.min.js"></script>
+    <script type="text/javascript">
+ 		angular
+			.module("appModule", ["integralui"])
+			.directive('customHeader', function() {
+			    return {
+			        restrict: 'E',
+			        templateUrl: 'column-menu.html',
+			        scope: {
+			            obj: '='
+			        }
+			    };
+			})
+			.controller("appCtrl", ["$scope", "IntegralUITreeGridService", "$timeout", function($scope, $gridService, $timeout){
+				$scope.gridName = "gridSample";
+				$scope.columns = [];
+				$scope.rows = [];
+
+				var activeColumn = null;
+
+				var getMenuIcon = function(column){
+					return column.visible != false ? 'icons check-mark' : null;
+				}
+
+				var getColumnList = function(){
+					var list = [];
+					for (var j = 0; j < $scope.columns.length; j++){
+						list.push({
+							icon: getMenuIcon($scope.columns[j]),
+							text: $scope.columns[j].headerObj.text
+						});
+					}
+
+					return list;
+				}
+
+				var getExpIndex = function(){
+					var expIndex = 0;
+
+					var count = 0;
+					for (var j = 0; j < $scope.columns.length; j++){
+						if ($scope.columns[j].visible != false){
+							if ($scope.columns[j].id == 1){
+								expIndex = count;
+								break;
+							}
+
+							count++;
+						}
+					}
+
+					return expIndex;
+				}
+
+				var showColumnsMenu = {
+					text: 'Show Columns',
+					items: getColumnList()
+				}
+
+				$scope.menu = {
+					activate: 'both',
+					itemIcon: 'icons empty',
+					items: [
+						{ text: 'Move First', key: 'MOVE_FIRST' },
+						{ text: 'Move Left', key: 'MOVE_LEFT' },
+						{ text: 'Move Right', key: 'MOVE_RIGHT' },
+						{ text: 'Move Last', key: 'MOVE_LAST' },
+						{ type: 'separator' },
+						showColumnsMenu
+					],
+					position: 'below',
+					itemClick: function(e){
+						if (e.item){
+							$gridService.suspendLayout($scope.gridName);
+
+							switch (e.item.key){
+								case 'MOVE_FIRST':
+									if (activeColumn)
+										$gridService.moveColumn($scope.gridName, activeColumn, 'first');
+									break;
+
+								case 'MOVE_LEFT':
+									if (activeColumn)
+										$gridService.moveColumn($scope.gridName, activeColumn, 'left');
+									break;
+
+								case 'MOVE_RIGHT':
+									if (activeColumn)
+										$gridService.moveColumn($scope.gridName, activeColumn, 'right');
+									break;
+
+								case 'MOVE_LAST':
+									if (activeColumn)
+										$gridService.moveColumn($scope.gridName, activeColumn, 'last');
+									break;
+
+								default:
+									var index = showColumnsMenu.items.indexOf(e.item);
+									if (index >= 0 && index < $scope.columns.length){
+										$scope.columns[index].visible = $scope.columns[index].visible == undefined ? false : true;
+										e.item.icon = getMenuIcon($scope.columns[index]);
+									}
+									break;
+							}
+
+							$gridService.expandColIndex($scope.gridName, getExpIndex());
+
+							$gridService.resumeLayout($scope.gridName);
+						}
+
+
+						activeColumn = null;
+					},
+					open: function(e){
+						activeColumn = $gridService.getHoverColumn($scope.gridName);
+					}
+				}
+
+				$scope.header1 = { text: "Header 1", menu: $scope.menu }
+				$scope.header2 = { text: "Header 2", menu: $scope.menu }
+				$scope.header3 = { text: "Header 3", menu: $scope.menu }
+
+				$scope.columns = [
+					{ 
+						id: 1,
+						headerObj: $scope.header1,
+						headerContent: '<custom-header obj="header1"></custom-header>',
+						width: 230
+					},
+					{ 
+						id: 2,
+						headerObj: $scope.header2,
+						headerContent: '<custom-header obj="header2"></custom-header>',
+						width: 180
+					},
+					{ 
+						id: 3,
+						headerObj: $scope.header3,
+						headerContent: '<custom-header obj="header3"></custom-header>',
+						width: 150
+					}
+				];
+
+				$scope.rows = [
+					{ 
+						id: 1,
+						text: "Item1",
+						cells: [{ cid: 1, text: "Item11" }, { cid: 2, text: "Item12" }, { cid: 3, text: "Item13" }],
+						rows: [
+							{ id: 11, pid: 1, text: "Item11", cells: [{ cid: 1, text: "Item111" }, { cid: 2, text: "Item112" }, { cid: 3, text: "Item113" }] },
+							{ 
+								id: 12,
+								pid: 1,
+								text: "Item12",
+								cells: [{ cid: 1, text: "Item121" }, { cid: 2, text: "Item122" }, { cid: 3, text: "Item123" }],
+								rows: [
+									{ id: 121, pid: 12, text: "Item121", cells: [{ cid: 1, text: "Item1211" }, { cid: 2, text: "Item1212" }, { cid: 3, text: "Item1213" }] },
+									{ 
+										id: 122,
+										pid: 12,
+										text: "Item122", 
+										cells: [{ cid: 1, text: "Item1221" }, { cid: 2, text: "Item1222" }, { cid: 3, text: "Item1223" }],
+										expanded: false,
+										rows: [
+											{ id: 1221, pid: 122, text: "Item1221", cells: [{ cid: 1, text: "Item12211" }, { cid: 2, text: "Item12212" }, { cid: 3, text: "Item12213" }] },
+											{ id: 1222, pid: 122, text: "Item1222", cells: [{ cid: 1, text: "Item12221" }, { cid: 2, text: "Item12222" }, { cid: 3, text: "Item12223" }] }
+										]
+									},
+									{ id: 123, pid: 12, text: "Item123", cells: [{ cid: 1, text: "Item1231" }, { cid: 2, text: "Item1232" }, { cid: 3, text: "Item1233" }] }
+								]
+							},
+							{ id: 13, pid: 1, text: "Item13", cells: [{ cid: 1, text: "Item131" }, { cid: 2, text: "Item132" }, { cid: 3, text: "Item133" }] },
+							{
+								id: 14,
+								pid: 1,
+								text: "Item14",
+								cells: [{ cid: 1, text: "Item141" }, { cid: 2, text: "Item142" }, { cid: 3, text: "Item143" }],
+								expanded: false,
+								rows: [
+									{ id: 141, pid: 14, text: "Item141", cells: [{ cid: 1, text: "Item1411" }, { cid: 2, text: "Item1412" }, { cid: 3, text: "Item1413" }] },
+									{ id: 142, pid: 14, text: "Item142", cells: [{ cid: 1, text: "Item1421" }, { cid: 2, text: "Item1422" }, { cid: 3, text: "Item1423" }] }
+								]
+							}
+						]
+					},
+					{
+						id: 2,
+						text: "Item2",
+						cells: [{ cid: 1, text: "Item21" }, { cid: 2, text: "Item22" }, { cid: 3, text: "Item23" }],
+						rows: [
+							{ id: 21, pid: 2, text: "Item21", cells: [{ cid: 1, text: "Item211" }, { cid: 2, text: "Item212" }, { cid: 3, text: "Item213" }] },
+							{ id: 22, pid: 2, text: "Item22", cells: [{ cid: 1, text: "Item221" }, { cid: 2, text: "Item222" }, { cid: 3, text: "Item223" }] },
+							{
+								id: 23,
+								pid: 2,
+								text: "Item23", 
+								cells: [{ cid: 1, text: "Item231" }, { cid: 2, text: "Item232" }, { cid: 3, text: "Item233" }],
+								expanded: false,
+								rows: [
+									{ id: 231, pid: 23, text: "Item231", cells: [{ cid: 1, text: "Item2311" }, { cid: 2, text: "Item2312" }, { cid: 3, text: "Item2313" }] },
+									{ id: 232, pid: 23, text: "Item232", cells: [{ cid: 1, text: "Item2321" }, { cid: 2, text: "Item2322" }, { cid: 3, text: "Item2323" }] }
+								]
+							}
+						]
+					},
+					{ id: 3, text: "Item3", cells: [{ cid: 1, text: "Item31" }, { cid: 2, text: "Item32" }, { cid: 3, text: "Item33" }] }
+				];
+
+				$scope.onUpdateComplete = function(){
+					showColumnsMenu.items = getColumnList();
+				}
+			}]);
+    </script>
+    <style type="text/css">
+		.control-panel
+		{
+			margin-left: 35px;
+			width: 250px;
+		}
+		.feature-content
+		{
+			width: 700px;
+		}
+        .directive
+        {
+        	border: thin solid #dadada;
+        	width: 600px;
+        	height: 350px;
+        }
+		.iui-contextmenu-block
+		{
+			border-radius: 0;
+			padding: 2px;
+		}
+		.iui-contextmenu-item
+		{
+			width: 140px;
+		}
+		.icons
+		{
+			margin-right: 5px;
+			vertical-align: middle;
+		}
+		.check-mark
+		{
+		    background-position: -96px -48px;
+		}
+        .column-header
+        {
+        	margin: 0;
+        	padding: 0 3px;
+        }
+		.column-menu-button
+		{
+		    background-image: url(../../../resources/icons.png);
+		    background-position: -176px -80px;
+		    background-repeat: no-repeat;
+		    border: thin solid #bebebe;
+		    display: inline-block;
+		    position: absolute;
+		    top: 5px;
+		    right: 3px;
+			margin: 0;
+			padding: 0;
+			width: 16px;
+			height: 16px;
+			cursor: default;
+		}
+        .column-header:hover > .column-menu-button
+        {
+		    background-position: -192px -80px;
+ 		    border-color: white;
+       }
+    </style>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span style="color:#c60d0d">IntegralUI</span> Studio <span style="font-size:0.75em; font-style:italic">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content" ng-app="appModule">
+        <div class="feature" ng-controller="appCtrl">
+			<script type="text/ng-template" id="column-menu.html">
+				<div class="column-header">
+					<span>{{obj.text}}</span>
+					<span class="column-menu-button" iui-contextmenu="obj.menu"></span>
+				</div>
+			</script>
+	        <h2 class="feature-title">Grids / Column with DropDown Menu</h2>
+	        <div class="feature-content">
+                <iui-treegrid name="{{gridName}}" class="directive" columns="columns" rows="rows" show-footer="false" allow-focus="false" update-complete="onUpdateComplete()"></iui-treegrid>
+                <br style="clear:both;"/>
+                <div class="feature-help">
+                    <p><span class="initial-space"></span>In this sample each column header contains a menu button. When this button is clicked, a dropdown menu will appear with several options that allows you to move a column or make it visible or hidden.</p>
+                    <p><span class="initial-space"></span>To add a menu button to the column header, we are creating a template with custom header directive, using custom CSS styles and HTML elements. To apply the template to each column, the following field of column object is used:
+                        <ul class="feature-points">
+                            <li><span style="color:#c60d0d">headerContent</span> - holds a reference to a custom template used to replace the header text with custom HTML elements</li>
+                        </ul>
+                    </p>
+                    <p><span class="initial-space"></span>There is no limit on what kind of template that you can create. Any combination of HTML elements is acceptable, along with custom events.</p>
+               </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

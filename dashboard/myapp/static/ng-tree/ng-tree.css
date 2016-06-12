@@ -1,0 +1,122 @@
+﻿.tree-view .tree-node {
+    margin-bottom: 0;
+}
+
+.tree-node {
+    margin-bottom: 0em;
+    border: 0px;
+    background:#FFFFFF;
+    color: #000 !important;
+}
+
+
+.tree-node ul {
+    padding-left: 0;
+    list-style: none;
+    margin-bottom: 0;
+
+    border: 0px;
+    list-style:none !important;
+
+
+}
+
+.tree-node .tree-node ul {
+    margin-left: .5em;
+    position: relative;
+
+}
+
+.tree-node .tree-node li {
+    position: relative;
+    padding-left: .5em;
+    white-space: nowrap;
+    border: 0px;
+
+}
+
+.tree-node .tree-node li .node-label:before {
+    content: ' ';
+    background:#EEEEEE !important;
+    color:#000000 !important;
+    position: absolute;
+    border-top: 0px solid #ddd;
+    width: .5em;
+    top: 50%;
+    left: -.5em;
+    border: 0px;
+
+}
+
+.tree-node .tree-node li:before {
+    content: ' ';
+    position: absolute;
+    left: 0;
+    border-left: 0px #ddd;
+    top: 0;
+    bottom: 0;
+    border: 0px;
+}
+
+.tree-node .tree-node li:last-child:before {
+    bottom: auto;
+    height: 12px; /* !!! */
+    border: 0px;
+}
+
+.tree-node .node-label {
+    cursor: pointer;
+    position: relative;
+    display: inline-block;
+}
+
+.tree-node .node-text {
+    display: inline-block;
+    border: 0px transparent;
+    padding: 0 .2em;
+    margin-left: .2em;
+    -ms-border-radius: 3px;
+    border-radius: 3px;
+}
+
+.tree-node .node-icon {
+    text-align: center;
+    width: 1em;
+    display: inline-block;
+    cursor: pointer;
+    position: relative;
+    margin-right: .3em;
+}
+
+.tree-node .node-label .node-text.selected {
+    background-color: #337ab7;
+    color: #000 !important;
+}
+
+.tree-node .node-label .node-text:hover {
+    border-color: #337ab7;
+    color: #000 !important;
+}
+
+.tree-node .node-icon.with-children {
+    -webkit-transition: 0.1s ease-out;
+    -moz-transition: 0.1s ease-out;
+    -ms-transition: 0.1s ease-out;
+    -o-transition: 0.1s ease-out;
+    transition: 0.1s ease-out;
+    border: 0px;
+}
+
+.tree-node .expanded > .node-label > .node-icon.with-children {
+    -webkit-transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+    -o-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    transform: rotate(90deg);
+    border: 0px;
+}
+
+.tree-node .with-children:hover {
+
+    color: #000 !important;
+}

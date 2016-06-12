@@ -1,0 +1,226 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>TreeView - Loading Animation</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/integralui.css" />
+    <link rel="stylesheet" href="../../../css/integralui.treeview.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-flat-blue.css" />
+    <script type="text/javascript" src="../../../external/angular.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.lists.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.treeview.min.js"></script>
+    <script type="text/javascript">
+ 		angular
+			.module("appModule", ["integralui"])
+			.controller("appCtrl", ["$scope", "IntegralUITreeViewService", "$timeout", function($scope, $treeService, $timeout){
+				$scope.treeName = "treeSample";
+				$scope.localData = [];
+				$scope.numItems = 50000;
+				$scope.numLevels = 3;
+				$scope.treeName = "treeSample";
+				
+				$scope.speedLevels = [ 'veryfast', 'fast', 'normal', 'slow', 'veryslow' ];
+				$scope.animationSpeed = $scope.speedLevels[2];
+				$scope.animationType = 'linear';
+				
+				var itemCount = 0;
+            
+				// Make sure each node has a random set of child items
+				var getRandomNumber = function(level){
+					var nCount = 1 + Math.floor(Math.random() * 10);
+					
+					if (level === 0)
+					{
+						if ($scope.numLevels == 0)
+							nCount = $scope.numItems;
+						else
+						{
+							var derivative = 1;
+							for (var k = 1; k <= $scope.numLevels; k++)
+								derivative = (derivative * nCount) + 1;
+
+							nCount = $scope.numItems / derivative + 1;
+							if (nCount < 1000)
+								nCount = 1000;
+						}
+					}
+					
+					return nCount;
+				}
+				
+				// Recursive function for adding root and child items to the TreeView
+				var addLarge = function(parentItem, level){
+					if (level > $scope.numLevels)
+						return;
+						
+					var numChilds = getRandomNumber(level);    
+					for (var i = 0; i < numChilds; i++){
+						if (itemCount < $scope.numItems){
+							var item = {
+								text : 'Item ' + (itemCount+1).toString(),
+								id: itemCount,
+								expanded : false
+							};
+								
+							$treeService.addItem($scope.treeName, item, parentItem);
+							itemCount++;
+						
+							addLarge(item, level + 1);
+						}
+					}
+				};
+           
+				// Clear the content of TreeView
+				var clearList = function(){
+					$treeService.clearItems($scope.treeName);
+					itemCount = 0;
+				}
+
+				var loadCircular = function(){
+					var loadTimer = $timeout(function(){
+						$treeService.suspendLayout($scope.treeName);
+						
+						clearList();
+						
+						// Populate the TreeView with data
+						addLarge(null, 0);
+						
+						$treeService.resumeLayout($scope.treeName);
+					}, 1000);
+				}
+				
+				$scope.add = function(){
+					$treeService.beginLoad($scope.treeName, null, { type: $scope.animationType, speed: $scope.animationSpeed, opacity: 0.25 });
+
+					if ($scope.animationType == 'circular')
+						loadCircular();
+					else {
+						$treeService.suspendLayout($scope.treeName);
+						
+						clearList();
+						
+						// Populate the TreeView with data
+						addLarge(null, 0);
+						
+						$treeService.resumeLayout($scope.treeName);
+					}
+				}
+				
+				$scope.clear = function(){
+					$treeService.suspendLayout($scope.treeName);
+					
+					clearList();
+					
+					$treeService.resumeLayout($scope.treeName);
+				}
+				
+				$scope.expandAll = function(){
+					$treeService.expand($scope.treeName);
+				}
+				
+				
+				$scope.collapseAll = function(){
+					$treeService.collapse($scope.treeName);
+				}
+				
+				
+				$scope.$watch("numItems", function(newValue, oldValue){
+					if (isNaN(newValue))
+						$scope.numItems = oldValue;
+				});
+				
+				$scope.$watch("numLevels", function(newValue, oldValue){
+					if (isNaN(newValue))
+						$scope.numLevels = oldValue;
+				});
+
+				$scope.onLoadComplete = function(){
+					$treeService.endLoad($scope.treeName);
+				}
+			}]);
+    </script>
+    <style type="text/css">
+		.control-panel
+		{
+			margin-left: 35px;
+			width: 250px;
+		}
+		.feature-content
+		{
+			width: 700px;
+		}
+	    .animation-type
+	    {
+	    	margin: 10px 0 10px 0;
+	    	padding: 0;
+	    }
+	    .animation-type-val
+	    {
+	    	margin: 0 5px;
+	    }
+	    select
+	    {
+	    	margin: 5px 0 0 0;
+	    	width: 100px;
+	    }
+	    label
+	    {
+		    vertical-align: middle;
+	    }
+    </style>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span class="product-name">IntegralUI</span> Studio <span class="product-platform">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content" ng-app="appModule">
+        <div class="feature" ng-controller="appCtrl">
+	        <h2 class="feature-title">TreeView / Loading Animation</h2>
+	        <div class="feature-content">
+                <iui-treeview name="{{treeName}}" class="directive" items="localData" load-complete="onLoadComplete()"></iui-treeview>
+                <div class="control-panel">
+                	<label>Animation Speed: </label>
+                	<select ng-model="animationSpeed" ng-options="speed as speed for speed in speedLevels"></select>
+					<p class="animation-type">Animation Type:</p>
+					<label class="animation-type-val"><input type="radio" ng-model="animationType" value="linear" />Linear</label>
+					<label class="animation-type-val"><input type="radio" ng-model="animationType" value="circular" />Circular</label>
+					<label class="animation-type-val"><input type="radio" ng-model="animationType" value="none" />None</label><br />
+					<div style="margin-top:20px" align="center">
+						<table>
+							<tr>
+								<td>Max items: </td>
+								<td class="align-left"><input type="number" ng-model="numItems" min="1" max="100000" style="width:75px" integer /></td>
+							</tr>
+							<tr>
+								<td>Levels: </td>
+								<td class="align-left"><input type="number" ng-model="numLevels" min="0" max="100" style="width:75px" integer /></td>
+							</tr>
+						</table>
+						<div align="center" style="margin-top:20px">
+							<button ng-click="add()" style="width:65px; margin-right:10px">Add</button>
+							<button ng-click="clear()" style="width:65px">Clear</button>
+						</div>
+						<div align="center" style="margin-top:20px">
+							<button ng-click="expandAll()" style="margin-bottom:5px;width:140px">Expand All</button>
+							<button ng-click="collapseAll()" style="width:140px">Collapse All</button>
+		                </div>
+					</div>
+                </div>
+                <br style="clear:both;"/>
+                <div class="feature-help">
+                    <p><span class="initial-space"></span>When you want to load large data into the TreeView, it may take some time during which some notification that loading is in the process is required. This sample shows how to add a loading animation during this process.</p>
+                    <p>There are two types of loading animation presented above: circular and linear, with several different speed levels.</p>
+                    <p style="padding:10px 25px;"><strong>Note</strong>&nbsp;&nbsp;&nbsp;You can change the appearance of loader using CSS. Circular animation uses an image that rotates, and linear animation uses a progress bar. All of these are customizable using CSS styles.</p>
+                    <p>Using controls in right panel, you can add maximum of 100,000 items with maximum depth of 100 tree levels.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,128 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>Accordion - Icons</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/integralui.accordion.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-flat-blue.css" />
+    <script type="text/javascript" src="../../../external/angular.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.accordion.min.js"></script>
+    <script type="text/javascript">
+        angular
+            .module("appModule", ["integralui"])
+            .controller("appCtrl", ["$scope", "IntegralUIAccordionService", function($scope, $ctrlService){
+                $scope.ctrlName = "ctrlSample";
+                $scope.groups = [
+                    { 
+                        name: 'group1',
+                        icon: 'library',
+                        text: 'Books',
+                        body: 'Curabitur pretium tincidunt lacus. Nulla gravida orci a odio. Nullam varius, turpis et commodo pharetra, est eros bibendum elit, nec luctus magna felis sollicitudin mauris. Integer in mauris eu nibh euismod gravida. Duis ac tellus et risus vulputate vehicula. Donec lobortis risus a elit. Etiam tempor.'
+                    },
+                    { 
+                        name: 'group2',
+                        icon: 'album',
+                        text: 'Music',
+                        body: 'Pellentesque malesuada nulla a mi. Duis sapien sem, aliquet nec, commodo eget, consequat quis, neque. Aliquam faucibus, elit ut dictum aliquet, felis nisl adipiscing sapien, sed malesuada diam lacus eget erat. Cras mollis scelerisque nunc. Nullam arcu. Aliquam consequat.'
+                    },
+                    { 
+                        name: 'group3',
+                        icon: 'star-empty',
+                        text: 'Favorites',
+                        body: 'Fusce convallis, mauris imperdiet gravida bibendum, nisl turpis suscipit mauris, sed placerat ipsum urna sed risus. In convallis tellus a mauris. Curabitur non elit ut libero tristique sodales. Mauris a lacus. Donec mattis semper leo. In hac habitasse platea dictumst.'
+                    }
+                ];
+                
+                $scope.showExpandBox = true;
+                $scope.showIcons = true;
+
+                $scope.toggleExpandBox = function(){
+                    $scope.showExpandBox = !$scope.showExpandBox;
+                }
+
+                $scope.toggleIcons = function(){
+                    $scope.showIcons = !$scope.showIcons;
+                }
+        }]);
+    </script>
+    <style type="text/css">
+        .directive
+        {
+        }
+        .box
+        {
+            background-image: url(../../../resources/icons.png);
+            background-repeat: no-repeat;
+            display: inline-block;
+            overflow: hidden;
+            padding: 0;
+            margin: 0 1px 2px 0;
+            width: 16px;
+            height: 16px;
+            vertical-align: middle;
+        }
+        .expand
+        {
+            background-position: -80px 0;
+        }
+        .collapse
+        {
+            background-position: -224px -80px;
+        }
+        .custom-content
+        {
+            margin: 0;
+            padding: 5px;
+            height: 150px;
+        }
+        .group-icon
+        {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+        }
+        input
+        {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <h1><span style="color:#c60d0d">IntegralUI</span> Studio <span style="font-size:0.75em; font-style:italic">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content" ng-app="appModule">
+        <div class="feature" ng-controller="appCtrl">
+            <h2 class="feature-title">Accordion / Icons</h2>
+            <div class="feature-content">
+                <iui-accordion name="{{ctrlName}}" class="directive" groups="groups">
+                    <iui-accordion-group ng-repeat="group in groups" name="{{group.name}}">
+                        <iui-accordion-header>
+                            <span class="box" ng-class="group.selected == false ? 'expand' : 'collapse'" ng-show="showExpandBox"></span>
+                            <span>{{group.text}}</span>
+                            <span class="group-icon icons-medium {{group.icon}}" ng-show="showIcons"></span>
+                        </iui-accordion-header>
+                        <p class="custom-content">{{group.body}}</p>
+                    </iui-accordion-group>
+                </iui-accordion>
+                <div class="control-panel" style="margin-left:50px;width:150px">
+                    <label><input type="checkbox" ng-click="toggleExpandBox()" checked="checked" /> Show Expand Box</label>
+                    <label><input type="checkbox" ng-click="toggleIcons()" checked="checked" /> Show Icons</label>
+                </div>
+                <br style="clear:both;"/>
+                <div class="feature-help">
+                    <p><span class="initial-space"></span>In this sample you can show/hide icons for groups in Accordion directive. Icons are fully customizable and can be placed in any location within the group header. In our example icons are placed on the right side.</p>
+                    <p><span class="initial-space"></span>This example also shows an expand box on the left side of group header, this is also an icon used to represent the state of the group: expanded or collapsed.</p>
+                    <p style="padding-bottom:30px"><span class="initial-space"></span>For more information check out the source code of this sample.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

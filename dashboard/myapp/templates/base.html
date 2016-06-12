@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="renderer" content="webkit">
+
+    <title>UBackup 游族备份系统 - 主页</title>
+
+    <meta name="keywords" content="游族备份系统">
+    <meta name="description" content="异地备份系统">
+
+    <!--[if lt IE 8]>
+    <script>
+        alert('不支持IE6-8，请使用谷歌、火狐等浏览器\n或360、QQ等国产浏览器的极速模式浏览本页面！');
+    </script>
+    <![endif]-->
+
+    <style type="text/css">
+        .scrollspy-example {
+            height: 200px;
+            overflow: auto;
+            position: relative;
+
+        }
+
+        .select2-dropdown {
+            z-index: 9001 !important;
+        }
+    </style>
+
+
+    <link href="css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
+    <link href="css/font-awesome.min.css?v=4.3.0" rel="stylesheet">
+    <link href="css/animate.min.css" rel="stylesheet">
+    <link href="css/style.min.css?v=3.2.0" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="dist/sweetalert.css">
+    <link rel="stylesheet" href="css/app.css">
+    <link rel="stylesheet" href="css/metroStyle/metroStyle.css">
+    <link href="css/jquery.steps.css" rel="stylesheet">
+    <link rel="stylesheet" href="ng-tree/ng-tree.css">
+    <link rel="stylesheet" href="js/jqcloud/jqcloud.css">
+    <link rel="stylesheet" href="css/lj.css">
+    <link rel="stylesheet" href="js/ScrollerJS/scroller.css">
+     <link rel="stylesheet" href="css/plugins/iCheck/custom.css">
+
+     <link rel="stylesheet" href="js/multi-select/css/multi-select.css">
+
+
+
+    <!--
+    <link href="css/select2.min.css" rel="stylesheet"/>
+    -->
+
+
+    <!-- 全局js -->
+
+    <script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="js/animateBackground-plugin.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js?v=3.4.0"></script>
+    <script type="text/javascript" src="js/content.min.js?v=1.0.0"></script>
+    <script type="text/javascript" src="js/multi-select/js/jquery.multi-select.js"></script>
+    <script type="text/javascript" src="js/multi-select/js/jquery.quicksearch.js"></script>
+    <!--<script type="text/javascript" src="js/plugins/iCheck/icheck.min.js"></script>-->
+    <script type="text/javascript" src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script type="text/javascript" src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script type="text/javascript" src="js/plugins/layer/layer.min.js"></script>
+    <script type="text/javascript" src="js/jquery.steps.js"></script>
+    <!--<script type="text/javascript" src="js/jquery.ztree.core.js"></script>-->
+    <!--<script type="text/javascript" src="js/jquery.ztree.excheck.js"></script>-->
+    <!--<script type="text/javascript" src="js/jquery.ztree.exedit.min.js"></script>-->
+    <script type="text/javascript" src="js/plugins/jsKnob/jquery.knob.js"></script>
+    <script type="text/javascript" src="js/jqcloud/jqcloud.js"></script>
+    <script type="text/javascript" src="js/ScrollerJS/scroller.js"></script>
+    <script type="text/javascript" src="js/echarts.min.js"></script>
+    <script type="text/javascript" src="js/macarons.js"></script>
+
+
+    <link rel="stylesheet" href="js/select2/select2.css">
+    <script type="text/javascript" src="js/select2/select2.min.js"></script>
+    <!-- DataTables CSS -->
+    <!--<link rel="stylesheet" type="text/css" href="js/datatable/jquery.dataTables.css">-->
+    <link rel="stylesheet" type="text/css" href="js/datatable/dataTables.bootstrap.css">
+
+    <!-- DataTables -->
+    <script type="text/javascript" charset="utf8" src="js/datatable/jquery.dataTables.js"></script>
+    <script type="text/javascript" charset="utf8" src="js/datatable/dataTables.bootstrap.js"></script>
+
+
+    <!--<script type="text/javascript" src="js/Sortable.js"></script>-->
+
+
+    <!-- 自定义js -->
+    <!--
+    <script src="js/select2.min.js"></script>
+    -->
+
+    <script type="text/javascript" src="js/hplus.min.js?v=3.2.0"></script>
+    <script type="text/javascript" src="js/contabs.min.js"></script>
+
+
+    <!--<script type="text/javascript" src="js/ng-sortable.js"></script>-->
+    <!-- 第三方插件 -->
+    <!--<script type="text/javascript" src="js/plugins/pace/pace.min.js"></script>-->
+    <!--<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.6/angular-route.js"></script>-->
+    <script type="text/javascript" src="src-noconflict/ace.js" charset="utf-8"></script>
+
+
+    <script type="text/javascript" src="test_js/angular.min.js"></script>
+
+    <script type="text/javascript" src="test_js/angular-route.min.js"></script>
+
+    <script type="text/javascript" src="test_js/angular-sanitize.js"></script>
+    <script type="text/javascript" src="js/jqcloud/angular-jqcloud.js"></script>
+    <script type="text/javascript" src="src-noconflict/ui-ace.js"></script>
+    <script type="text/javascript" src="js/angular-resource.js"></script>
+    <script type="text/javascript" src="js/sweet-alert.min.js"></script>
+    <script type="text/javascript" src="js/SweetAlert.min.js"></script>
+    <script type="text/javascript" src="ng-tree/ng-tree.js"></script>
+    <script type="text/javascript" src="ui-select/dist/select.js"></script>
+    <script type="text/javascript" src="js/app.js"></script>
+
+    <script type="text/javascript" src="js/controller/cluster.js"></script>
+    <script type="text/javascript" src="js/controller/node.js"></script>
+    <script type="text/javascript" src="js/controller/backup_type.js"></script>
+    <script type="text/javascript" src="js/controller/business.js"></script>
+    <script type="text/javascript" src="js/controller/backup_instance.js"></script>
+    <script type="text/javascript" src="js/controller/alert.js"></script>
+    <script type="text/javascript" src="js/controller/statistic.js"></script
+
+
+    <script type="text/javascript" src="js/controller/index.js"></script>
+    <script type="text/javascript" src="js/controller/agent.js"></script>
+    <script type="text/javascript" src="js/controller/agentalert.js"></script>
+    <script type="text/javascript" src="js/controller/agentversion.js"></script>
+    <script type="text/javascript" src="js/controller/appmarket.js"></script>
+    <script type="text/javascript" src="js/controller/businesstree.js"></script>
+    <script type="text/javascript" src="js/controller/depapp.js"></script>
+    <script type="text/javascript" src="js/controller/taskdetail.js"></script>
+    <script type="text/javascript" src="js/controller/tasklist.js"></script>
+    <script type="text/javascript" src="js/controller/test.js"></script>
+    <script type="text/javascript" src="js/controller/us.js"></script>
+    <script type="text/javascript" src="js/controller/test1.js"></script>
+
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="js/bootstrap-table/bootstrap-table.min.css">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="js/bootstrap-table/bootstrap-table.min.js"></script>
+
+    <!-- Latest compiled and minified Locales -->
+    <script src="js/bootstrap-table/bootstrap-table-zh-CN.min.js"></script>
+
+
+</head>
+<body>
+<div></div>
+</body>
+<body class="fixed-sidebar full-height-layout gray-bg">
+
+<div id="wrapper">
+    <!--左侧导航开始-->
+    <nav class="navbar-default navbar-static-side" role="navigation">
+        <div class="nav-close"><i class="fa fa-times-circle"></i>
+        </div>
+        <div class="sidebar-collapse">
+            <ul class="nav" id="side-menu">
+                <li class="nav-header">
+                    <div class="dropdown profile-element">
+                        <span><img alt="image" class="" src="img/logo.png"/></span>
+                        <a data-toggle="dropdown" href="index.html#">
+                                <span class="clear">
+                               <span class="block m-t-xs"><strong class="font-bold"></strong></span>
+                                <span class="text-muted text-xs block"></span>
+                                </span>
+                        </a>
+                    </div>
+                    <div class="logo-element">UB
+                    </div>
+                </li>
+
+
+                <li>
+                    <a href="#/index">
+                        <i class="fa fa-home"></i>
+                        <span class="nav-label">首页</span>
+                    </a>
+
+                </li>
+
+
+                <li>
+                    <a href="index.html#">
+                        <i class="fa fa-bar-chart"></i>
+                        <span class="nav-label">统计报警</span>
+                        <span class="fa arrow"></span>
+                    </a>
+                    <ul class="nav nav-second-level">
+                        <li>
+                            <a class="" href="#/statistic" data-index="0">统计信息</a>
+                        </li>
+                        <li>
+                            <a class="" href="#/alert" data-index="0">报警列表</a>
+                        </li>
+                    </ul>
+
+                </li>
+
+
+                <li>
+                    <a href="index.html#">
+                        <i class="fa fa-table"></i>
+                        <span class="nav-label">备份管理</span>
+                        <span class="fa arrow"></span>
+                    </a>
+                    <ul class="nav nav-second-level">
+                        <li>
+                            <a class="" href="#/backup_instance" data-index="0">备份实例</a>
+                        </li>
+                        <li>
+                            <a class="" href="#/business" data-index="0">业务分类</a>
+                        </li>
+                        <li>
+                            <a class="" href="#/backup_type" data-index="0">备份类型</a>
+                        </li>
+                    </ul>
+
+                </li>
+
+
+                <li>
+                    <a href="index.html#">
+                        <i class="fa fa-columns"></i>
+                        <span class="nav-label">集群节点</span>
+                        <span class="fa arrow"></span>
+                    </a>
+                    <ul class="nav nav-second-level">
+                        <li>
+                            <a class="" href="#/cluster" data-index="0">集群列表</a>
+                        </li>
+                        <li>
+                            <a class="" href="#/node">节点列表</a>
+                        </li>
+                    </ul>
+
+                </li>
+
+            </ul>
+        </div>
+    </nav>
+
+    <!--左侧导航结束-->
+    <!--右侧部分开始-->
+    <div id="page-wrapper" class="gray-bg dashbard-1">
+        <div class="row border-bottom">
+            <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+                <div class="navbar-header"><a class="navbar-minimalize minimalize-styl-2 btn btn-primary "><i
+                        class="fa fa-bars"></i> </a>
+
+                    <env></env>
+                    <!--
+                    <form role="search" class="" style="display: inline-table;margin-top: 12px;width: 300px;">
+                        <div class="form-group">
+                            <select class="form-control m-b" name="account">
+                                <option selected="selected">选项 1</option>
+                                <option>选项 2</option>
+                                <option>选项 3</option>
+                                <option>选项 4</option>
+                            </select>
+
+                        </div>
+                    </form>
+                    -->
+
+
+                    <!--
+                    <input type="text" placeholder="请输入您需要查找的内容 …" class="form-control" name="top-search"
+                           id="top-search"> -->
+                </div>
+            </nav>
+
+
+        </div>
+        <div class="row content-tabs">
+            <button class="roll-nav roll-left J_tabLeft">欢迎
+            </button>
+            <!--<a class="roll-nav roll-left ">{{ user.name }}</a>-->
+            <nav class="page-tabs J_menuTabs">
+                <div class="page-tabs-content">
+                    <a href="javascript:;" class="active J_menuTab" data-id="index_v1.html">{{ user.name }}</a>
+                </div>
+            </nav>
+
+
+            <!--
+            <div class="btn-group roll-nav roll-right">
+                <button class="dropdown J_tabClose" data-toggle="dropdown">当前环境<span class="caret"></span>
+                </button>
+                <ul role="menu" class="dropdown-menu dropdown-menu-right">
+                    <li class="J_tabShowActive"><a>全部</a>
+                    </li>
+                    <li class="divider"></li>
+                    <li class="J_tabCloseAll"><a>大侠</a>
+                    </li>
+                    <li class="J_tabCloseOther"><a>测试</a>
+                    </li>
+                </ul>
+            </div> -->
+            <a href="logout" class="roll-nav roll-right J_tabExit"><i class="fa fa fa-sign-out"></i>退出</a>
+        </div>
+
+
+        <div class="row J_mainContent scrollspy-example" id="content-main" seamless ng-view>
+
+        </div>
+
+        <div class="footer">
+            <div class="pull-right">&copy; 2015-2016 <a href="/index" target="_blank">游族统一异地备份系统</a>
+            </div>
+        </div>
+    </div>
+    <!--右侧部分结束-->
+
+</div>
+
+
+<!--- <script type="text/javascript-lazy" src="src/ace.js" data-ace-base="src" charset="utf-8"></script>
+<script type="text/javascript-lazy" src="src/keybinding-vim.js"></script>
+<script type="text/javascript-lazy" src="src/keybinding-emacs.js"></script>
+<script type="text/javascript-lazy" src="demo/kitchen-sink/demo.js"></script> -->
+
+
+
+</body>
+</html>

@@ -1,0 +1,146 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>IntegralUIFilter Service</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <script type="text/javascript" src="../../../external/angular.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.lists.min.js"></script>
+    <script type="text/javascript">
+ 		angular
+			.module("appModule", ["integralui"])
+			.controller("appCtrl", ["$scope", "IntegralUIFilter", function($scope, $filterService){
+				$scope.list = [];
+				$scope.results = [];
+				$scope.formula = '(a & b) | c';
+				$scope.conditionValues = [
+					{ value: 7, operation: '>' },
+					{ value: [1, 5, 9, 13], operation: '!=', join: '&' }
+				];
+
+				for (var i = 1; i <= 20; i++)
+					$scope.list.push(i.toString());
+
+				$scope.applyFilter = function(){
+					var conditions = { value: $scope.conditionValues[0].value, operation: $scope.conditionValues[0].operation }
+
+					$scope.results[0] = $filterService.filter($scope.list, null, conditions);
+				}
+
+				$scope.applyFilter2 = function(){
+					var conditions = { value: $scope.conditionValues[1].value, operation: $scope.conditionValues[1].operation, join: $scope.conditionValues[1].join }
+
+					$scope.results[1] = $filterService.filter($scope.list, null, conditions);
+				}
+
+				$scope.applyFilter3 = function(){
+					var conditions = [
+						{ value: 7, operation: '>' },
+						{ value: 15, operation: '<=' },
+						{ value: [1, 20], operation: '=', join: '|' }
+					]
+
+					$scope.results[2] = $filterService.filter($scope.list, null, conditions, $scope.formula);
+				}
+
+			}]);
+    </script>
+    <style type="text/css">
+    	input
+    	{
+    		margin-left: 10px;
+    	}
+    	label
+    	{
+      		display: inline-block;
+      		margin: 5px 2px 5px 0;
+	  	}
+	  	.example
+	  	{
+	  		margin-bottom: 10px;
+	  	}
+    	.inline-list
+    	{
+    		background: #cecece;
+    		border: thin solid gray;
+     		display: inline-block;
+	   		list-style-type: none;
+    		margin: 0 2px 0 0;
+    		padding: 1px;
+    	}
+    	.inline-item
+    	{
+    		display: inline-block;
+    		margin-right: 2px;
+    		vertical-align: middle;
+    	}
+    	.result
+    	{
+    		background: #80cc80;
+    	}
+    </style>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span class="product-name">IntegralUI</span> Studio <span class="product-platform">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content" ng-app="appModule">
+        <div class="feature" ng-controller="appCtrl">
+	        <h2 class="feature-title">IntegralUIFilter Service</h2>
+	        <div class="feature-content">
+	        	<div class="example">
+	        		<label><strong>Example 1: </strong></label><br/>
+	        		<label>List: </label>
+		        	<ul class="inline-list"><li class="inline-item" ng-repeat="i in list">{{i}},<li></ul>
+					<button ng-click="applyFilter()">Filter</button><br/>
+					<label>Condition: <input ng-model="conditionValues[0].operation" type="text" style="width:20px" /></label><input ng-model="conditionValues[0].value" type="number" min="1" max="20" /><br/>
+					<label>Result: </label>
+					<ul class="inline-list result"><li class="inline-item" ng-repeat="i in results[0]">{{i}},<li></ul>
+				</div>
+	        	<div class="example">
+	        		<label><strong>Example 2: </strong></label><br/>
+	        		<label>List: </label>
+		        	<ul class="inline-list"><li class="inline-item" ng-repeat="i in list">{{i}},<li></ul>
+					<button ng-click="applyFilter2()">Filter</button><br/>
+					<label>Condition: <input ng-model="conditionValues[1].operation" type="text" style="width:20px" /></label><label>1, 5, 9, 13</label><label style="margin-left:30px">Join: <input ng-model="conditionValues[1].join" type="text" style="width:20px" /></label><br/>
+					<label>Result: </label>
+					<ul class="inline-list result"><li class="inline-item" ng-repeat="i in results[1]">{{i}},<li></ul>
+				</div>
+	        	<div class="example">
+	        		<label><strong>Example 3: </strong></label><br/>
+	        		<label>List: </label>
+		        	<ul class="inline-list"><li class="inline-item" ng-repeat="i in list">{{i}},<li></ul>
+					<button ng-click="applyFilter3()">Filter</button><br/>
+					<label>Multiple conditions (see code): (> 7 And <= 15) Or = [1, 20]</label><br/>
+					<label>Formula: </label><input ng-model="formula" type="text" /></label><br/>
+					<label>Result: </label>
+					<ul class="inline-list result"><li class="inline-item" ng-repeat="i in results[2]">{{i}},<li></ul>
+				</div>
+                <br style="clear:both;"/>
+                <div class="feature-help">
+                    <p><span class="initial-space"></span>This example presents how to use IntegralUIFilter service to filter custom arrays. It allows you to create different kind of conditions: single or multiple, with custom operation in each condition. Further more, there is an option to create custom formulas by which conditions will be applied to the filter.</p>
+                    <p><span class="initial-space"></span>Here is a list of available operations:</p>
+                    <ul class="feature-points">
+                        <li><span style="color:#c60d0d">'>'</span> greater than specified value</li>
+                        <li><span style="color:#c60d0d">'>='</span> greater or equal to specified value</li>
+                        <li><span style="color:#c60d0d">'<'</span> smaller than specified value</li>
+                        <li><span style="color:#c60d0d">'<='</span> smaller or equal to specified value</li>
+                        <li><span style="color:#c60d0d">'='</span> equal to specified value</li>
+                        <li><span style="color:#c60d0d">'!='</span> or <span style="color:#c60d0d">'<>'</span> not equal than specified value</li>
+                        <li><span style="color:#c60d0d">'->'</span> begins with specified value</li>
+                        <li><span style="color:#c60d0d">'<-'</span> ends with specified value</li>
+                        <li><span style="color:#c60d0d">'><'</span> or <span style="color:#c60d0d">'[]'</span> contains the specified value</li>
+                    </ul>
+                    <p><span class="initial-space"></span>Formula can accept up to 26 different conditions, combined using <span style="color:#c60d0d">&amp;</span>, <span style="color:#c60d0d">|</span>, <span style="color:#c60d0d">!</span>, <span style="color:#c60d0d">(</span> and <span style="color:#c60d0d">)</span> or any other bracket characters. </p>
+                    <p><span class="initial-space"></span>For more information check out the source code of this sample.</p><br /><br />
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

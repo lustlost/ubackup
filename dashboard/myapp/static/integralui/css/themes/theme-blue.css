@@ -1,0 +1,615 @@
+
+.iui-dropdown-mark
+{
+	background: -webkit-linear-gradient(white, #cae4ff);
+	background:    -moz-linear-gradient(white, #cae4ff);
+	background:     -ms-linear-gradient(white, #cae4ff);
+	background:      -o-linear-gradient(white, #cae4ff);
+    background :         linear-gradient(white, #cae4ff);
+
+	background-color: #cae4ff;
+}
+
+/* --- IntegralUI Widget -------------------------------------------------- */
+
+.iui-widget
+{
+	background-color: white;
+	border-color: #cecece;
+    color: black;
+}
+
+/* --- IntegralUI Accordion ----------------------------------------------- */
+
+.iui-accordion-header
+{
+	background: -webkit-linear-gradient(#aecaf3, #6791e1);
+	background:    -moz-linear-gradient(#aecaf3, #6791e1);
+	background:     -ms-linear-gradient(#aecaf3, #6791e1);
+	background:      -o-linear-gradient(#aecaf3, #6791e1);
+    background :         linear-gradient(#aecaf3, #6791e1);
+
+	background-color: #6791e1;
+	border: solid thin #5f8bde;
+}
+.iui-accordion-header-hovered
+{
+	background: -webkit-linear-gradient(#eff3fc, #83a6e7);
+	background:    -moz-linear-gradient(#eff3fc, #83a6e7);
+	background:     -ms-linear-gradient(#eff3fc, #83a6e7);
+	background:      -o-linear-gradient(#eff3fc, #83a6e7);
+    background :         linear-gradient(#eff3fc, #83a6e7);
+
+	background-color: #83a6e7;
+}
+.iui-accordion-header-selected
+{
+	background: -webkit-linear-gradient(#91afe8, #2455b0);
+	background:    -moz-linear-gradient(#91afe8, #2455b0);
+	background:     -ms-linear-gradient(#91afe8, #2455b0);
+	background:      -o-linear-gradient(#91afe8, #2455b0);
+    background :         linear-gradient(#91afe8, #2455b0);
+
+	background-color: #2455b0;
+	border-color: #1e4691;
+	color: white;
+}
+
+.iui-accordion-content
+{
+	background: -webkit-linear-gradient(white, #f0f8ff);
+	background:    -moz-linear-gradient(white, #f0f8ff);
+	background:     -ms-linear-gradient(white, #f0f8ff);
+	background:      -o-linear-gradient(white, #f0f8ff);
+    background :         linear-gradient(white, #f0f8ff);
+
+	background-color: #f0f8ff;
+	border: solid thin #5f8bde;
+}
+
+.iui-accordion-expand-box
+{
+	background: url(../../resources/icons.png) no-repeat 0 0;
+}
+.iui-accordion-expand-box-expanded 
+{
+	background-position: -80px 0px;
+}
+.iui-accordion-expand-box-collapsed
+{
+	background-position: -96px 0px;
+}
+
+/* --- IntegralUI ComboBox ----------------------------------------------- */
+.iui-combobox
+{
+	background-color: white;
+	border-color: #cecece;
+	border-radius: 1px;
+    color: black;
+}
+
+/* --- IntegralUI Grid ----------------------------------------------- */
+.iui-grid
+{
+	background-color: white;
+	border-color: #dadada;
+    color: black;
+}
+.iui-grid-column-header, .iui-grid-column-footer
+{
+	background: -webkit-linear-gradient(white, #ededed);
+	background:    -moz-linear-gradient(white, #ededed);
+	background:     -ms-linear-gradient(white, #ededed);
+	background:      -o-linear-gradient(white, #ededed);
+    background :         linear-gradient(white, #ededed);
+
+	background-color: #ededed;
+	border: thin solid #d5d5d5;
+}
+.iui-grid-column-header-hovered
+{
+	background: -webkit-linear-gradient(white, #e8f3ff);
+	background:    -moz-linear-gradient(white, #e8f3ff);
+	background:     -ms-linear-gradient(white, #e8f3ff);
+	background:      -o-linear-gradient(white, #e8f3ff);
+    background :         linear-gradient(white, #e8f3ff);
+
+	background-color: #e8f3ff;
+	border-color: #bfdfff;
+}
+.iui-grid-column-header-selected
+{
+	background: -webkit-linear-gradient(white, #b0c4de);
+	background:    -moz-linear-gradient(white, #b0c4de);
+	background:     -ms-linear-gradient(white, #b0c4de);
+	background:      -o-linear-gradient(white, #b0c4de);
+    background :         linear-gradient(white, #b0c4de);
+
+	background-color: #b0c4de;
+	border: thin solid #8aa7ce;
+}
+.iui-grid-column-header-cell-selected
+{
+	background-color: #f9f9ff;
+}
+.iui-grid-row-disabled, .iui-grid-row-cell-disabled
+{
+	background-color: white;
+	color: #cecece;
+}
+.iui-grid-row-hovered
+{
+	background: -webkit-linear-gradient(white, #e8f3ff);
+	background:    -moz-linear-gradient(white, #e8f3ff);
+	background:     -ms-linear-gradient(white, #e8f3ff);
+	background:      -o-linear-gradient(white, #e8f3ff);
+    background :         linear-gradient(white, #e8f3ff);
+
+	background-color: #e8f3ff;
+}
+
+.iui-grid-row-selected
+{
+	background: -webkit-linear-gradient(white, #cae4ff);
+	background:    -moz-linear-gradient(white, #cae4ff);
+	background:     -ms-linear-gradient(white, #cae4ff);
+	background:      -o-linear-gradient(white, #cae4ff);
+    background :         linear-gradient(white, #cae4ff);
+
+	background-color: #cae4ff;
+}
+.iui-grid-row-cell:first-child
+{
+	border-left: thin solid #d5d5d5;
+}
+.iui-grid-row-cell:last-child
+{
+	border-right: thin solid #d5d5d5;
+}
+.iui-grid-lines-horizontal
+{
+	border-bottom: thin solid #d5d5d5;
+}
+.iui-grid-lines-vertical
+{
+	border-right: thin solid #d5d5d5;
+}
+.iui-grid-lines-both
+{
+	border-right: thin solid #d5d5d5;
+	border-bottom: thin solid #d5d5d5;
+}
+
+/* --- IntegralUI List ----------------------------------------------- */
+.iui-list
+{
+	background-color: white;
+	border-color: #cecece;
+	border-radius: 1px;
+    color: black;
+}
+.iui-list-item
+{
+	border: thin solid transparent;
+	padding: 0px 3px;
+}
+.iui-list-item-disabled
+{
+	color: #cecece;
+}
+.iui-list-item-hovered
+{
+	background: -webkit-linear-gradient(white, #e8f3ff);
+	background:    -moz-linear-gradient(white, #e8f3ff);
+	background:     -ms-linear-gradient(white, #e8f3ff);
+	background:      -o-linear-gradient(white, #e8f3ff);
+    background :         linear-gradient(white, #e8f3ff);
+
+	background-color: #e8f3ff;
+	border: thin solid #ddeeff;
+}
+.iui-list-item-selected
+{
+	background: -webkit-linear-gradient(white, #cae4ff);
+	background:    -moz-linear-gradient(white, #cae4ff);
+	background:     -ms-linear-gradient(white, #cae4ff);
+	background:      -o-linear-gradient(white, #cae4ff);
+    background :         linear-gradient(white, #cae4ff);
+
+	background-color: #cae4ff;
+	border: thin solid #bfdfff;
+}
+.iui-list-item-content
+{
+	border-radius: 0;
+	padding: 3px;
+}
+
+/* --- IntegralUI ListBox ----------------------------------------------- */
+.iui-listbox
+{
+	background-color: white;
+	border-color: #cecece;
+    color: black;
+}
+.iui-listbox-item-content
+{
+	display: inline-block;
+	border: thin solid transparent;
+	padding: 0px 3px;
+}
+
+.iui-listbox-item-content-hovered
+{
+	background: -webkit-linear-gradient(white, #e8f3ff);
+	background:    -moz-linear-gradient(white, #e8f3ff);
+	background:     -ms-linear-gradient(white, #e8f3ff);
+	background:      -o-linear-gradient(white, #e8f3ff);
+    background :         linear-gradient(white, #e8f3ff);
+
+	background-color: #e8f3ff;
+	border: thin solid #ddeeff;
+}
+
+.iui-listbox-item-content-selected
+{
+	background: -webkit-linear-gradient(white, #cae4ff);
+	background:    -moz-linear-gradient(white, #cae4ff);
+	background:     -ms-linear-gradient(white, #cae4ff);
+	background:      -o-linear-gradient(white, #cae4ff);
+    background :         linear-gradient(white, #cae4ff);
+
+	background-color: #cae4ff;
+	border: thin solid #bfdfff;
+}
+
+/* --- IntegralUI Menu ------------------------------------------------------ */
+
+.iui-menu
+{
+	background-color: white;
+    color: black;
+}
+.iui-menu > ul
+{
+	background-color: #2455b0;
+}
+.iui-menu-item-root
+{
+	background: none;
+	border: solid thin #2455b0;
+	color: white;
+}
+.iui-menu-item-root-hovered
+{
+	background: -webkit-linear-gradient(#eff3fc, #83a6e7);
+	background:    -moz-linear-gradient(#eff3fc, #83a6e7);
+	background:     -ms-linear-gradient(#eff3fc, #83a6e7);
+	background:      -o-linear-gradient(#eff3fc, #83a6e7);
+    background :         linear-gradient(#eff3fc, #83a6e7);
+
+	background-color: #83a6e7;
+	border: solid thin #1e4691;
+	color: black;
+}
+.iui-menu-item-root-hovered a
+{
+	color: black;
+}
+.iui-menu-item-hovered
+{
+	background: -webkit-linear-gradient(white, #e8f3ff);
+	background:    -moz-linear-gradient(white, #e8f3ff);
+	background:     -ms-linear-gradient(white, #e8f3ff);
+	background:      -o-linear-gradient(white, #e8f3ff);
+    background :         linear-gradient(white, #e8f3ff);
+
+	background-color: #e8f3ff;
+	border: solid thin #ddeeff !important;
+}
+.iui-menu-item-selected
+{
+	background-color: white;
+	border: solid thin gray;
+}
+.iui-menu-item-selected a
+{
+	color: black;
+}
+.iui-menu li > ul
+{
+	background-color: #fefefe;
+	border: solid thin #1e4691;
+}
+.iui-menu-expand-box
+{
+	width: 16px;
+	height: 16px;
+	background: url(../resources/icons.png) no-repeat 0 0;
+}
+.iui-menu-item-normal
+{
+	background-color: #fefefe;
+	border: solid thin #fefefe;
+	color: black;
+}
+.iui-menu-marker-expand-down::before
+{
+	border: 4px solid #6791e1;
+	border-color: #6791e1 transparent transparent transparent;
+}
+.iui-menu-marker-expand-down-rtl::before
+{
+	border: 4px solid #6791e1;
+	border-color: #6791e1 transparent transparent transparent;
+}
+.iui-menu-marker-expand-right::before
+{
+	border: 4px solid #6791e1;
+	border-color: transparent transparent transparent #6791e1;
+}
+.iui-menu-marker-expand-left::before
+{
+	border: 4px solid #6791e1;
+	border-color: transparent #6791e1 transparent transparent;
+}
+.iui-menu-marker-top::before
+{
+	border: 4px solid #fefefe;
+	border-color: transparent transparent #1e4691 transparent;
+}
+.iui-menu-marker-top::after
+{
+	border: 4px solid #fefefe;
+	border-color: transparent transparent #fefefe transparent;
+}
+.iui-menu-marker-top-rtl::before
+{
+	border: 4px solid #fefefe;
+	border-color: transparent transparent #1e4691 transparent;
+}
+.iui-menu-marker-top-rtl::after
+{
+	border: 4px solid #fefefe;
+	border-color: transparent transparent #fefefe transparent;
+}
+.iui-menu-marker-left::before
+{
+	border: 4px solid #fefefe;
+	border-color: transparent #1e4691 transparent transparent;
+}
+.iui-menu-marker-left::after
+{
+	border: 4px solid #fefefe;
+	border-color: transparent #fefefe transparent transparent;
+}
+.iui-menu-marker-right::before
+{
+	border: 4px solid #fefefe;
+	border-color: transparent transparent transparent #1e4691;
+}
+.iui-menu-marker-right::after
+{
+	border: 4px solid #fefefe;
+	border-color: transparent transparent transparent #fefefe;
+}
+.iui-menu-disabled > ul
+{
+	background: #808080;
+}
+.iui-menu-item-root-disabled, .iui-menu-item-disabled
+{
+	border: solid thin transparent;
+	color: #cecece;
+}
+
+/* --- IntegralUI SlideBar -------------------------------------------------- */
+
+.iui-slidebar-button
+{
+	background: url(../../resources/icons.png) no-repeat -144px 0;
+}
+.iui-slidebar-button-selected
+{
+	background: url(../../resources/icons.png) no-repeat -160px 0;
+}
+
+/* --- IntegralUI TabStrip ----------------------------------------------- */
+
+.iui-tabstrip ul
+{
+}
+.iui-tabstrip-tab-header
+{
+	background-color: #83a6e7;
+	border: solid thin #2455b0;
+	border-bottom-color: gray;
+	color: white;
+}
+.iui-tabstrip-tab-disabled
+{
+	background-color: #f5f5f5;
+	border: solid thin gray;
+	color: gray;
+}
+.iui-tabstrip-tab-hovered
+{
+	background: -webkit-linear-gradient(white, #d2dff7);
+	background:    -moz-linear-gradient(white, #d2dff7);
+	background:     -ms-linear-gradient(white, #d2dff7);
+	background:      -o-linear-gradient(white, #d2dff7);
+    background :         linear-gradient(white, #d2dff7);
+
+	background-color: #d2dff7;
+	border: solid thin gray;
+	color: black;
+}
+.iui-tabstrip-tab-selected
+{
+	background-color: white;
+	border: solid thin gray;
+	color: black;
+}
+.iui-tabstrip-tab-selected-top
+{
+	border-bottom-color: white;
+}
+.iui-tabstrip-tab-selected-right
+{
+	border-left-color: white;
+}
+.iui-tabstrip-tab-selected-bottom
+{
+	border-top-color: white;
+}
+.iui-tabstrip-tab-selected-left
+{
+	border-right-color: white;
+}
+.iui-tabstrip-tab-content
+{
+	background: white;
+	border-color: gray;
+}
+.iui-tabstrip-tab-content-disabled
+{
+	background: #f5f5f5;
+	color: gray;
+}
+.iui-tabstrip-nav-buttons span:hover
+{
+	background-color: white;
+	border: thin solid gray;
+	border-radius: 3px;
+}
+
+/* --- IntegralUI TreeGrid ----------------------------------------------- */
+.iui-treegrid
+{
+	background-color: white;
+	border-color: #dadada;
+    color: black;
+}
+.iui-treegrid-column-header, .iui-treegrid-column-footer
+{
+	background: -webkit-linear-gradient(white, #ededed);
+	background:    -moz-linear-gradient(white, #ededed);
+	background:     -ms-linear-gradient(white, #ededed);
+	background:      -o-linear-gradient(white, #ededed);
+    background :         linear-gradient(white, #ededed);
+
+	background-color: #ededed;
+	border: thin solid #d5d5d5;
+}
+.iui-treegrid-column-header-hovered
+{
+	background: -webkit-linear-gradient(white, #e8f3ff);
+	background:    -moz-linear-gradient(white, #e8f3ff);
+	background:     -ms-linear-gradient(white, #e8f3ff);
+	background:      -o-linear-gradient(white, #e8f3ff);
+    background :         linear-gradient(white, #e8f3ff);
+
+	background-color: #e8f3ff;
+	border-color: #bfdfff;
+}
+.iui-treegrid-column-header-selected
+{
+	background: -webkit-linear-gradient(white, #b0c4de);
+	background:    -moz-linear-gradient(white, #b0c4de);
+	background:     -ms-linear-gradient(white, #b0c4de);
+	background:      -o-linear-gradient(white, #b0c4de);
+    background :         linear-gradient(white, #b0c4de);
+
+	background-color: #b0c4de;
+	border: thin solid #8aa7ce;
+}
+.iui-treegrid-column-header-cell-selected
+{
+	background-color: #f9f9ff;
+}
+.iui-treegrid-row-disabled, .iui-treegrid-row-cell-disabled
+{
+	background-color: white;
+	color: #cecece;
+}
+.iui-treegrid-row-hovered
+{
+	background: -webkit-linear-gradient(white, #e8f3ff);
+	background:    -moz-linear-gradient(white, #e8f3ff);
+	background:     -ms-linear-gradient(white, #e8f3ff);
+	background:      -o-linear-gradient(white, #e8f3ff);
+    background :         linear-gradient(white, #e8f3ff);
+
+	background-color: #e8f3ff;
+}
+
+.iui-treegrid-row-selected
+{
+	background: -webkit-linear-gradient(white, #cae4ff);
+	background:    -moz-linear-gradient(white, #cae4ff);
+	background:     -ms-linear-gradient(white, #cae4ff);
+	background:      -o-linear-gradient(white, #cae4ff);
+    background :         linear-gradient(white, #cae4ff);
+
+	background-color: #cae4ff;
+}
+.iui-treegrid-row-cell:first-child
+{
+	border-left: thin solid #d5d5d5;
+}
+.iui-treegrid-row-cell:last-child
+{
+	border-right: thin solid #d5d5d5;
+}
+.iui-treegrid-lines-horizontal
+{
+	border-bottom: thin solid #d5d5d5;
+}
+.iui-treegrid-lines-vertical
+{
+	border-right: thin solid #d5d5d5;
+}
+.iui-treegrid-lines-both
+{
+	border-right: thin solid #d5d5d5;
+	border-bottom: thin solid #d5d5d5;
+}
+
+/* --- IntegralUI TreeView ----------------------------------------------- */
+.iui-treeview
+{
+	background-color: white;
+	border-color: #cecece;
+    color: black;
+}
+.iui-treeview-item-content
+{
+	display: inline-block;
+	border: thin solid transparent;
+	padding: 0px 3px;
+}
+
+.iui-treeview-item-content-hovered
+{
+	background: -webkit-linear-gradient(white, #e8f3ff);
+	background:    -moz-linear-gradient(white, #e8f3ff);
+	background:     -ms-linear-gradient(white, #e8f3ff);
+	background:      -o-linear-gradient(white, #e8f3ff);
+    background :         linear-gradient(white, #e8f3ff);
+
+	background-color: #e8f3ff;
+	border: thin solid #ddeeff;
+}
+
+.iui-treeview-item-content-selected
+{
+	background: -webkit-linear-gradient(white, #cae4ff);
+	background:    -moz-linear-gradient(white, #cae4ff);
+	background:     -ms-linear-gradient(white, #cae4ff);
+	background:      -o-linear-gradient(white, #cae4ff);
+    background :         linear-gradient(white, #cae4ff);
+
+	background-color: #cae4ff;
+	border: thin solid #bfdfff;
+}

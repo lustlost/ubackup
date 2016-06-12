@@ -1,0 +1,118 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>Menu - Icons</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/jquery.integralui.menu.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-blue.css" />
+    <script type="text/javascript" src="../../../external/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="../../../external/jquery.ui.core.min.js"></script>
+    <script type="text/javascript" src="../../../external/jquery.ui.widget.min.js"></script>
+    <script type="text/javascript" src="../../../js/jquery.integralui.widget.min.js"></script>
+    <script type="text/javascript" src="../../../js/jquery.integralui.menu.min.js"></script>
+    <script type="text/javascript">
+        var $menu = null;
+        $(document).ready(function() {
+            $menu = $('#menu').menu();
+        });
+         
+        function toggleIcons(elem){
+            $menu.menu("option", "showIcons", elem.checked);
+        }
+    </script>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span style="color:#c60d0d">IntegralUI</span> Studio <span style="font-size:0.75em; font-style:italic">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content">
+        <div class="feature">
+	        <h2 class="feature-title">Menu / Icons</h2>
+	        <div class="feature-content">
+                <div id="menu" class="widget" style="height:0">
+                    <ul>
+                        <li><span class="icons books" data-element="icon"></span><span>Books</span>
+                            <ul>
+                                <li><span>Art</span></li>
+                                <li><span class="icons business" data-element="icon"></span><span>Business</span>
+                                    <ul>
+                                        <li><span>Economics</span></li>
+                                        <li><span class="icons chart" data-element="icon"></span><span>Investing</span>
+                                             <ul>
+                                                <li><span>Bonds</span></li>
+                                                <li><span>Options</span></li>
+                                                <li><span>Stocks</span></li>
+                                            </ul>
+                                        </li>
+                                        <li><span>Management</span></li>
+                                        <li><span>Small Business</span></li>
+                                    </ul>
+                                </li>
+                                <li><hr data-element="separator" style="margin:0;height:1px;background:#ebebeb;color:#ebebeb;border: 0; border-bottom:1px solid #fafafa;" /></li>
+                                <li><span class="icons health" data-element="icon"></span><span>Health</span></li>
+                                <li><span>Literature</span></li>
+                                <li><span class="icons science" data-element="icon"></span><span>Science</span>
+                                    <ul>
+                                        <li><span>Astronomy</span></li>
+                                        <li><span>Mathematics</span></li>
+                                        <li><span>Evolution</span></li>
+                                        <li><span>Nature</span></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                        <li><span class="icons music" data-element="icon"></span><span>Music</span>
+                            <ul>
+                                <li><span>Blues</span></li>
+                                <li><span>Classic Rock</span></li>
+                                <li><span>Pop</span></li>
+                                <li><span>Jazz</span></li>
+                            </ul>
+                        </li>
+                        <li><span>Sports</span>
+                             <ul>
+                                <li><span>Baseball</span></li>
+                                <li><span>Martial Arts</span></li>
+                                <li><span>Running</span></li>
+                                <li><span>Tennis</span>
+                                    <ul>
+                                        <li><span>Accessories</span></li>
+                                        <li><span>Balls</span></li>
+                                        <li><span>Racquets</span></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                        <li><span class="icons time" data-element="icon"></span><span>Watches</span></li>
+                    </ul>
+                </div>
+                <div class="control-panel" style="float:right;">
+                    <form name="frm">
+                        <label><input type="checkbox" name="checkIcons" checked="checked" onclick="toggleIcons(this)" /> Show Icons</label><br />
+                    </form>
+                </div>
+                <br style="clear:both;"/>
+                <div class="feature-help" style="margin-top: 300px">
+                    <p><span class="initial-space"></span>In this sample you can show/hide icons for items in Menu widget. By clicking on check box on the right, you can change the built-in properties:</p>
+                     <ul class="feature-points">
+                        <li><span style="color:#c60d0d">showIcons</span> - determines whether an icon is shown before the menu item title</li>
+                    </ul>
+                    <p><span class="initial-space"></span>There are two ways to apply an icon to an item:
+                        <ul class="feature-points">
+                            <li>By using HTML to set the <span style="color:#c60d0d">data-element</span> attribute to <span style="color:#c60d0d">icon</span>, or</li>
+                            <li>By using JavaScript to set the <span style="color:#c60d0d">icon</span> variable of item to some HTML code. You can use &lt;img&gt;, &lt;span&gt; or any other tag to add an image. Usually a &lt;span&gt; tag is used with image painted as background. For example:<br /><br />
+                                item.icon = "&lt;span class='icons heart' data-element='icon'&gt;&lt;/span&gt;";
+                            </li>
+                        </ul>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

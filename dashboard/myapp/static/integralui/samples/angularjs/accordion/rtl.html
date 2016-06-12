@@ -1,0 +1,75 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>Accordion - RTL</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/integralui.accordion.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-flat-blue.css" />
+    <script type="text/javascript" src="../../../external/angular.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.accordion.min.js"></script>
+    <script type="text/javascript">
+ 		angular
+			.module("appModule", ["integralui"])
+			.controller("appCtrl", ["$scope", "IntegralUIAccordionService", function($scope, $ctrlService){
+                $scope.ctrlName = "ctrlSample";
+                $scope.groups = [
+                    { id: 1, name: 'Group1', text: 'Header 1' },
+                    { id: 2, name: 'Group2', text: 'Header 2' },
+                    { id: 3, name: 'Group3', text: 'Header 3' }
+                ];
+                
+                $scope.groupAlignment = 'rtl';
+
+                $scope.toggleRTL = function(){
+                    if ($scope.groupAlignment == 'rtl')
+                        $scope.groupAlignment = 'ltr';
+                    else
+                        $scope.groupAlignment = 'rtl';
+                }
+
+		}]);
+    </script>
+    <style type="text/css">
+        .directive
+        {
+            direction: rtl;
+        }
+        .group-content
+        {
+            padding: 25% 10px;
+        }
+    </style>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span style="color:#c60d0d">IntegralUI</span> Studio <span style="font-size:0.75em; font-style:italic">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content" ng-app="appModule">
+        <div class="feature" ng-controller="appCtrl">
+	        <h2 class="feature-title">Accordion / RTL</h2>
+	        <div class="feature-content">
+                <iui-accordion name="{{ctrlName}}" class="directive" groups="groups" style="direction:{{groupAlignment}}">
+                    <iui-accordion-group ng-repeat="group in groups" name="{{group.name}}" heading="{{group.text}}">
+                        <div class="group-content">
+                            {{group.name}} Content
+                        </div>
+                    </iui-accordion-group>
+                </iui-accordion>
+                <div class="control-panel" style="margin-left:50px;width:150px">
+                    <label><input type="checkbox" ng-click="toggleRTL()" checked="checked" /> Right to Left</label><br />
+                </div>
+                <br style="clear:both;"/>
+                <div class="feature-help">
+                    <p><span class="initial-space"></span>This sample shows how to set the Accordion in right-to-left layout. All groups, their header and content, are displayed in right-to-left layout. By clicking on the checkbox in control panel on the right, you can switch back to the default left-to-right layout setting.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

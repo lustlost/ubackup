@@ -1,0 +1,205 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>TreeView - Move Items</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/integralui.css" />
+    <link rel="stylesheet" href="../../../css/integralui.treeview.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-flat-blue.css" />
+    <script type="text/javascript" src="../../../external/angular.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.lists.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.treeview.min.js"></script>
+    <script type="text/javascript">
+ 		angular
+			.module("appModule", ["integralui"])
+			.controller("appCtrl", ["$scope", "$timeout", "IntegralUITreeViewService", function($scope, $timeout, $treeService){
+				$scope.treeName = "treeSample";
+				$scope.flatList = [];
+				$scope.targetItem = null;
+                $scope.position = -1;
+
+				$scope.directions = [ 'first', 'before', 'at', 'after', 'last' ];
+				$scope.selDirection = $scope.directions[0];
+
+				$scope.data = [
+					{ 
+						id: 1,
+						text: "Item1",
+						items: [
+							{ id: 11, pid: 1, text: "Item11" },
+							{ 
+								id: 12,
+								pid: 1,
+								text: "Item12",
+								items: [
+									{ id: 121, pid: 12, text: "Item121" },
+									{ 
+										id: 122,
+										pid: 12,
+										text: "Item122", 
+										expanded: false,
+										items: [
+											{ id: 1221, pid: 122, text: "Item1221" },
+											{ id: 1222, pid: 122, text: "Item1222" }
+										]
+									},
+									{ id: 123, pid: 12, text: "Item123" },
+									{ id: 124, pid: 12, text: "Item124" },
+									{ id: 125, pid: 12, text: "Item125" }
+								]
+							},
+							{ id: 13, pid: 1, text: "Item13" },
+							{
+								id: 14,
+								pid: 1,
+								text: "Item14", 
+								items: [
+									{ id: 141, pid: 14, text: "Item141" },
+									{ id: 142, pid: 14, text: "Item142" }
+								]
+							}
+						]
+					},
+					{
+						id: 2,
+						text: "Item2",
+						expanded: false,
+						items: [
+							{ id: 21, pid: 2, text: "Item21" },
+							{ id: 22, pid: 2, text: "Item22" },
+							{
+								id: 23,
+								pid: 2,
+								text: "Item23", 
+								expanded: false,
+								items: [
+									{ id: 231, pid: 23, text: "Item231" },
+									{ id: 232, pid: 23, text: "Item232" }
+								]
+							}
+						]
+					},
+					{ id: 3, text: "Item3" },
+					{ id: 4, text: "Item4" },
+					{ id: 5, text: "Item5" },
+					{
+						id: 6,
+						text: "Item6",
+						items: [
+							{ id: 61, pid: 6, text: "Item61" },
+							{ id: 62, pid: 6, text: "Item62" }
+						]
+					},
+					{ id: 7, text: "Item7" }
+				];
+
+				var updateTargetItems = function(){
+					$scope.flatList.length = 0;
+					$scope.flatList.push({ text: "" });
+
+					var list = $treeService.getList($scope.treeName, null, true);
+					for (var i = 0; i < list.length; i++)
+						$scope.flatList.push(list[i]);
+
+					$scope.targetItem = $scope.flatList[0];
+				}
+
+				var initTimer = $timeout(function(){
+					updateTargetItems();
+
+					$treeService.expand($scope.treeName);
+
+					$timeout.cancel(initTimer);
+				}, 1);
+
+				$scope.moveItem = function(){
+					var selItems = $treeService.selectedItems($scope.treeName);
+					if (selItems){
+						if (selItems.indexOf($scope.targetItem) >= 0)
+							alert("Move operation canceled. Target Item cannot also be a moving item!");
+						else {
+							$treeService.moveItem($scope.treeName, selItems, $scope.targetItem && $scope.targetItem.text ? $scope.targetItem : null, $scope.selDirection, $scope.position);
+
+							updateTargetItems();
+						}
+					}
+				}
+			}]);
+    </script>
+    <style type="text/css">
+	    .directive
+	    {
+	    }
+	    .control-panel
+	    {
+	    	width: 250px;
+	    }
+	    label
+	    {
+	    	display: inline-block;
+	    	margin-right: 5px;
+	    	text-align: right;
+	    	width: 100px;
+	    }
+    	select
+    	{
+    		margin: 2px 0 5px 0;
+    		padding: 2px;
+    		width: 110px;
+    	}
+    	button
+    	{
+     		margin: 20px 5px 0 5px;
+    		padding: 5px;
+	   		width: 220px;
+    	}
+        .inline-block
+        {
+            display: inline-block;
+            margin: 3px 0;
+        }
+        .inline-button
+        {
+            width: 85px;
+            margin-right: 3px
+        }
+    </style>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span style="color:#c60d0d">IntegralUI</span> Studio <span style="font-size:0.75em; font-style:italic">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content" ng-app="appModule">
+        <div class="feature" ng-controller="appCtrl">
+	        <h2 class="feature-title">TreeView / Move Items</h2>
+	        <div class="feature-content">
+                <iui-treeview name="{{treeName}}" class="directive" items="data" selection-mode="multi-extended"></iui-treeview>
+                <div class="control-panel">
+                	<label>Direction: </label>
+                	<select ng-model="selDirection" ng-options="direction for direction in directions"></select><br/>
+                	<label>Target Item: </label>
+                	<select ng-model="targetItem" ng-options="item.text for item in flatList"></select><br/>
+                    <label>Position:</label> <input ng-model="position" type="number" min="-1" max="100" style="width:35px" /><br/><br/>
+                	<button ng-click="moveItem()">Move Item(s)</button>
+                </div>
+                <br style="clear:both;"/>
+                <div class="feature-help">
+                	<p><span class="initial-space"></span>This sample shows how to change the order of tree items dynamically from code, by using built-in method.</p>
+                    <p><span class="initial-space"></span>Using control panel on the right, you can move items to a specific position, place them above or below specific item, or move item at the beginning or the end of tree hierarchy. The following method is used:
+                        <ul class="feature-points">
+                            <li><span style="color:#c60d0d">moveItem(name, item, targetItem, direction, position)</span> - specifies direction at which item or set of items will be moved.</li>
+                        </ul>
+                    </p>
+                    <p><span class="initial-space"></span>In order to see how this works, select one or more items and then choose the direction and position at which they will be moved. To select multiple items, press and hold the CTRL or SHIFT key and click on items.</p>
+               </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

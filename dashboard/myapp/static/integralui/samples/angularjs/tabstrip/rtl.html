@@ -1,0 +1,95 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>TabStrip - RTL</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/integralui.tabstrip.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-flat-blue.css" />
+    <script type="text/javascript" src="../../../external/angular.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.tabstrip.min.js"></script>
+    <script type="text/javascript">
+ 		angular
+			.module("appModule", ["integralui"])
+			.controller("appCtrl", ["$scope", "IntegralUITabStripService", function($scope, $ctrlService){
+                $scope.ctrlName = "ctrlSample";
+                $scope.placement = 'top';
+
+                $scope.tabs = [
+                    { id: 1, name: 'Page1', text: 'Tab 1' },
+                    { id: 2, name: 'Page2', text: 'Tab 2' },
+                    { id: 3, name: 'Page3', text: 'Tab 3' },
+                    { id: 4, name: 'Page4', text: 'Tab 4' },
+                    { id: 5, name: 'Page5', text: 'Tab 5' },
+                    { id: 6, name: 'Page6', text: 'Tab 6' },
+                    { id: 7, name: 'Page7', text: 'Tab 7' },
+                    { id: 8, name: 'Page8', text: 'Tab 8' },
+                    { id: 9, name: 'Page9', text: 'Tab 9' },
+                    { id: 10, name: 'Page10', text: 'Tab 10' },
+                    { id: 11, name: 'Page11', text: 'Tab 11' },
+                    { id: 12, name: 'Page12', text: 'Tab 12' },
+                ];
+                
+                $scope.showRTL = true;
+                $scope.tabAlignment = 'rtl';
+
+                $scope.toggleRTL = function(){
+                    $scope.showRTL = !$scope.showRTL;
+
+                    if ($scope.tabAlignment == 'rtl')
+                        $scope.tabAlignment = 'ltr';
+                    else
+                        $scope.tabAlignment = 'rtl';
+                }
+
+		}]);
+    </script>
+    <style type="text/css">
+        .directive
+        {
+            direction: rtl;
+            height: 300px;
+        }
+        .tab-content
+        {
+            padding: 25% 10px;
+        }
+    </style>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span style="color:#c60d0d">IntegralUI</span> Studio <span style="font-size:0.75em; font-style:italic">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content" ng-app="appModule">
+        <div class="feature" ng-controller="appCtrl">
+	        <h2 class="feature-title">TabStrip / RTL</h2>
+	        <div class="feature-content">
+                <iui-tabstrip name="{{ctrlName}}" class="directive" tabs="tabs" style="direction:{{tabAlignment}}" rtl="showRTL" tabstrip-placement="{{placement}}">
+                    <iui-tab ng-repeat="tab in tabs" name="{{tab.name}}" heading="{{tab.text}}">
+                        <div class="tab-content">
+                            {{tab.name}} Content
+                        </div>
+                    </iui-tab>
+                </iui-tabstrip>
+                <div style="float:right; width: 100px; white-space:nowrap;">
+                    <label><input type="checkbox" ng-click="toggleRTL()" checked="checked" /> Right to Left</label><br /><br /><br />
+                    <label>Choose TabStrip Placement</label><br /><br />
+                    <label><input type="radio" ng-model="placement" value="top" />Top</label><br />
+                    <label><input type="radio" ng-model="placement" value="right" />Right</label><br />
+                    <label><input type="radio" ng-model="placement" value="bottom" />Bottom</label><br />
+                    <label><input type="radio" ng-model="placement" value="left" />Left</label><br />
+                </div>
+                <br style="clear:both;"/>
+                <div class="feature-help">
+                    <p><span class="initial-space"></span>This sample shows how to set the TabStrip in right-to-left layout. All groups, their header and content, are displayed in right-to-left layout. By clicking on the checkbox in control panel on the right, you can switch back to the default left-to-right layout setting.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

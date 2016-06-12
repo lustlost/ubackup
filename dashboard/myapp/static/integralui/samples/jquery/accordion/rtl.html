@@ -1,0 +1,80 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>Accordion - Right to Left</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/jquery.integralui.accordion.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-blue.css" />
+    <script type="text/javascript" src="../../../external/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="../../../external/jquery.ui.core.min.js"></script>
+    <script type="text/javascript" src="../../../external/jquery.ui.widget.min.js"></script>
+    <script type="text/javascript" src="../../../js/jquery.integralui.widget.min.js"></script>
+    <script type="text/javascript" src="../../../js/jquery.integralui.accordion.min.js"></script>
+    <script type="text/javascript">
+        var $bar = null;
+        $(document).ready(function() {
+            $bar = $('#accordion').accordion({
+                    rtl: true
+                });
+        });
+          
+        function toggleRTL(elem){
+            $bar.accordion("option", "rtl", elem.checked);
+        }
+        
+        function toggleIcons(elem){
+            $bar.accordion("option", "showIcons", elem.checked);
+        }
+    </script>
+    <style type="text/css">
+        .icons
+        {
+	        margin: 2px;
+        }
+    </style>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span style="color:#c60d0d">IntegralUI</span> Studio <span style="font-size:0.75em; font-style:italic">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content">
+        <div class="feature">
+	        <h2 class="feature-title">Accordion / RTL</h2>
+	        <div style="position:relative; width: 550px; margin:0 auto 0 0;">
+                <div id="accordion" style="float:left; width:400px; height:400px; font-size:0.75em;">
+                    <h3><span class="icons books" data-element="icon"></span><span>Books</span></h3>
+                    <div></div>
+                    <h3><span>Computers</span></h3>
+                    <div></div>
+                    <h3><span class="icons music" data-element="icon"></span><span>Music</span></h3>
+                    <div></div>
+                    <h3><span class="icons app" data-element="icon"></span><span>Software</span></h3>
+                    <div></div>
+                    <h3><span class="icons time" data-element="icon"></span><span>Watches</span></h3>
+                    <div></div>
+               </div>
+                <div style="float:right; width: 100px; font-size:0.8em; white-space:nowrap;">
+                    <form name="frm">
+                        <label><input type="checkbox" name="checkRTL" checked="checked" onclick="toggleRTL(this)" /> Right to Left</label><br />
+                        <label><input type="checkbox" name="checkIcons" checked="checked" onclick="toggleIcons(this)" /> Show Icons</label><br />
+                   </form>
+                </div>
+                <div style="clear: both; height: 1px;"></div>
+            </div>
+            <div style="font-size:0.75em; color:#000000; padding-right:25%">
+                <p>In this sample all groups are aligned in right-to-left style. By clicking on check boxes on the right, you can change the built-in properties:
+                    <ul class="feature-points">
+                        <li><span style="color:#c60d0d">rtl</span> - determines whether content of group headers are shown in left-to-right or right-to-left style</li>
+                        <li><span style="color:#c60d0d">showIcons</span> - determines whether an icon is shown before the group label</li>
+                    </ul>
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

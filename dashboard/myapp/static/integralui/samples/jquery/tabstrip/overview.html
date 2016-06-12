@@ -1,0 +1,106 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>TabStrip - Overview</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/jquery.integralui.tabstrip.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-blue.css" />
+    <script type="text/javascript" src="../../../external/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="../../../external/jquery.ui.core.min.js"></script>
+    <script type="text/javascript" src="../../../external/jquery.ui.widget.min.js"></script>
+    <script type="text/javascript" src="../../../js/jquery.integralui.widget.min.js"></script>
+    <script type="text/javascript" src="../../../js/jquery.integralui.tabstrip.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var $tab = $('#tabstrip').tabstrip({
+                showCloseButton: true
+            });
+           
+            $tab.on({
+                "tabremoved": function(e){
+                    if ($tab.tabstrip("getList").length === 0){
+                        tabCount = 0;
+                        updateTabAppearance();
+                    }
+                }
+            });
+            
+            updateTabAppearance = function(){
+                var cssValue = {
+                    "background-color": "transparent",
+                    border: 0
+                }
+                
+                if ($tab.tabstrip("getList").length === 0)
+                    cssValue = {
+                       "background-color": "white",
+                       "border": "thin solid gray",
+                        "border-radius": "3px"
+                    }
+                    
+                $tab.css(cssValue);
+            }
+        });
+    </script>
+    <style type="text/css">
+        .feature-content
+        {
+	        width: 700px;
+        }
+        .widget
+        {
+	        height: 300px;
+        }
+        .control-panel
+        {
+	        width: 250px;
+        }
+    </style>
+</head>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span class="product-name">IntegralUI</span> Studio <span class="product-platform">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content">
+        <div class="feature">
+	        <h2 class="feature-title">TabStrip / Overview</h2>
+	        <div class="feature-content">
+                <div id="tabstrip" class="widget"> 
+                    <ul>
+                        <li><span class="icons books" data-element="icon"></span><span>Books</span></li>
+                        <li><span class="icons music" data-element="icon"></span><span>Music</span></li>
+                        <li><span>Sports</span></li>
+                        <li><span>Video Games</span></li>
+                    </ul>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+                <div class="control-panel">
+                    <h3>Sample List:</h3>
+                    <ul class="feature-list">
+                        <li><a href="add-remove.html">Add/Remove</a></li>
+                        <li><a href="events.html">Events</a></li>
+                        <li><a href="icons.html">Icons</a></li>
+                        <li><a href="local-data.html">Local Data Binding</a></li>
+                        <li><a href="placement.html">Tab Strip Placement</a></li>
+                        <li><a href="rtl.html">Right to Left</a></li>
+                    </ul>
+                </div>
+                <br style="clear:both;"/>
+                <div class="feature-help">
+                    <p><span class="initial-space"></span>IntegralUI TabStrip widget allows you to create tabbed user interface in your web applications. There is no limit on how many tabs you can add to the TabStrip, and you can easily navigate them using navigation buttons. Each tab is consisting of tab header and control panel. Tab header can contain icon, title or custom content.</p>
+                    <p><span class="initial-space"></span>Using links in right panel, you can check out different features of TabStrip widget.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

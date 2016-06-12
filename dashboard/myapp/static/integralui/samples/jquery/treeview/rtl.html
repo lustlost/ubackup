@@ -1,0 +1,100 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>TreeView - Right to Left</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/jquery.integralui.treeview.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-blue.css" />
+    <script type="text/javascript" src="../../../external/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="../../../external/jquery.ui.core.min.js"></script>
+    <script type="text/javascript" src="../../../external/jquery.ui.widget.min.js"></script>
+    <script type="text/javascript" src="../../../js/jquery.integralui.widget.min.js"></script>
+    <script type="text/javascript" src="../../../js/jquery.integralui.treeview.min.js"></script>
+    <script type="text/javascript">
+        var $tree = null;
+        $(document).ready(function() {
+            $tree = $('#treeview').treeview({
+                    rtl: true
+                });
+        });
+          
+        function toggleRTL(elem){
+            $tree.treeview("option", "rtl", elem.checked);
+        }
+        
+        function toggleIcons(elem){
+            $tree.treeview("option", "showIcons", elem.checked);
+        }
+    </script>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span style="color:#c60d0d">IntegralUI</span> Studio <span style="font-size:0.75em; font-style:italic">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content">
+        <div class="feature">
+	        <h2 class="feature-title">TreeView / RTL</h2>
+	        <div style="position:relative; width: 550px; margin:0 auto 0 0;">
+                <div id="treeview" style="float:left; width:400px; height:400px; font-size:0.75em;">
+                    <ul>
+                        <li><span class="icons books" data-element="icon"></span><span>Books</span>
+                            <ul>
+                                <li><span class="icons empty" data-element="icon"></span><span>Art</span></li>
+                                <li><span class="icons business" data-element="icon"></span><span>Business</span>
+                                    <ul>
+                                        <li><span class="icons empty" data-element="icon"></span><span>Economics</span></li>
+                                        <li><span class="icons chart" data-element="icon"></span><span>Investing</span></li>
+                                        <li><span class="icons empty" data-element="icon"></span><span>Management</span></li>
+                                        <li><span class="icons empty" data-element="icon"></span><span>Small Business</span></li>
+                                    </ul>
+                                </li>
+                                <li><span class="icons health" data-element="icon"></span><span>Health</span></li>
+                                <li><span class="icons empty" data-element="icon"></span><span>Literature</span></li>
+                                <li data-expanded=false><span class="icons science" data-element="icon"></span><span>Science</span>
+                                    <ul>
+                                        <li><span class="icons empty" data-element="icon"></span><span>Astronomy</span></li>
+                                        <li><span class="icons empty" data-element="icon"></span><span>Mathematics</span></li>
+                                        <li><span class="icons empty" data-element="icon"></span><span>Evolution</span></li>
+                                        <li><span class="icons empty" data-element="icon"></span><span>Nature</span></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                        <li><span class="icons empty" data-element="icon"></span><span>Computers</span></li>
+                        <li><span class="icons music" data-element="icon"></span><span>Music</span></li>
+                        <li data-expanded=false><span class="icons app" data-element="icon"></span><span>Software</span>
+                            <ul>
+                                <li><span class="icons empty" data-element="icon"></span><span>Games</span></li>
+                                <li><span class="icons empty" data-element="icon"></span><span>Operating Systems</span></li>
+                                <li><span class="icons empty" data-element="icon"></span><span>Network &amp; Servers</span></li>
+                                <li><span class="icons empty" data-element="icon"></span><span>Security</span></li>
+                            </ul>
+                        </li>
+                        <li><span class="icons time" data-element="icon"></span><span>Watches</span></li>
+                    </ul>
+               </div>
+                <div style="float:right; width: 100px; font-size:0.8em; white-space:nowrap;">
+                    <form name="frm">
+                        <label><input type="checkbox" name="checkRTL" checked="checked" onclick="toggleRTL(this)" /> Right to Left</label><br />
+                        <label><input type="checkbox" name="checkIcons" checked="checked" onclick="toggleIcons(this)" /> Show Icons</label><br />
+                   </form>
+                </div>
+                <div style="clear: both; height: 1px;"></div>
+            </div>
+            <div style="font-size:0.75em; color:#000000; padding-right:25%">
+                <p>In this sample TreeView shows all its items aligned to the right side. By clicking on check boxes on the right, you can change the built-in properties:
+                    <ul class="feature-points">
+                        <li><span style="color:#c60d0d">rtl</span> - determines whether items are shown in left-to-right or right-to-left order</li>
+                        <li><span style="color:#c60d0d">showIcons</span> - determines whether an icon is shown before the item label</li>
+                    </ul>
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

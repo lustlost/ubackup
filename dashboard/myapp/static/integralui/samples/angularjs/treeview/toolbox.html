@@ -1,0 +1,307 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>TreeView - Toolbox</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/integralui.css" />
+    <link rel="stylesheet" href="../../../css/integralui.checkbox.css" />
+    <link rel="stylesheet" href="../../../css/integralui.treeview.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-flat-blue.css" />
+    <script type="text/javascript" src="../../../external/angular.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.checkbox.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.lists.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.treeview.min.js"></script>
+    <script type="text/javascript">
+ 		angular
+			.module("appModule", ["integralui"])
+			.controller("appCtrl", ["$scope", "$timeout", "IntegralUITreeViewService", function($scope, $timeout, $treeService){
+				// A unique indentifer of the TreeView directive
+				$scope.treeName = "treeSample";
+
+				// An object that holds the names of CSS classes for parent items
+				var parentItemStyle = {
+					general: { 
+						normal: 'group-item',
+						hovered: 'group-item'
+					},
+					content: {
+						normal: 'group-item-content',
+						hovered: 'group-item-content'
+					}
+				}
+
+				// An object that holds the names of CSS classes for child items
+				var childItemStyle = {
+					general: { 
+						normal: 'iui-treeview-item-child',
+						hovered: 'iui-treeview-item-child-hovered',
+						selected: 'iui-treeview-item-child-selected'
+					},
+					content: {
+						selected: 'iui-treeview-item-child-content-selected'
+					}
+				}
+
+				// Data used to populate the TreeView
+				$scope.items = [
+					{ 
+						id: 1, 
+						text: "Common Controls",
+						expanded: false,
+						items: [
+							{ id: 11, pid: 1, text: "Button" },
+							{ id: 12, pid: 1, text: "CheckBox" },
+							{ id: 13, pid: 1, text: "ComboBox" },
+							{ id: 14, pid: 1, text: "DateTime Picker" },
+							{ id: 15, pid: 1, text: "Label" },
+							{ id: 16, pid: 1, text: "ProgressBar" },
+							{ id: 17, pid: 1, text: "TextBox" }
+						]
+					},
+					{ 
+						id: 2, 
+						text: "Containers",
+						items: [
+							{ id: 21, pid: 2, text: "GroupBox" },
+							{ id: 22, pid: 2, text: "Panel" },
+							{ id: 23, pid: 2, text: "SplitContainer" },
+							{ id: 24, pid: 2, text: "TabControl" }
+						]
+					},
+					{ 
+						id: 3, 
+						text: "Menus & Toolbars",
+						items: [
+							{ id: 31, pid: 3, text: "ContextMenu" },
+							{ id: 32, pid: 3, text: "Menu" },
+							{ id: 33, pid: 3, text: "ToolStrip" }
+						]
+					},
+					{ 
+						id: 4, 
+						text: "Data",
+						expanded: false,
+						items: [
+							{ id: 41, pid: 4, text: "DataGrid" },
+							{ id: 42, pid: 4, text: "DataSet" },
+							{ id: 43, pid: 4, text: "ReportViewer" }
+						]
+					},
+					{ 
+						id: 5, 
+						text: "Dialogs",
+						expanded: false,
+						items: [
+							{ id: 51, pid: 5, text: "ColorDialog" },
+							{ id: 52, pid: 5, text: "FontDialog" }
+						]
+					},
+					{ 
+						id: 6, 
+						text: "Printing",
+						expanded: false,
+						items: [
+							{ id: 61, pid: 6, text: "PrintDialog" },
+							{ id: 62, pid: 6, text: "PrintDocument" }
+						]
+					},
+					{ 
+						id: 7, 
+						text: "IntegralUI",
+						items: [
+							{ id: 71, pid: 7, text: "Accordion" },
+							{ id: 72, pid: 7, text: "CheckBox" },
+							{ id: 73, pid: 7, text: "ComboBox" },
+							{ id: 74, pid: 7, text: "ContextMenu" },
+							{ id: 75, pid: 7, text: "Menu" },
+							{ id: 76, pid: 7, text: "SlideBar" },
+							{ id: 77, pid: 7, text: "TabStrip" },
+							{ id: 78, pid: 7, text: "TreeGrid" },
+							{ id: 79, pid: 7, text: "TreeView" }
+						]
+					}
+				];
+
+				var initTimer = $timeout(function(){
+					// Retrive a flat list of tree hierarchy
+					var list = $treeService.getFlatList($scope.treeName, true);
+					if (list && list.length > 0){
+						// Cycle through all items and set a custom style to each child item
+						// Skip the root items, they will use default CSS classes
+						for (var i = 0; i < list.length; i++){
+							if (list[i].pid)
+								list[i].style = childItemStyle;
+						}
+					}
+
+					// Select the item with label set to 'Menu'
+					$treeService.selectedItem($scope.treeName, $scope.items[2].items[1]);
+
+					$timeout.cancel(initTimer);
+				}, 1);
+
+				var currentGroupItem = null;
+				var suppressCallback = false;
+
+				// Handler for beforeSelect event that resets the appearance of parent items
+				$scope.onBeforeSelect = function(e){
+					if (currentGroupItem){
+						var parentItem = $treeService.getItemParent($scope.treeName, e.item);
+						if ((e.item.pid && currentGroupItem != parentItem) || (!e.item.pid && currentGroupItem != e.item)){
+							currentGroupItem.style = null;
+							$treeService.refresh($scope.treeName, currentGroupItem);
+
+							currentGroupItem = null;
+						}
+					}
+				}
+
+				// Handler for afterSelect event that changes the appearance of parent and child items whenever an item is selected
+				$scope.onAfterSelect = function(e){
+					if (!suppressCallback){
+						// If selected item is a child, update the appearance of its parent
+						if (e.item.pid){
+							var parentItem = $treeService.getItemParent($scope.treeName, e.item);
+							if (parentItem){
+								parentItem.style = parentItemStyle;
+								currentGroupItem = parentItem;						
+							}
+
+							// Update the TreeView appearance by calling the refresh method
+							$treeService.refresh($scope.treeName, parentItem);
+						}
+						else
+							currentGroupItem = e.item;						
+					}
+				}
+
+				// Handler for itemClick event that make sure parent item is expanded or collapsed even if it is clicked outside its label
+				$scope.onItemClick = function(e){
+					var item = $treeService.getItemAt($scope.treeName, e.mousePos);
+					if (item){
+						// Update the value of suppressCallback variable to make sure the appearance of root item is not altered when item is selected
+						suppressCallback = true;
+
+						// Expand/Collapse the clicked item and select it
+						$treeService.toggle($scope.treeName, item);
+						$treeService.selectedItem($scope.treeName, item);
+
+						// If it is a child item, update the appearance of its parent
+						if (item.pid){
+							var parentItem = $treeService.getItemParent($scope.treeName, item);
+							if (parentItem){
+								parentItem.style = parentItemStyle;
+								currentGroupItem = parentItem;						
+							}
+
+							// Update the TreeView appearance by calling the refresh method
+							$treeService.refresh($scope.treeName, parentItem);
+						}
+						else
+							currentGroupItem = item;	
+
+						// Reset the suppressCallback value
+						suppressCallback = false;					
+					}
+				}
+			}]);
+    </script>
+    <style type="text/css">
+    	.directive
+    	{
+    		border-radius: 0;
+    	}
+
+    	/* TreeView Parent Item Settings */
+    	.iui-treeview-item
+    	{
+    		background: #e5e5e5;
+    		border: thin solid #ababab;
+    		margin: 1px 0;
+    		padding: 1px 3px;
+    	}
+    	.iui-treeview-item-selected, .group-item
+    	{
+    		background: #c5c5c5;
+    		border-color: #a1a1a1;
+    	}
+
+    	/* TreeView Child Item Settings */
+    	.iui-treeview-item-child
+    	{
+    		background: transparent;
+    		border: thin solid transparent;
+    		font-weight: normal;
+    	}
+    	.iui-treeview-item-child-hovered
+    	{
+    		background: #f1f1f1;
+    		border: thin solid #e5e5e5;
+    	}
+    	.iui-treeview-item-child-selected
+    	{
+    		background: transparent;
+    		border-color: transparent;
+    	}
+    	.iui-treeview-item-child-content-selected
+    	{
+    		color: #c60d0d;
+    		font-weight: bold;
+    	}
+
+    	/* TreeView Other Settings */
+    	.iui-treeview-item-hovered
+    	{
+    		background: #f5f5f5;
+    		border: thin solid #ababab;
+    		margin: 1px 0;
+    	}
+    	.iui-treeview-item-content
+    	{
+    		background: transparent;
+    		border-color: transparent;
+    	}
+    	.iui-treeview-item-content-selected, .group-item-content
+    	{
+    		color: black;
+    		font-weight: bold;
+    	}
+
+    	/* TreeView ExpandBox Settings */
+		.iui-treeview-expand-box-open
+		{
+			background: url(../../../resources/icons.png) no-repeat -80px 0;
+		}
+		.iui-treeview-expand-box-close
+		{
+			background: url(../../../resources/icons.png) no-repeat -96px 0;
+		}
+    </style>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span style="color:#c60d0d">IntegralUI</span> Studio <span style="font-size:0.75em; font-style:italic">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content" ng-app="appModule">
+        <div class="feature" ng-controller="appCtrl">
+	        <h2 class="feature-title">TreeView / Toolbox</h2>
+	        <div class="feature-content">
+	            <div style="display:inline-block">
+	                <iui-treeview name="{{treeName}}" class="directive" items="items" indent="0" allow-focus="false" before-select="onBeforeSelect(e)" after-select="onAfterSelect(e)" item-click="onItemClick(e)"></iui-treeview>
+                    <br style="clear:both;"/>
+                </div>
+                <div class="feature-help" style="margin:0">
+                    <p><span class="initial-space"></span>In above demonstration, we have a TreeView that appears like an Accordion. Root items behave like group headers and their content is a list of child items. Whenever a child items is selected, its parent item is also highlighted.</p>
+                    <p><span class="initial-space"></span>This is accomplished by handling selection events and by modifying corresponding CSS classes.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

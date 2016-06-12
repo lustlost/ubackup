@@ -1,0 +1,82 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>TabStrip - Right to Left</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/jquery.integralui.tabstrip.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-blue.css" />
+    <script type="text/javascript" src="../../../external/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="../../../external/jquery.ui.core.min.js"></script>
+    <script type="text/javascript" src="../../../external/jquery.ui.widget.min.js"></script>
+    <script type="text/javascript" src="../../../js/jquery.integralui.widget.min.js"></script>
+    <script type="text/javascript" src="../../../js/jquery.integralui.tabstrip.min.js"></script>
+    <script type="text/javascript">
+        var $tab = null;
+        $(document).ready(function() {
+            $tab = $('#tabstrip').tabstrip({
+                    rtl: true
+                });
+        });
+          
+        function toggleRTL(elem){
+            $tab.tabstrip("option", "rtl", elem.checked);
+        }
+        
+        function toggleIcons(elem){
+            $tab.tabstrip("option", "showIcons", elem.checked);
+        }
+    </script>
+    <style type="text/css">
+        .widget
+        {
+	        height: 300px;
+        }
+    </style>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span style="color:#c60d0d">IntegralUI</span> Studio <span style="font-size:0.75em; font-style:italic">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content">
+        <div class="feature">
+	        <h2 class="feature-title">TabStrip / RTL</h2>
+	        <div class="feature-content">
+                <div id="tabstrip" class="widget"> 
+                    <ul>
+                        <li><span class="icons books" data-element="icon"></span><span>Books</span></li>
+                        <li><span>Computers</span></li>
+                        <li><span class="icons music" data-element="icon"></span><span>Music</span></li>
+                        <li><span class="icons app" data-element="icon"></span><span>Software</span></li>
+                        <li><span class="icons time" data-element="icon"></span><span>Watches</span></li>
+                    </ul>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+               </div>
+                <div class="control-panel">
+                    <form name="frm">
+                        <label><input type="checkbox" name="checkRTL" checked="checked" onclick="toggleRTL(this)" /> Right to Left</label><br />
+                        <label><input type="checkbox" name="checkIcons" checked="checked" onclick="toggleIcons(this)" /> Show Icons</label><br />
+                   </form>
+                </div>
+                <br style="clear:both;"/>
+                <div class="feature-help">
+                    <p><span class="initial-space"></span>In this sample all tabs are aligned in right-to-left style. By clicking on check boxes on the right, you can change the built-in properties:
+                        <ul class="feature-points">
+                            <li><span style="color:#c60d0d">rtl</span> - determines whether tabs are shown in left-to-right or right-to-left style</li>
+                            <li><span style="color:#c60d0d">showIcons</span> - determines whether an icon is shown before the tab label</li>
+                        </ul>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

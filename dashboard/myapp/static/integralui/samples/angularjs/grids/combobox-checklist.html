@@ -1,0 +1,219 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>Grids - ComboBox Editor</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/integralui.css" />
+    <link rel="stylesheet" href="../../../css/integralui.checkbox.css" />
+    <link rel="stylesheet" href="../../../css/integralui.combobox.css" />
+    <link rel="stylesheet" href="../../../css/integralui.treegrid.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-flat-blue.css" />
+    <script type="text/javascript" src="../../../external/angular.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.min.js"></script>
+   	<script type="text/javascript" src="../../../js/angular.integralui.lists.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.checkbox.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.combobox.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.treegrid.min.js"></script>
+    <script type="text/javascript">
+ 		angular
+			.module("appModule", ["integralui"])
+			.controller("appCtrl", function($scope){
+				$scope.gridName = "gridSample";
+				$scope.sampleRows = [];
+				$scope.defaultIcon = "icons-medium empty-doc";
+
+				$scope.comboList = [
+					{ text: 'Option1' },
+					{ text: 'Option2', checked: true, enabled: false },
+					{ text: 'Option3' },
+					{ text: 'Option4', checked: true },
+					{ text: 'Option5' },
+					{ text: 'Option6', checked: true },
+					{ text: 'Option7', checked: true }
+				];
+
+				$scope.columns = [
+					{ headerText: 'Header1', footerText: 'Footer1', width: 300 },
+					{ 
+						headerText: "Header2",
+						footerText: 'Footer2',
+						editorType: 'combobox',
+						editorSettings: {
+							checkBoxSettings: {
+								showCheckBoxes: true,
+								threeState: false
+							},
+							items: $scope.comboList,
+							maxDropDownItems: 4
+						},
+						width: 250
+					},
+					{ headerText: 'Header3', footerText: 'Footer3', width: 300 }
+				];
+
+				$scope.rows = [
+					{ 
+						id: 1,
+						text: "Item1",
+						cells: [{ text: "Item11" }, { value: $scope.comboList[3] }, { text: "Item13" }],
+						rows: [
+							{ id: 11, pid: 1, text: "Item11", cells: [{ text: "Item111" }, { value: $scope.comboList[7] }, { text: "Item113" }] },
+							{ 
+								id: 12,
+								pid: 1,
+								text: "Item12",
+								cells: [{ text: "Item121" }, { value: $scope.comboList[4] }, { text: "Item123" }],
+								rows: [
+									{ id: 121, pid: 12, text: "Item121", cells: [{ text: "Item1211" }, { value: $scope.comboList[1] }, { text: "Item1213" }] },
+									{ 
+										id: 122,
+										pid: 12,
+										text: "Item122", 
+										cells: [{ text: "Item1221" }, { value: $scope.comboList[6] }, { text: "Item1223" }],
+										expanded: false,
+										rows: [
+											{ id: 1221, pid: 122, text: "Item1221", cells: [{ text: "Item12211" }, { value: null }, { text: "Item12213" }] },
+											{ id: 1222, pid: 122, text: "Item1222", cells: [{ text: "Item12221" }, { value: $scope.comboList[3] }, { text: "Item12223" }] }
+										]
+									},
+									{ id: 123, pid: 12, text: "Item123", cells: [{ text: "Item1231" }, { value: $scope.comboList[5] }, { text: "Item1233" }] }
+								]
+							},
+							{ id: 13, pid: 1, text: "Item13", cells: [{ text: "Item131" }, { value: null }, { text: "Item133" }] },
+							{
+								id: 14,
+								pid: 1,
+								text: "Item14",
+								cells: [{ text: "Item141" }, { value: $scope.comboList[4] }, { text: "Item143" }],
+								rows: [
+									{ id: 141, pid: 14, text: "Item141", cells: [{ text: "Item1411" }, { value: $scope.comboList[7] }, { text: "Item1413" }] },
+									{ id: 142, pid: 14, text: "Item142", cells: [{ text: "Item1421" }, { value: $scope.comboList[1] }, { text: "Item1423" }] }
+								]
+							}
+						]
+					},
+					{
+						id: 2,
+						text: "Item2",
+						cells: [{ text: "Item21" }, { value: $scope.comboList[4] }, { text: "Item23" }],
+						expanded: false,
+						rows: [
+							{ id: 21, pid: 2, text: "Item21", cells: [{ text: "Item211" }, { value: $scope.comboList[3] }, { text: "Item213" }] },
+							{ id: 22, pid: 2, text: "Item22", cells: [{ text: "Item221" }, { value: null }, { text: "Item223" }] },
+							{
+								id: 23,
+								pid: 2,
+								text: "Item23", 
+								cells: [{ text: "Item231" }, { value: $scope.comboList[3] }, { text: "Item233" }],
+								expanded: false,
+								rows: [
+									{ id: 231, pid: 23, text: "Item231", cells: [{ text: "Item2311" }, { value: $scope.comboList[4] }, { text: "Item2313" }] },
+									{ id: 232, pid: 23, text: "Item232", cells: [{ text: "Item2321" }, { value: $scope.comboList[5] }, { text: "Item2323" }] }
+								]
+							}
+						]
+					},
+					{ id: 3, text: "Item3", cells: [{ text: "Item31" }, { value: $scope.comboList[1] }, { text: "Item33" }] }
+				];
+
+				$scope.onCellValueChanging = function(e){
+					if (e.value && e.value.enabled == false)
+						return false;
+				}
+
+				$scope.onCellValueChanged = function(e){
+				}
+			});
+    </script>
+    <style type="text/css">
+		/* TreeGrid settings */
+		.iui-treegrid-column-header-cell, .iui-treegrid-column-footer-cell
+		{
+			padding: 1px 3px;
+		}
+		.iui-treegrid-row-cell-content
+		{
+			padding: 1px 3px;
+		}
+        .iui-list
+        {
+            font-size: 0.75em;
+        }
+        .iui-list-item
+        {
+        	padding: 0;
+        }
+        .iui-list-item-content
+        {
+        	margin-left: 3px;
+        }
+
+		/* Sample settings */
+		.control-panel
+		{
+			width: 170px;
+		}
+		.feature-content
+		{
+			width: 900px;
+		}
+		.feature-list
+		{
+			width: 300px;
+		}
+        .directive
+        {
+        	border: thin solid #cecece;
+        	width: 900px;
+        	height: 300px;
+        }
+    </style>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span class="product-name">IntegralUI</span> Studio <span class="product-platform">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content" ng-app="appModule">
+        <div class="feature" ng-controller="appCtrl">
+	        <h2 class="feature-title">Grids / ComboBox Editor</h2>
+	        <div class="feature-content">
+                <iui-treegrid name="{{gridName}}" class="directive" columns="columns" rows="rows" row-icon="defaultIcon" cellvalue-changing="onCellValueChanging(e)" cellvalue-changed="onCellValueChanged(e)" allow-focus="false"></iui-treegrid>
+                <br style="clear:both;"/>
+                <div class="feature-help">
+                    <p><span class="initial-space"></span>This example shows how to add drop down check list to cells in TreeGrid, AngularJS. This is done by setting the <span class="code-field">editorType</span> field of specified column to <span class="code-string">'combobox'</span>, which allows ComboBox component with a drop down list to appear below a cell. The drop down list contains items with a check box and label.</p>
+                    <p><span class="initial-space"></span>When mouse cursor hovers over cell with a ComboBox editor, a drop down button will appear. When cell or this button is clicked, a drop down list appears, with items set in the ComboBox. By selecting an enabled item from this list, a cell value will change. In case of this example second item in the list is disabled, and it cannot become applied to a cell.</p>
+                    <p><span class="initial-space"></span>Each cell has a <span class="code-field">value</span> field which can accept custom objects, in case of an combo box, it accepts one item object from a list of available items in the combo.</p>
+                    <p><span class="initial-space"></span>Each column has an <span class="code-field">editorSettings</span> field, which allows you to set the behavior and appearance of applied editor. In case of the ComboBox editor, the following properites are available:</p>
+                    <div class="code-block">
+                    	<p class="code-line"><strong>editorSettings</strong> = {</p>
+	                    <div class="code-obj-block">
+                    		<p class="code-line"><span class="code-field">checkBoxSettings</span>: {</p>
+		                    <div class="code-obj-block">
+				            	<p class="code-line"><span class="code-lang">showCheckBoxes</span> - determines whether drop down list will show items with a check box,</p>
+				            	<p class="code-line"><span class="code-lang">threeState</span> - determiens whether check boxes can accept two or three state values,</p>
+				            	<p class="code-line"><span class="code-lang">style</span> - an object that contains names of CSS classes for each part of the check box (unavailable in the moment)</p>
+			                </div>
+				            <p class="code-line">},</p>
+			            	<p class="code-line"><span class="code-field">dropDownWidth</span> - determines the width of drop down list,</p>
+			            	<p class="code-line"><span class="code-field">dropDownHeight</span> - determines the height of drop down list,</p>
+			            	<p class="code-line"><span class="code-field">itemIcon</span> - a default icon for all items,</p>
+			            	<p class="code-line"><span class="code-field">items</span> - an array of item objects dispalyed in the drop down list,</p>
+			            	<p class="code-line"><span class="code-field">maxDropDownItems</span> - a number of maximum visible items in the drop down list,</p>
+			            	<p class="code-line"><span class="code-field">rtl</span> - determines whether right-to-left layout is used (unavailable in the moment),</p>
+			            	<p class="code-line"><span class="code-field">showIcons</span> - determines whether item icon is visible</p>
+			            	<p class="code-line"><span class="code-field">style</span> - an object that contains names of CSS classes for each part of the combo box (unavailable in the moment)</p>
+		                </div>
+				        <p class="code-line">}</p>
+	                </div>
+                    <p>ComboBox editor can appear using mouse cursor or by pressing the 'ENTER' key. In case of this example, keyboard navigation is disabled, and ComboBox editor can appear only using mouse clicks.</p><br/>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

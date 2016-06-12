@@ -1,0 +1,144 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>TreeView - Add/Remove</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/jquery.integralui.treeview.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-blue.css" />
+    <script type="text/javascript" src="../../../external/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="../../../external/jquery.ui.core.min.js"></script>
+    <script type="text/javascript" src="../../../external/jquery.ui.widget.min.js"></script>
+    <script type="text/javascript" src="../../../js/jquery.integralui.widget.min.js"></script>
+    <script type="text/javascript" src="../../../js/jquery.integralui.treeview.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var $tree = $('#treeview');
+            $tree.treeview();
+               
+            var itemCount = 0;
+            var selectedItem = $tree.treeview("option", "selectedItem");
+
+            $('#add-root').click(function(e){
+                e.preventDefault();
+                
+                itemCount++;
+                $tree.treeview("addItem", { text: "Item" + itemCount });
+            });
+                     
+            $('#add-child').click(function(e){
+                e.preventDefault();
+                
+                itemCount++;
+                $tree.treeview("addItem", { text: "Item" + itemCount }, $tree.treeview("option", "selectedItem"));
+            });
+                      
+            $('#insert-after').click(function(e){
+                e.preventDefault();
+                
+                itemCount++;
+                $tree.treeview("insertItemAfter", { text: "Item" + itemCount }, $tree.treeview("option", "selectedItem"));
+            });
+                      
+            $('#insert-at').click(function(e){
+                e.preventDefault();
+
+                itemCount++;
+                $tree.treeview("insertItemAt", { text: "Item" + itemCount }, document.frm.insertAt.value, $tree.treeview("option", "selectedItem"));
+            });
+                       
+            $('#insert-before').click(function(e){
+                e.preventDefault();
+                
+                itemCount++;
+                $tree.treeview("insertItemBefore", { text: "Item" + itemCount }, $tree.treeview("option", "selectedItem"));
+            });
+          
+            $('#remove').click(function(e){
+                e.preventDefault();
+                
+                $tree.treeview("removeItem", $tree.treeview("option", "selectedItem"));
+            });
+          
+            $('#remove-at').click(function(e){
+                e.preventDefault();
+               
+                $tree.treeview("removeItemAt", document.frm.removeAt.value, $tree.treeview("option", "selectedItem"));
+            });
+          
+            $('#clear').click(function(e){
+                e.preventDefault();
+                
+                $tree.treeview("clearItems");
+                itemCount = 0;
+            });
+            
+            $tree.on({
+                    "selectionchanged": function(e){
+                        var selItem = $tree.treeview("option", "selectedItem");
+                        
+                        frm.addChild.disabled = selItem ? false : true;
+                        frm.insertAfter.disabled = selItem ? false : true;
+                        frm.insertBefore.disabled = selItem ? false : true;
+                        frm.remove.disabled = selItem ? false : true;
+                    }
+                });
+        });
+        
+    function isNumberKey(e){
+        var charCode = (e.which) ? e.which : event.keyCode;
+        if (charCode > 31 && (charCode < 48 || charCode > 57))
+            return false;
+            
+        return true;
+    }
+    </script>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span style="color:#c60d0d">IntegralUI</span> Studio <span style="font-size:0.75em; font-style:italic">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content">
+        <div class="feature">
+	        <h2 class="feature-title">TreeView / Add - Remove</h2>
+	        <div class="feature-content">
+                <div id="treeview" class="widget"></div>
+                <div class="control-panel" align="center" style="width:150px">
+                    <form name="frm">
+                        <button type="button" id="add-root" style="margin:5px 0; width:125px">Add Root</button><br />
+                        <button type="button" name="addChild" id="add-child" style="margin:5px 0; width:125px" disabled>Add Child</button><br />
+                        <button type="button" name="insertAfter" id="insert-after" style="margin:5px 0; width:125px" disabled>Insert After</button><br />
+                        <button type="button" name="insertBefore" id="insert-before" style="margin:5px 0; width:125px" disabled>Insert Before</button><br />
+                        <div style="display:inline-block; margin:3px 0; ">
+                           <button type="button" id="insert-at" style="width:90px; margin-right:3px">Insert At</button><input type="number" name="insertAt" min="0" max="1000" value="0" onkeypress="return isNumberKey(event)" style="width:30px" />
+                        </div>
+                        <button type="button" name="remove" id="remove" style="margin:5px 0; width:125px" disabled>Remove</button><br />
+                        <div style="display:inline-block; margin:3px 0; ">
+                            <button type="button" id="remove-at" style="width:90px; margin-right:3px">Remove At</button><input type="number" name="removeAt" min="0" max="1000" value="0" onkeypress="return isNumberKey(event)" style="width:30px" /><br />
+                        </div>
+                        <button type="button" id="clear" style="margin:5px 0; width:125px">Clear</button>
+                    </form>
+                </div>
+                <br style="clear:both;"/>
+                <div class="feature-help">
+                    <p>In this sample you can create and/or modify a tree hierarchy using several different methods:
+                        <ul class="feature-points">
+                            <li><span style="color:#c60d0d">addItem</span> - adds a new item</li>
+                            <li><span style="color:#c60d0d">insertItemAfter</span> - adds a new item after specified item (in this sample the selected item)</li>
+                            <li><span style="color:#c60d0d">insertItemAt</span> - adds a new item at specified position</li>
+                            <li><span style="color:#c60d0d">insertItemBefore</span> - adds a new item before specified item (in this sample the selected item)</li>
+                            <li><span style="color:#c60d0d">removeItem</span> - removes a item (in this sample the selected item)</li>
+                            <li><span style="color:#c60d0d">removeItemAt</span> - removes a item at specified position from parent collection</li>
+                            <li><span style="color:#c60d0d">clearItems</span> - removes all items</li>
+                        </ul>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

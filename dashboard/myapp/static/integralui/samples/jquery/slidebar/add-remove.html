@@ -1,0 +1,178 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>SlideBar - Add/Remove</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/jquery.integralui.slidebar.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-blue.css" />
+    <script type="text/javascript" src="../../../external/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="../../../external/jquery.ui.core.min.js"></script>
+    <script type="text/javascript" src="../../../external/jquery.ui.widget.min.js"></script>
+    <script type="text/javascript" src="../../../js/jquery.integralui.widget.min.js"></script>
+    <script type="text/javascript" src="../../../js/jquery.integralui.slidebar.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var $bar = $('#slidebar').slidebar({
+                slideWidth: 500,
+                slideHeight: 300
+            });
+               
+            var slideCount = 0;
+            var selectedSlide = $bar.slidebar("option", "selectedSlide");
+            
+            updateBarAppearance = function(){
+                var cssValue = {
+                    "background-color": "transparent",
+                    border: 0
+                }
+                
+                if ($bar.slidebar("getList").length === 0)
+                    cssValue = {
+                       "background-color": "white",
+                       "border": "thin solid gray",
+                       "border-radius": "3px",
+                       "width": "500px",
+                       "height": "370px"
+                    }
+                else
+                    cssValue.height = "auto";
+                        
+                $bar.css(cssValue);
+            }
+            
+            updateBarAppearance();
+            
+            getImageMod = function(){
+                return slideCount % 5 + 1;
+            }
+            
+            createSlide = function(){
+                return { content: "<img src='../../../resources/slide" + getImageMod() + ".jpg' />" }
+            }
+            
+            $('#add-slide').click(function(e){
+                e.preventDefault();
+                
+                $bar.slidebar("addSlide", createSlide());
+                slideCount++;
+                
+                updateBarAppearance();
+            });
+                      
+            $('#insert-after').click(function(e){
+                e.preventDefault();
+                
+                $bar.slidebar("insertSlideAfter", createSlide(), $bar.slidebar("option", "selectedSlide"));
+                slideCount++;
+                
+                updateBarAppearance();
+            });
+                      
+            $('#insert-at').click(function(e){
+                e.preventDefault();
+
+                $bar.slidebar("insertSlideAt", createSlide(), document.frm.insertAt.value);
+                slideCount++;
+                
+                updateBarAppearance();
+           });
+                       
+            $('#insert-before').click(function(e){
+                e.preventDefault();
+                
+                $bar.slidebar("insertSlideBefore", createSlide(), $bar.slidebar("option", "selectedSlide"));
+                slideCount++;
+                
+                updateBarAppearance();
+            });
+          
+            $('#remove').click(function(e){
+                e.preventDefault();
+                
+                $bar.slidebar("removeSlide", $bar.slidebar("option", "selectedSlide"));
+                updateBarAppearance();
+            });
+          
+            $('#remove-at').click(function(e){
+                e.preventDefault();
+               
+                $bar.slidebar("removeSlideAt", document.frm.removeAt.value);
+                updateBarAppearance();
+           });
+          
+            $('#clear').click(function(e){
+                e.preventDefault();
+                
+                $bar.slidebar("clearSlides");
+                slideCount = 0;
+                updateBarAppearance();
+           });
+        });
+        
+    function isNumberKey(e){
+        var charCode = (e.which) ? e.which : event.keyCode;
+        if (charCode > 31 && (charCode < 48 || charCode > 57))
+            return false;
+            
+        return true;
+    }
+    </script>
+    <style type="text/css">
+        .feature-content
+        {
+	        width: 850px;
+        }
+        .widget
+        {
+	        background-color: transparent;
+        }
+    </style>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span style="color:#c60d0d">IntegralUI</span> Studio <span style="font-size:0.75em; font-style:italic">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content">
+        <div class="feature">
+	        <h2 class="feature-title">SlideBar / Add - Remove</h2>
+	        <div class="feature-content">
+                <div id="slidebar" class="widget"></div>
+                <div class="control-panel" align="center" style="width:150px">
+                    <form name="frm">
+                        <button type="button" id="add-slide" style="margin:5px 0; width:125px">Add</button><br />
+                        <button type="button" id="insert-after" style="margin:5px 0; width:125px">Insert After</button><br />
+                        <button type="button" id="insert-before" style="margin:5px 0; width:125px">Insert Before</button><br />
+                        <div style="display:inline-block; margin:3px 0; ">
+                           <button type="button" id="insert-at" style="width:90px; margin-right:3px">Insert At</button><input type="number" name="insertAt" min="0" max="1000" value="0" onkeypress="return isNumberKey(event)" style="width:30px" />
+                        </div>
+                        <button type="button" id="remove" style="margin:5px 0; width:125px">Remove</button><br />
+                        <div style="display:inline-block; margin:3px 0; ">
+                            <button type="button" id="remove-at" style="width:90px; margin-right:3px">Remove At</button><input type="number" name="removeAt" min="0" max="1000" value="0" onkeypress="return isNumberKey(event)" style="width:30px" /><br />
+                        </div>
+                        <button type="button" id="clear" style="margin:5px 0; width:125px">Clear</button>
+                    </form>
+                </div>
+                <br style="clear:both;"/>
+                <div class="feature-help" style="width:700px">
+                    <p><span class="initial-space"></span>In this sample you can create and/or modify a list of slides using several different methods:
+                        <ul class="feature-points">
+                            <li><span style="color:#c60d0d">addSlide</span> - adds a new slide</li>
+                            <li><span style="color:#c60d0d">insertSlideAfter</span> - adds a new slide after specified slide (in this sample the selected slide)</li>
+                            <li><span style="color:#c60d0d">insertSlideAt</span> - adds a new slide at specified position</li>
+                            <li><span style="color:#c60d0d">insertSlideBefore</span> - adds a new slide before specified slide (in this sample the selected slide)</li>
+                            <li><span style="color:#c60d0d">removeSlide</span> - removes a slide (in this sample the selected slide)</li>
+                            <li><span style="color:#c60d0d">removeSlideAt</span> - removes a slide at specified position</li>
+                            <li><span style="color:#c60d0d">clearSlides</span> - removes all slides</li>
+                        </ul>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

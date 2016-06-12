@@ -1,0 +1,129 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>SlideBar - Events</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/jquery.integralui.slidebar.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-blue.css" />
+    <script type="text/javascript" src="../../../external/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="../../../external/jquery.ui.core.min.js"></script>
+    <script type="text/javascript" src="../../../external/jquery.ui.widget.min.js"></script>
+    <script type="text/javascript" src="../../../js/jquery.integralui.widget.min.js"></script>
+    <script type="text/javascript" src="../../../js/jquery.integralui.slidebar.min.js"></script>
+    <script type="text/javascript">
+        var $slide = null;
+        $(document).ready(function() {
+            $bar = $('#slidebar').slidebar({
+                slideWidth: 500,
+                slideHeight: 300
+            });
+            
+            $eventLog = $("#eventLog");
+            
+            $bar
+                .on({
+                    "buttonclicking": function(e){
+                       $eventLog.append("<li><span style='color:#c60d0d'>buttonclicking</span> event was fired before button was clicked at position: <i>" + e.object.index + "</i></li>"); 
+                    },
+                    "buttonclicked": function(e){
+                        $eventLog.append("<li><span style='color:#c60d0d'>buttonclicked</span> event was fired after button was clicked at position: <i>" + e.object.index + "</i></li>"); 
+                    },
+                    "clear": function(e){
+                       $eventLog.append("<li><span style='color:#c60d0d'>clear</span> event was fired when list is cleared</li>"); 
+                    },
+                    "slideadding": function(e){
+                       $eventLog.append("<li><span style='color:#c60d0d'>slideadding</span> event was fired before a slide is added</li>"); 
+                    },
+                    "slideadded": function(e){
+                        $eventLog.append("<li><span style='color:#c60d0d'>slideadded</span> event was fired after a slide is added</li>"); 
+                    },
+                    "slidechanging": function(e){
+                       $eventLog.append("<li><span style='color:#c60d0d'>slidechanging</span> event was fired before slide changes to a new slide at position: <i>" + e.object.index + "</i></li>"); 
+                    },
+                    "slidechanged": function(e){
+                        $eventLog.append("<li><span style='color:#c60d0d'>slidechanged</span> event was fired after slide changes to a new slide at position: <i>" + e.object.index + "</i></li>"); 
+                    },
+                    "slidehover": function(e){
+                        $eventLog.append("<li><span style='color:#c60d0d'>slidehover</span> event was fired when the mouse cursor hovers over a slide at position: <i>" + e.object.index + "</i></li>"); 
+                    },
+                    "slideremoving": function(e){
+                       $eventLog.append("<li><span style='color:#c60d0d'>slideremoving</span> event was fired before a slide is removed</li>"); 
+                    },
+                    "slideremoved": function(e){
+                        $eventLog.append("<li><span style='color:#c60d0d'>slideremoved</span> event was fired after a slide is removed</li>"); 
+                    }
+                });
+          
+            $('#clear').click(function(e){
+               $eventLog.empty();
+               //$bar.slidebar("remove", $bar.slidebar("option", "selectedSlide"));
+           });
+        });
+    </script>
+    <style type="text/css">
+        .feature-content
+        {
+	        width: 850px;
+        }
+        .widget
+        {
+	        background-color: transparent;
+	        height:auto;
+        }
+    </style>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span style="color:#c60d0d">IntegralUI</span> Studio <span style="font-size:0.75em; font-style:italic">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content">
+        <div class="feature">
+	        <h2 class="feature-title">SlideBar / Events</h2>
+	        <div class="feature-content">
+                <div id="slidebar" class="widget">
+                    <div>
+                        <ul>
+	                        <li><img src="../../../resources/slide1.jpg" /></li>
+	                        <li><img src="../../../resources/slide2.jpg" /></li>
+	                        <li><img src="../../../resources/slide3.jpg" /></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="control-panel" style="width:300px;">
+                    <div style="background: white; border: thin solid gray; border-radius:3px; width: 350px;height: 400px">
+                        <form name="frm">
+                            <button type="button" id="clear" style="float:right;margin:3px 12px; width:50px">Clear</button>
+                            <p style="margin:0 10px; padding: 3px; border-bottom: thin solid #c5c5c5">Event log:</p>
+                        </form>
+                        <ul id="eventLog">
+                        </ul>
+                    </div>
+                </div>
+                <br style="clear:both;"/>
+                <div class="feature-help">
+                    <p><span class="initial-space"></span>This sample presents most of events that are fired from SlideBar widget. Depending on action, a specific event is fired, which you can handle by simple creating an event handler. Here is list of events that are supported:</p>
+                     <ul class="feature-points">
+                        <li><span style="color:#c60d0d">buttonclicking</span> - Occurs when navigation button is clicked, but before slide is changed</li>
+                        <li><span style="color:#c60d0d">buttonclicked</span> - Occurs when navigation button is clicked and after slide changes</li>
+                        <li><span style="color:#c60d0d">clear</span> - Occurs when list is cleared</li>
+                        <li><span style="color:#c60d0d">slideadding</span> - Occurs before a new slide is added</li>
+                        <li><span style="color:#c60d0d">slideadded</span> - Occurs after a new slide is added</li>
+                        <li><span style="color:#c60d0d">slidechanging</span> - Occurs when currently selected slide is about to change</li>
+                        <li><span style="color:#c60d0d">slidechanged</span> - Occurs when currently selected slide is changed</li>
+                        <li><span style="color:#c60d0d">slidehover</span> - Occurs when the mouse cursor hovers over a slide space</li>
+                        <li><span style="color:#c60d0d">slideremoving</span> - Occurs before slide is removed</li>
+                        <li><span style="color:#c60d0d">slideremoved</span> - Occurs after slide is removed</li>
+                    </ul>
+                    <p><span class="initial-space"></span>Depending on some conditions, when handling some of above events you can prevent the default action to proceed, by canceling the operation.</p>
+                    <p><span class="initial-space"></span>In this sample event log will not register add/remove events, because this kind of operation is not demonstrated here.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

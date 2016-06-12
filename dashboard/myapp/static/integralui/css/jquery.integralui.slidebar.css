@@ -1,0 +1,43 @@
+.iui-slidebar
+{
+	background-color: white;
+	cursor: default;
+	margin: 0;
+	overflow: hidden;
+	padding: 0;
+}
+.iui-slidebar-box
+{
+	border: thin solid #f5f5f5;
+	list-style: none;
+	margin:0;
+	padding: 0;
+}
+.iui-slidebar-box li
+{
+	float: left;
+}
+
+.iui-slidebar-nav-bar
+{
+	font-size: 0;
+	list-style: none;
+	margin:5px auto;
+	padding: 0;
+	text-align:center;
+	white-space: nowrap;
+	width: 100%;
+}
+.iui-slidebar-button
+{
+	background: url(../resources/icons.png) no-repeat -144px 0;
+	display: inline-block;
+	height:16px;
+	margin: 0 2px;
+	padding: 0;
+	width:16px;
+}
+.iui-slidebar-button-selected
+{
+	background: url(../resources/icons.png) no-repeat -160px 0;
+}

@@ -1,0 +1,146 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>TreeView - Status Icons</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/integralui.css" />
+    <link rel="stylesheet" href="../../../css/integralui.treeview.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-flat-blue.css" />
+    <script type="text/javascript" src="../../../external/angular.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.lists.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.treeview.min.js"></script>
+    <script type="text/javascript">
+ 		angular
+			.module("appModule", ["integralui"])
+			.controller("appCtrl", function($scope){
+				$scope.treeName = "treeSample";
+				$scope.showStatusIcons = true;
+				
+				$scope.localData = [
+					{ 
+						id: 1,
+						text: "Books",
+						statusIcon: "icons question",
+						items: [
+							{ id: 11, pid: 1, text: "Art" },
+							{ 
+								id: 12,
+								pid: 1,
+								text: "Business",
+								expanded: false,
+								items: [
+									{ id: 121, pid: 12, text: "Economics" },
+									{ 
+										id: 122,
+										pid: 12,
+										text: "Investing", 
+										expanded: false,
+										items: [
+											{ id: 1221, pid: 122, text: "Bonds" },
+											{ id: 1222, pid: 122, text: "Options" },
+											{ id: 1223, pid: 122, text: "Stocks" }
+										]
+									},
+									{ id: 123, pid: 12, text: "Management" },
+									{ id: 124, pid: 12, text: "Small Business" }
+								]
+							},
+							{ id: 13, pid: 1, text: "Health", statusIcon: "icons exclamation" },
+							{ id: 14, pid: 1, text: "Literature" }
+						]
+					},
+					{ id: 2, text: "Computers" },
+					{
+						id: 3,
+						text: "Electronics",
+						expanded: false,
+						items: [
+							{ id: 31, pid: 3, text: "Camera" },
+							{ id: 32, pid: 3, text: "Cell Phones" },
+							{ id: 33, pid: 3, text: "Video Game Consoles" }
+						]
+					},
+					{ 
+						id: 5,
+						text: "Software",
+						items: [
+							{ id: 52, pid: 5, text: "Operating Systems" },
+							{ id: 53, pid: 5, text: "Network & Servers", statusIcon: "icons down" },
+							{ id: 54, pid: 5, text: "Security" }
+						]
+					},
+					{ 
+						id: 6,
+						text: "Sports",
+						expanded: false,
+						statusIcon: "icons up",
+						items: [
+							{ id: 61, pid: 6, text: "Baseball" },
+							{ id: 62, pid: 6, text: "Martial Arts" },
+							{ id: 63, pid: 6, text: "Running" },
+							{ 
+								id: 64,
+								pid: 6,
+								text: "Tennis",
+								expanded: false,
+								items: [
+									{ id: 641, pid: 64, text: "Accessories" },
+									{ id: 642, pid: 64, text: "Balls" },
+									{ id: 643, pid: 64, text: "Racquets" }
+								]
+							}
+						]
+					}
+				];
+
+				$scope.toggleStatus = function(){
+					$scope.showStatusIcons = !$scope.showStatusIcons;
+				}
+			});
+    </script>
+    <style type="text/css">
+		.icons
+		{
+			margin-top: 5px;
+		}
+    </style>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span style="color:#c60d0d">IntegralUI</span> Studio <span style="font-size:0.75em; font-style:italic">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content" ng-app="appModule">
+        <div class="feature" ng-controller="appCtrl">
+	        <h2 class="feature-title">TreeView / Status Icons</h2>
+	        <div class="feature-content">
+                <iui-treeview name="{{treeName}}" class="directive" items="localData" show-status-icons="showStatusIcons" ></iui-treeview>
+                <div class="control-panel">
+					<label><input type="checkbox" ng-click="toggleStatus()" checked="checked" /> Show Status Icons</label><br />
+                </div>
+                <br style="clear:both;"/>
+                <div class="feature-help">
+                    <p><span class="initial-space"></span>In this sample you can show/hide status icons for items in TreeView widget. By clicking on check box on the right, you can change the built-in properties:
+                        <ul class="feature-points">
+                            <li><span style="color:#c60d0d">showStatusIcons</span> - determines whether an icon is shown to the far left side of the item space</li>
+                        </ul>
+                    </p>
+                    <p>There are two ways to apply a status icon to an item:
+                        <ul class="feature-points">
+                            <li>By using CSS to set the class for <span style="color:#c60d0d">status-icon</span> attribute of specific item.</li>
+                            <li>By using CSS to set the class for <span style="color:#c60d0d">statusIcon</span> variable of specific item. For example:<br /><br />
+                                item.statusIcon = 'icons question';
+                            </li>
+                        </ul>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

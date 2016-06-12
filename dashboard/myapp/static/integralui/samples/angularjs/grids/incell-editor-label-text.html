@@ -1,0 +1,438 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>Grids - InCell Editor</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/integralui.css" />
+    <link rel="stylesheet" href="../../../css/integralui.checkbox.css" />
+    <link rel="stylesheet" href="../../../css/integralui.treegrid.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-flat-blue.css" />
+    <script type="text/javascript" src="../../../external/angular.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.lists.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.checkbox.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.treegrid.min.js"></script>
+    <script type="text/javascript">
+ 		angular
+			.module("appModule", ["integralui"])
+			.controller("appCtrl", ["$scope", "IntegralUITreeGridService", "$timeout", function($scope, $gridService, $timeout){
+				$scope.gridName = "gridSample";
+				$scope.editCell = null;
+
+				$scope.columns = [
+					{ 
+						id: 1, 
+						headerText: "Title",
+						editorType: 'incell',
+						editorSettings: { activate: 'dblclick' },
+						editorTemplate: "'celleditor-simple.html'",
+						width: 400
+					},
+					{ 
+						id: 2, 
+						editorType: 'checkbox', 
+						editorSettings: {
+					 		style: {
+					 			general: 'checkbox',
+					 			box: {
+						 			general: 'checkbox-box',
+						 			checked: 'checkbox-checked',
+						 			indeterminate: 'checkbox-indeterminate',
+						 			unchecked: 'checkbox-unchecked'
+						 		}
+					 		},
+						 	threeState: true
+						}, 
+						contentAlignment: 'center', 
+						width: 30, 
+						fixedWidth: true
+					},
+					{ id: 3, headerText: "Year", headerAlignment: "center", contentAlignment: "center", width: 70 },
+					{ id: 4, headerText: "Ratings", headerAlignment: "center", contentAlignment: "center", width: 80 },
+					{ id: 5, headerText: "Released", headerAlignment: "center", contentAlignment: "center", width: 130 }
+				];
+
+				$scope.rows = [
+					{ 
+						id: 1,
+						text: "Mystery",
+						cells: [{ cid: 1, text: "Mystery" }, { cid: 2 }],
+						rows: [
+							{ 
+								id: 11,
+								pid: 1,
+								text: "Inception",
+								cells: [{ cid: 1, text: "Inception" }, { cid: 2, value: 'checked' }, { cid: 3, text: "2010" }, { cid: 4, text: "8.8" }, { cid: 5, text: "16 Jul 2010" } ]
+							},
+							{ 
+								id: 12,
+								pid: 1,
+								text: "Snowpiercer",
+								cells: [{ cid: 1, text: "Snowpiercer" }, { cid: 2 }, { cid: 3, text: "2014" }, { cid: 4, text: "7.0" }, { cid: 5, text: "11 Jul 2014" } ]
+							},
+							{ 
+								id: 13,
+								pid: 1,
+								text: "Shutter Island",
+								cells: [ { cid: 1, text: "Shutter Island" }, { cid: 2, value: 'checked' }, { cid: 3, text: "2010" }, { cid: 4, text: "8.1" }, { cid: 5, text: "19 Feb 2010" } ]
+							},
+						]
+					},
+					{ 
+						id: 2,
+						text: "Sci-Fi",
+						cells: [{ cid: 1, text: "Sci-Fi" }, { cid: 2 }],
+						rows: [
+							{ 
+								id: 21,
+								pid: 2,
+								text: "Gravity",
+								cells: [{ cid: 1, text: "Gravity" }, { cid: 2 }, { cid: 3, text: "2013" }, { cid: 4, text: "7.9" }, { cid: 5, text: "04 Oct 2013" } ]
+							},
+							{ 
+								id: 22,
+								pid: 2,
+								text: "Prometheus",
+								cells: [{ cid: 1, text: "Prometheus" }, { cid: 2, value: 'checked' }, { cid: 3, text: "2012" }, { cid: 4, text: "7.0" }, { cid: 5, text: "08 Jun 2012" } ]
+							},
+							{ 
+								id: 23,
+								pid: 2,
+								text: "The Avengers",
+								cells: [{ cid: 1, text: "The Avengers" }, { cid: 2 }, { cid: 3, text: "2012" }, { cid: 4, text: "8.2" }, { cid: 5, text: "04 May 2012" } ]
+							},
+							{ 
+								id: 24,
+								pid: 2,
+								text: "Dawn of the Planet of the Apes",
+								cells: [{ cid: 1, text: "Dawn of the Planet of the Apes" }, { cid: 2, value: 'checked' }, { cid: 3, text: "2014" }, { cid: 4, text: "7.7" }, { cid: 5, text: "11 Jul 2014" } ]
+							},
+							{ 
+								id: 25,
+								pid: 2,
+								text: "Interstellar",
+								cells: [{ cid: 1, text: "Interstellar" }, { cid: 2 }, { cid: 3, text: "2014" }, { cid: 4, text: "8.7" }, { cid: 5, text: "07 Nov 2014" } ]
+							},
+						]
+					},
+					{ 
+						id: 3,
+						text: "Action",
+						cells: [{ cid: 1, text: "Action" }, { cid: 2, value: 'checked' }],
+						rows: [
+							{ 
+								id: 31,
+								pid: 3,
+								text: "Edge of Tomorrow",
+								cells: [{ cid: 1, text: "Edge of Tomorrow" }, { cid: 2, value: 'checked' }, { cid: 3, text: "2014" }, { cid: 4, text: "7.9" }, { cid: 5, text: "06 Jun 2014" } ]
+							},
+							{ 
+								id: 32,
+								pid: 3,
+								text: "The Dark Knight Rises",
+								cells: [{ cid: 1, text: "The Dark Knight Rises" }, { cid: 2, value: 'checked' }, { cid: 3, text: "2012" }, { cid: 4, text: "8.5" }, { cid: 5, text: "20 Jul 2012" } ]
+							},
+						]
+					},
+					{ 
+						id: 4,
+						text: "Drama",
+						cells: [{ cid: 1, text: "Drama" }, { cid: 2 }],
+						rows: [
+							{ 
+								id: 41,
+								pid: 4,
+								text: "Locke",
+								cells: [{ cid: 1, text: "Locke" }, { cid: 2 }, { cid: 3, text: "2014" }, { cid: 4, text: "7.1" }, { cid: 5, text: "29 May 2014" } ]
+							},
+							{ 
+								id: 42,
+								pid: 4,
+								text: "Blue Jasmine",
+								cells: [{ cid: 1, text: "Blue Jasmine" }, { cid: 2, value: 'checked' }, { cid: 3, text: "2013" }, { cid: 4, text: "7.3" }, { cid: 5, text: "23 Aug 2013" } ]
+							},
+							{ 
+								id: 43,
+								pid: 4,
+								text: "Black Swan",
+								cells: [{ cid: 1, text: "Black Swan" }, { cid: 2 }, { cid: 3, text: "2010" }, { cid: 4, text: "8.0" }, { cid: 5, text: "17 Dec 2010" } ]
+							},
+							{ 
+								id: 44,
+								pid: 4,
+								text: "American Hustle",
+								cells: [{ cid: 1, text: "American Hustle" }, { cid: 2 }, { cid: 3, text: "2013" }, { cid: 4, text: "7.3" }, { cid: 5, text: "20 Dec 2013" } ]
+							},
+						]
+					},
+					{ 
+						id: 5,
+						text: "Horror",
+						cells: [{ cid: 1, text: "Horror" }, { cid: 2 }],
+						rows: [
+							{ 
+								id: 51,
+								pid: 5,
+								text: "The Conjuring",
+								cells: [{ cid: 1, text: "The Conjuring" }, { cid: 2 }, { cid: 3, text: "2013" }, { cid: 4, text: "7.5" }, { cid: 5, text: "19 Jul 2013" } ]
+							},
+						]
+					},
+					{ 
+						id: 6,
+						text: "Crime",
+						cells: [{ cid: 1, text: "Crime" }, { cid: 2 }],
+						rows: [
+							{ 
+								id: 61,
+								pid: 6,
+								text: "Nightcrawler",
+								cells: [{ cid: 1, text: "Nightcrawler" }, { cid: 2, value: 'checked' }, { cid: 3, text: "2014" }, { cid: 4, text: "7.9" }, { cid: 5, text: "31 Oct 2014" } ]
+							},
+							{ 
+								id: 62,
+								pid: 6,
+								text: "Prisoners",
+								cells: [{ cid: 1, text: "Prisoners" }, { cid: 2 }, { cid: 3, text: "2013" }, { cid: 4, text: "8.1" }, { cid: 5, text: "20 Sep 2013" } ]
+							},
+							{ 
+								id: 63,
+								pid: 6,
+								text: "The Town",
+								cells: [{ cid: 1, text: "The Town" }, { cid: 2 }, { cid: 3, text: "2010" }, { cid: 4, text: "7.6" }, { cid: 5, text: "17 Sep 2010" } ]
+							},
+						]
+					},
+					{ 
+						id: 7,
+						text: "Biography",
+						cells: [{ cid: 1, text: "Biography" }, { cid: 2 }],
+						rows: [
+							{ 
+								id: 71,
+								pid: 7,
+								text: "The Social Network",
+								cells: [{ cid: 1, text: "The Social Network" }, { cid: 2, value: 'checked' }, { cid: 3, text: "2010" }, { cid: 4, text: "7.8" }, { cid: 5, text: "01 Oct 2010" } ]
+							},
+							{ 
+								id: 72,
+								pid: 7,
+								text: "The Wolf of Wall Street",
+								cells: [{ cid: 1, text: "The Wolf of Wall Street" }, { cid: 2, value: 'checked' }, { cid: 3, text: "2013" }, { cid: 4, text: "8.2" }, { cid: 5, text: "25 Dec 2013" } ]
+							},
+							{ 
+								id: 73,
+								pid: 7,
+								text: "Rush",
+								cells: [{ cid: 1, text: "Rush" }, { cid: 2 }, { cid: 3, text: "2013" }, { cid: 4, text: "8.2" }, { cid: 5, text: "27 Sep 2013" } ]
+							},
+						]
+					},
+					{ 
+						id: 8,
+						text: "Animation",
+						cells: [{ cid: 1, text: "Animation" }, { cid: 2 }],
+						rows: [
+							{ 
+								id: 81,
+								pid: 8,
+								text: "Frozen",
+								cells: [{ cid: 1, text: "Frozen" }, { cid: 2 }, { cid: 3, text: "2013" }, { cid: 4, text: "7.7" }, { cid: 5, text: "27 Nov 2013" } ]
+							},
+							{ 
+								id: 82,
+								pid: 8,
+								text: "Toy Story 3",
+								cells: [{ cid: 1, text: "Toy Story 3" }, { cid: 2, value: 'checked' }, { cid: 3, text: "2010" }, { cid: 4, text: "8.4" }, { cid: 5, text: "18 Jun 2010" } ]
+							},
+						]
+					}
+				];
+
+				var updateCellValues = function(){
+					var list = $gridService.getFlatList($scope.gridName, true);
+					for (var i = 0; i < list.length; i++){
+						list[i].cells[0].value = { 
+							numeric: list[i].id.toString(),
+							text: list[i].cells[0].text
+						}
+
+						list[i].cells[0].text = list[i].id.toString() + list[i].cells[0].text;
+					}
+				}
+
+				var initTimer = $timeout(function(){
+					updateCellValues();
+
+					$timeout.cancel(initTimer);
+				}, 1);
+
+				$scope.editorFocus = { active: false }
+				$scope.editBox = {
+					numeric: '',
+					text: ''
+				}
+
+				$scope.onBeforeEdit = function(e){
+					if (e.cell){
+						$scope.editCell = e.cell;
+						$scope.editBox.numeric = e.cell.value.numeric;
+						$scope.editBox.text = e.cell.value.text;
+						$scope.editorFocus.active = true;
+					}
+				}
+
+				$scope.onAfterEdit = function(e){
+					$scope.editCell = null;
+					$scope.editorFocus.active = false;
+				}
+
+				$scope.onOk = function(cell){
+					confirmEdit(cell);
+				}
+
+				$scope.onCancel = function(cell){
+					cancelEdit(cell);
+				}
+
+				var confirmEdit = function(cell){
+					if (cell){
+						cell.text = $scope.editBox.numeric + $scope.editBox.text;
+						cell.value.text = $scope.editBox.text;
+					}
+
+					$gridService.closeEditor($scope.gridName, $scope.editCell);
+				}
+
+				var cancelEdit = function(){
+					$gridService.closeEditor($scope.gridName, $scope.editCell);
+				}
+
+				$scope.onEditKeyDown = function(e){
+					switch (e.keyCode){
+						case 13: // ENTER
+							$gridService.focus($scope.gridName, $scope.editCell);
+							confirmEdit($scope.editCell);
+							break;
+							
+						case 27: // ESCAPE
+							cancelEdit($scope.editCell);
+							break;
+					}
+
+					e.stopPropagation();
+				}
+			}]);
+    </script>
+    <style type="text/css">
+		.feature-content
+		{
+			width: 850px;
+		}
+        .directive
+        {
+        	width: 800px;
+        }
+		/* TreeGrid settings */
+		.iui-treegrid-column-header-cell, .iui-treegrid-column-footer-cell
+		{
+			padding: 2px 2px;
+		}
+		.iui-treegrid-row-selected
+		{
+			background: transparent;
+			color: black;
+		}
+		.iui-treegrid-row-cell-content
+		{
+			padding: 2px 2px;
+		}
+		.checkbox
+		{
+			width: 16px;
+			margin: auto;
+		}
+		.checkbox-box
+		{
+	        border: 0;
+	        display: inline-block;
+			width: 16px;
+			height: 16px;
+		}
+	    .checkbox-checked
+	    {
+	        background-image: url("../../../resources/checkbox/checkbox-checked.png");
+	    }
+	    .checkbox-indeterminate
+	    {
+	        background-image: url("../../../resources/checkbox/checkbox-indeterminate.png");
+	    }
+	    .checkbox-unchecked
+	    {
+	        background-image: url("../../../resources/checkbox/checkbox-unchecked.png");
+	    }
+
+		/* Editor Template Inline */
+	    .cell-editor
+	    {
+	    	background: white;
+			overflow: hidden;
+	    }
+		.cell-editor:before {
+		  content: "";
+		  display: inline-block;
+		  vertical-align: middle;
+		  height: 100%;
+		}
+	    input
+	    {
+	    	display: inline-block;
+	    	margin-left: 3px;
+			vertical-align: middle;
+	    	width: 200px;
+	    }
+    </style>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span style="color:#c60d0d">IntegralUI</span> Studio <span style="font-size:0.75em; font-style:italic">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content" ng-app="appModule">
+        <div class="feature" ng-controller="appCtrl">
+			<script type="text/ng-template" id="celleditor-simple.html">
+				<div class="cell-editor" ng-model="editCell">
+					<label>{{editBox.numeric}}<input ng-model="editBox.text" iui-focus="editorFocus" onfocus="this.select()" tabindex="91" ng-keydown="onEditKeyDown($event)" /></label>
+				</div>
+			</script>
+	        <h2 class="feature-title">Grids / InCell Editor</h2>
+	        <div class="feature-content">
+                <iui-treegrid name="{{gridName}}" class="directive" columns="columns" rows="rows" before-edit="onBeforeEdit(e)" after-edit="onAfterEdit(e)"></iui-treegrid>
+                <br style="clear:both;"/>
+                <div class="feature-help">
+                    <p><span class="initial-space"></span>This sample demonstrates how to enable <strong>incell editing</strong>, by creating a custom editor and place it inside a grid cell. In this case, the editor is applied to the cells in <span style="color:#c60d0d">Title</span> column.</p>
+                    <p><span class="initial-space"></span>To create a custom editor is simple, at first create a HTML content which will determine the editor appearance and behavior. Then apply a refrence of this template to the column's <span style="color:#c60d0d">editorTemplate</span> field. Next, set that editor will appear inside the cell, by specifying the <span style="color:#c60d0d">editorType</span> value to <span style="color:#c60d0d">'incell'</span>.</p>
+                    <p><span class="initial-space"></span>In our example, editor consist of a textbox and two buttons. When a cell is clicked, the editor will pop up, with input focus set to the textbox. Whenever the Ok button is clicked, the cell value is updated. This is all customizable.</p>
+                    <p><span class="initial-space"></span>When column has a custom editor set, whenever a cell is hovered, an editor mark will appear on the right side. Currenty there are two types of custom editors: <span style="color:#c60d0d">'incell'</span> and <span style="color:#c60d0d">'dropdown'</span>. The appearance of this mark depends on editor type. In case of a incell editor, it is a an icon of a pencil.</p>
+                    <p style="padding:10px 25px;"><strong>Note</strong>&nbsp;&nbsp;&nbsp;You can also check out the <a href="dropdown-editor.html">DropDown Editor</a>.</p>
+                    <p>In this sample, the following column fields, methods and events are used:</p>
+                        <ul class="feature-points">
+                            <li><span style="color:#c60d0d">editorType</span> - determines the type of the editor, in this case is <span style="color:#c60d0d">'incell'</span></li>
+                            <li><span style="color:#c60d0d">editorTemplate</span> - holds a reference to a template by which editor is created</li>
+                            <li><span style="color:#c60d0d">closeEditor</span> - closes the currently opened editor</li>
+                            <li><span style="color:#c60d0d">beforeEdit</span> - occurs before editing process starts</li>
+                            <li><span style="color:#c60d0d">afterEdit</span> - occurs after editing process ends</li>
+                        </ul>
+                    </p>
+                    <p>For more information check out the source code of this sample.</p>
+                    <p style="margin:10px 0 30px 0;color:#c60d0d;font-weight:bold">This offline sample may not work using <u>Chrome browser</u>. You can try using any other browser: FireFox, IE, Opera, Safari. This happens due to restrictions of Chrome when loading templates locally. The Online version of this sample works without problems.</p>
+               </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,140 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>TreeView - Animated ExpandBox</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/integralui.css" />
+    <link rel="stylesheet" href="../../../css/integralui.treeview.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-flat-blue.css" />
+    <script type="text/javascript" src="../../../external/angular.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.lists.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.treeview.min.js"></script>
+    <script type="text/javascript">
+ 		angular
+			.module("appModule", ["integralui"])
+			.controller("appCtrl", ["$scope", "IntegralUITreeViewService", "$timeout", function($scope, $treeService, $timeout){
+				$scope.treeName = "treeSample";
+				
+				$scope.data = [
+					{ 
+						id: 1,
+						text: "Item1",
+						items: [
+							{ id: 11, pid: 1, text: "Item11" },
+							{ 
+								id: 12,
+								pid: 1,
+								text: "Item12",
+								items: [
+									{ id: 121, pid: 12, text: "Item121" },
+									{ 
+										id: 122,
+										pid: 12,
+										text: "Item122", 
+										expanded: false,
+										items: [
+											{ id: 1221, pid: 122, text: "Item1221" },
+											{ id: 1222, pid: 122, text: "Item1222" }
+										]
+									},
+									{ id: 123, pid: 12, text: "Item123" },
+									{ id: 124, pid: 12, text: "Item124" },
+									{ id: 125, pid: 12, text: "Item125" }
+								]
+							},
+							{ id: 13, pid: 1, text: "Item13" },
+							{
+								id: 14,
+								pid: 1,
+								text: "Item14", 
+								items: [
+									{ id: 141, pid: 14, text: "Item141" },
+									{ id: 142, pid: 14, text: "Item142" }
+								]
+							}
+						]
+					},
+					{
+						id: 2,
+						text: "Item2",
+						expanded: false,
+						items: [
+							{ id: 21, pid: 2, text: "Item21" },
+							{ id: 22, pid: 2, text: "Item22" },
+							{
+								id: 23,
+								pid: 2,
+								text: "Item23", 
+								expanded: false,
+								items: [
+									{ id: 231, pid: 23, text: "Item231" },
+									{ id: 232, pid: 23, text: "Item232" }
+								]
+							}
+						]
+					},
+					{ id: 3, text: "Item3" },
+					{ id: 4, text: "Item4" },
+					{ id: 5, text: "Item5" },
+					{
+						id: 6,
+						text: "Item6",
+						items: [
+							{ id: 61, pid: 6, text: "Item61" },
+							{ id: 62, pid: 6, text: "Item62" }
+						]
+					},
+					{ id: 7, text: "Item7" }
+				];
+			}]);
+    </script>
+    <style type="text/css">
+		.iui-treeview-item
+		{
+			margin: 2px 0;
+		}
+		.iui-treeview-expand-box
+		{
+			 animation: leave 1.0s 1s 1 forwards;
+		}
+		@keyframes leave
+		{
+			0% { opacity: 1; }
+			100% { opacity: 0; }
+		}
+		.iui-treeview:hover .iui-treeview-expand-box
+		{
+			 animation: enter 1.0s 0s 1 forwards;
+		}
+		@keyframes enter
+		{
+			0% { opacity: 0; }
+			100% { opacity: 1; }
+		}
+    </style>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span class="product-name">IntegralUI</span> Studio <span class="product-platform">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content" ng-app="appModule">
+        <div class="feature" ng-controller="appCtrl">
+	        <h2 class="feature-title">TreeView / Animated ExpandBox</h2>
+	        <div class="feature-content">
+                <iui-treeview name="{{treeName}}" class="directive" items="data"></iui-treeview>
+                <br style="clear:both;"/>
+                <div class="feature-help">
+                    <p><span class="initial-space"></span>This sample demonstrates how to show/hide expand boxes in the TreeView using a CSS animation.</p>
+                    <p><span class="initial-space"></span>Whenever mouse cursor hovers over TreeView space, the expand boxes will appear slowly become fully visible. After mouse cursor leaves the TreeView space, the expand boxes will remain visible for 1s and than slowly become hidden.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

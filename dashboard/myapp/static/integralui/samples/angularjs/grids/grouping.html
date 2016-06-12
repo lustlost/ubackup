@@ -1,0 +1,253 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>Grids - Grouping</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/integralui.css" />
+    <link rel="stylesheet" href="../../../css/integralui.checkbox.css" />
+    <link rel="stylesheet" href="../../../css/integralui.grid.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-flat-blue.css" />
+    <script type="text/javascript" src="../../../external/angular.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.lists.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.checkbox.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.grid.min.js"></script>
+    <script type="text/javascript">
+ 		angular
+			.module("appModule", ["integralui"])
+			.controller("appCtrl", ["$scope", "IntegralUIGridService", "$timeout", function($scope, $gridService, $timeout){
+				$scope.gridName = "gridSample";
+				$scope.gridLines = 'horizontal';
+
+				$scope.columns = [
+					{ id: 2, headerText: "Title", width: 250, allowGrouping: false },
+					{ id: 1, groupText: "True/False", editorType: 'checkbox', contentAlignment: 'center', width: 30, fixedWidth: true },
+					{ id: 3, headerText: "Year", headerAlignment: "center", contentAlignment: "center", width: 70 },
+					{ id: 4, headerText: "Genre", headerAlignment: "center", contentAlignment: "center", width: 150 },
+					{ id: 5, headerText: "Ratings", headerAlignment: "center", contentAlignment: "center", width: 90 },
+					{ id: 6, headerText: "Released", headerAlignment: "center", contentAlignment: "center", width: 130 }
+				];
+
+				$scope.rows = [
+					{ 
+						id: 1,
+						text: "Inception",
+						cells: [{ cid: 1, value: true }, { cid: 2, text: "Inception" }, { cid: 3, text: "2010" }, { cid: 4, text: "Mystery" }, { cid: 5, text: "8.8" }, { cid: 6, text: "16 Jul 2010" } ]
+					},
+					{ 
+						id: 2,
+						text: "Gravity",
+						cells: [{ cid: 1 }, { cid: 2, text: "Gravity" }, { cid: 3, text: "2013" }, { cid: 4, text: "Sci-Fi" }, { cid: 5, text: "7.9" }, { cid: 6, text: "04 Oct 2013" } ]
+					},
+					{ 
+						id: 3,
+						text: "Django Unchained",
+						cells: [{ cid: 1, value: true }, { cid: 2, text: "Django Unchained" }, { cid: 3, text: "2012" }, { cid: 4, text: "Western" }, { cid: 5, text: "8.5" }, { cid: 6, text: "25 Dec 2012" } ]
+					},
+					{ 
+						id: 4,
+						text: "Toy Story 3",
+						cells: [{ cid: 1, value: true }, { cid: 2, text: "Toy Story 3" }, { cid: 3, text: "2010" }, { cid: 4, text: "Animation" }, { cid: 5, text: "8.4" }, { cid: 6, text: "18 Jun 2010" } ]
+					},
+					{ 
+						id: 5,
+						text: "The Wolf of Wall Street",
+						cells: [{ cid: 1, value: true }, { cid: 2, text: "The Wolf of Wall Street" }, { cid: 3, text: "2013" }, { cid: 4, text: "Comedy" }, { cid: 5, text: "8.2" }, { cid: 6, text: "25 Dec 2013" } ]
+					},
+					{ 
+						id: 6,
+						text: "The Town",
+						cells: [{ cid: 1 }, { cid: 2, text: "The Town" }, { cid: 3, text: "2010" }, { cid: 4, text: "Crime" }, { cid: 5, text: "7.6" }, { cid: 6, text: "17 Sep 2010" } ]
+					},
+					{ 
+						id: 7,
+						text: "Nightcrawler",
+						cells: [{ cid: 1, value: true }, { cid: 2, text: "Nightcrawler" }, { cid: 3, text: "2014" }, { cid: 4, text: "Thriller" }, { cid: 5, text: "7.9" }, { cid: 6, text: "31 Oct 2014" } ]
+					},
+					{ 
+						id: 8,
+						text: "Locke",
+						cells: [{ cid: 1 }, { cid: 2, text: "Locke" }, { cid: 3, text: "2014" }, { cid: 4, text: "Drama" }, { cid: 5, text: "7.1" }, { cid: 6, text: "29 May 2014" } ]
+					},
+					{ 
+						id: 9,
+						text: "Prometheus",
+						cells: [{ cid: 1, value: true }, { cid: 2, text: "Prometheus" }, { cid: 3, text: "2012" }, { cid: 4, text: "Sci-Fi" }, { cid: 5, text: "7.0" }, { cid: 6, text: "08 Jun 2012" } ]
+					},
+					{ 
+						id: 10,
+						text: "The Social Network",
+						cells: [{ cid: 1, value: true }, { cid: 2, text: "The Social Network" }, { cid: 3, text: "2010" }, { cid: 4, text: "Biography" }, { cid: 5, text: "7.8" }, { cid: 6, text: "01 Oct 2010" } ]
+					},
+					{ 
+						id: 11,
+						text: "The Conjuring",
+						cells: [{ cid: 1 }, { cid: 2, text: "The Conjuring" }, { cid: 3, text: "2013" }, { cid: 4, text: "Horror" }, { cid: 5, text: "7.5" }, { cid: 6, text: "19 Jul 2013" } ]
+					},
+					{ 
+						id: 12,
+						text: "Blue Jasmine",
+						cells: [{ cid: 1, value: true }, { cid: 2, text: "Blue Jasmine" }, { cid: 3, text: "2013" }, { cid: 4, text: "Drama" }, { cid: 5, text: "7.3" }, { cid: 6, text: "23 Aug 2013" } ]
+					},
+					{ 
+						id: 13,
+						text: "Black Swan",
+						cells: [{ cid: 1 }, { cid: 2, text: "Black Swan" }, { cid: 3, text: "2010" }, { cid: 4, text: "Drama" }, { cid: 5, text: "8.0" }, { cid: 6, text: "17 Dec 2010" } ]
+					},
+					{ 
+						id: 14,
+						text: "Prisoners",
+						cells: [{ cid: 1 }, { cid: 2, text: "Prisoners" }, { cid: 3, text: "2013" }, { cid: 4, text: "Mystery" }, { cid: 5, text: "8.1" }, { cid: 6, text: "20 Sep 2013" } ]
+					},
+					{ 
+						id: 15,
+						text: "The Avengers",
+						cells: [{ cid: 1 }, { cid: 2, text: "The Avengers" }, { cid: 3, text: "2012" }, { cid: 4, text: "Sci-Fi" }, { cid: 5, text: "8.2" }, { cid: 6, text: "04 May 2012" } ]
+					},
+					{ 
+						id: 16,
+						text: "Snowpiercer",
+						cells: [{ cid: 1 }, { cid: 2, text: "Snowpiercer" }, { cid: 3, text: "2014" }, { cid: 4, text: "Mystery" }, { cid: 5, text: "7.0" }, { cid: 6, text: "11 Jul 2014" } ]
+					},
+					{ 
+						id: 17,
+						text: "The Dark Knight Rises",
+						cells: [{ cid: 1, value: true }, { cid: 2, text: "The Dark Knight Rises" }, { cid: 3, text: "2012" }, { cid: 4, text: "Action" }, { cid: 5, text: "8.5" }, { cid: 6, text: "20 Jul 2012" } ]
+					},
+					{ 
+						id: 18,
+						text: "American Hustle",
+						cells: [{ cid: 1 }, { cid: 2, text: "American Hustle" }, { cid: 3, text: "2013" }, { cid: 4, text: "Drama" }, { cid: 5, text: "7.3" }, { cid: 6, text: "20 Dec 2013" } ]
+					},
+					{ 
+						id: 19,
+						text: "Dawn of the Planet of the Apes",
+						cells: [{ cid: 1, value: true }, { cid: 2, text: "Dawn of the Planet of the Apes" }, { cid: 3, text: "2014" }, { cid: 4, text: "Action" }, { cid: 5, text: "7.7" }, { cid: 6, text: "11 Jul 2014" } ]
+					},
+					{ 
+						id: 20,
+						text: "Frozen",
+						cells: [{ cid: 1 }, { cid: 2, text: "Frozen" }, { cid: 3, text: "2013" }, { cid: 4, text: "Animation" }, { cid: 5, text: "7.7" }, { cid: 6, text: "27 Nov 2013" } ]
+					},
+					{ 
+						id: 21,
+						text: "Edge of Tomorrow",
+						cells: [{ cid: 1, value: true }, { cid: 2, text: "Edge of Tomorrow" }, { cid: 3, text: "2014" }, { cid: 4, text: "Action" }, { cid: 5, text: "7.9" }, { cid: 6, text: "06 Jun 2014" } ]
+					},
+					{ 
+						id: 22,
+						text: "Interstellar",
+						cells: [{ cid: 1 }, { cid: 2, text: "Interstellar" }, { cid: 3, text: "2014" }, { cid: 4, text: "Sci-Fi" }, { cid: 5, text: "8.7" }, { cid: 6, text: "07 Nov 2014" } ]
+					},
+					{ 
+						id: 23,
+						text: "Rush",
+						cells: [{ cid: 1 }, { cid: 2, text: "Rush" }, { cid: 3, text: "2013" }, { cid: 4, text: "Action" }, { cid: 5, text: "8.2" }, { cid: 6, text: "27 Sep 2013" } ]
+					},
+					{ 
+						id: 24,
+						text: "Shutter Island",
+						cells: [{ cid: 1, value: true }, { cid: 2, text: "Shutter Island" }, { cid: 3, text: "2010" }, { cid: 4, text: "Mystery" }, { cid: 5, text: "8.1" }, { cid: 6, text: "19 Feb 2010" } ]
+					},
+					{ 
+						id: 25,
+						text: "This Is the End",
+						cells: [{ cid: 1 }, { cid: 2, text: "This Is the End" }, { cid: 3, text: "2013" }, { cid: 4, text: "Comedy" }, { cid: 5, text: "6.7" }, { cid: 6, text: "12 Jun 2013" } ]
+					}
+				];
+
+				$scope.sorting = 'none';
+				var sortColumn = null;
+				var prevColumn = null;
+
+				$scope.onColumnClick = function(e){
+					if (e.column){
+						if (e.column != prevColumn){
+							if ($scope.sorting == 'none')
+								$scope.sorting = 'ascending';
+						}
+						else {
+							if ($scope.sorting == 'ascending')
+								$scope.sorting = 'descending';
+							else
+								$scope.sorting = 'ascending';
+						}
+
+						sortColumn = e.column;
+						prevColumn = e.column;
+
+						$gridService.sort($scope.gridName, e.column, $scope.sorting);
+					}
+				}
+			}]);
+    </script>
+    <style type="text/css">
+		.control-panel
+		{
+			width: 170px;
+		}
+		.feature-content
+		{
+			width: 800px;
+		}
+		.feature-list
+		{
+			width: 300px;
+		}
+		/* Grid settings */
+        .directive
+        {
+        	border: thin solid #cecece;
+        	width: 800px;
+        	height: 400px;
+        }
+		.iui-grid-column-header-cell, .iui-grid-column-footer-cell
+		{
+			padding: 2px 2px;
+		}
+		.iui-grid-row-cell-content
+		{
+			padding: 3px 2px;
+		}
+   </style>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span class="product-name">IntegralUI</span> Studio <span class="product-platform">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content" ng-app="appModule">
+        <div class="feature" ng-controller="appCtrl">
+	        <h2 class="feature-title">Grids / Grouping</h2>
+	        <div class="feature-content">
+                <iui-grid name="{{gridName}}" class="directive" columns="columns" rows="rows" show-footer="false" grid-lines="gridLines" expanding-column-index="0" grouping="{ enabled: true, showColumns: true }" allow-column-reorder="true" sorting="sorting"  column-click="onColumnClick(e)"></iui-grid>
+	            <br style="clear:both;"/>
+	            <div class="feature-help">
+	                <p><span class="initial-space"></span>An example that shows how to group rows based on group fields.</p>
+	                <p><span class="initial-space"></span>To create groups, drag-drop a column header to the grouping panel above the grid. A group will be created and the grid layout will update with arranged data in groups. You can also reorder groups by using drag-drop in grouping panel.</p>
+	                <p><span class="initial-space"></span>In order to enable grouping, the following fields of grouping property needs to be set:
+	                    <ul class="feature-points">
+	                        <li><span style="color:#c60d0d">enabled</span> - determines whether grouping is enabled or not, by default it is disabled</li>
+	                        <li><span style="color:#c60d0d">showColumns</span> - determines whether grouping columns are visible in grid view, by default they are hidden</li>
+	                    </ul>
+	                </p>
+	                <p><span class="initial-space"></span>To disable creation og group field for some column, simply disable grouping for specified column using this field:
+	                    <ul class="feature-points">
+	                        <li><span style="color:#c60d0d">allowGrouping</span> - determines whether is allowed creation of group field for the column</li>
+	                    </ul>
+
+	                </p>
+	                <p><span class="initial-space"></span>In our case, the 'Title' column is fixed, and it cannot be drag-dropped in grouping panel.</p>
+	                <p><span class="initial-space"></span>In our example sorting is also enabled. Whenever a column header ic clicked, all rows will be arranged in ascending or descending order.</p>
+                    <p style="padding:10px 25px;"><strong>Note</strong>&nbsp;&nbsp;&nbsp; Grouping feature is only available as part of IntegralUI Grid directive.</p>
+	                <p style="padding-bottom:30px"><span class="initial-space"></span>For more information check out the source code of this sample.</p>
+	           </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,95 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>TabStrip - Open New Tab</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/integralui.tabstrip.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-flat-blue.css" />
+    <script type="text/javascript" src="../../../external/angular.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.tabstrip.min.js"></script>
+    <script type="text/javascript">
+ 		angular
+			.module("appModule", ["integralui"])
+			.controller("appCtrl", ["$scope", "IntegralUITabStripService", "$timeout", function($scope, $ctrlService, $timeout){
+                $scope.ctrlName = "ctrlSample";
+
+                $scope.tabs = [
+                    { id: 1, name: 'Tab1', text: 'Tab 1' },
+                    { name: 'empty',  icon: 'new-tab' }
+                ];
+                
+                var tabCount = $scope.tabs.length - 1;
+
+                var getCurrentSelection = function(){
+                    return $ctrlService.selectedTab($scope.ctrlName);
+                }
+                
+                var createNewTab = function(){
+                    tabCount++;
+                    return { id: tabCount, name: "Tab" + tabCount, text: "Tab " + tabCount };
+                }
+
+                $scope.onBeforeSelect = function(e){
+                    if (e.tab && e.tab.name == 'empty'){
+                        var newTab = createNewTab();
+                        $ctrlService.insertTabBefore($scope.ctrlName, newTab, e.tab);
+                        $ctrlService.selectedTab($scope.ctrlName, newTab);
+
+                        return false;
+                    }
+                }
+		}]);
+    </script>
+    <style type="text/css">
+        .directive
+        {
+            height: 300px;
+        }
+        .new-tab
+        {
+            background-position: -208px -80px;
+            margin: 0 0 0 4px;
+        }
+        .tab-content
+        {
+            padding: 30% 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span style="color:#c60d0d">IntegralUI</span> Studio <span style="font-size:0.75em; font-style:italic">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content" ng-app="appModule">
+        <div class="feature" ng-controller="appCtrl">
+	        <h2 class="feature-title">TabStrip / Open New Tab</h2>
+	        <div class="feature-content">
+                <iui-tabstrip name="{{ctrlName}}" class="directive" tabs="tabs" before-select="onBeforeSelect(e)">
+                    <iui-tab ng-repeat="tab in tabs" name="{{tab.name}}" heading="{{tab.text}}">
+                        <iui-tab-header>
+                            <span class="icons {{tab.icon}}" ng-show="tab.icon != undefined"></span>
+                            <span>{{tab.text}}</span>
+                        </iui-tab-header>
+                        <div class="tab-content">
+                            {{tab.name}} Content
+                        </div>
+                    </iui-tab>
+                </iui-tabstrip>
+                <div class="control-panel" align="center" style="width:150px">
+                </div>
+                <br style="clear:both;"/>
+                <div class="feature-help">
+                    <p><span class="initial-space"></span>An example on how to open a new tab by using the last tab as an add button. Whenever the add tab is clicked, a new tab will be created and added at last position.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,120 @@
+.iui-treeview
+{
+	background-color: white;
+	border: solid thin gray;
+	border-radius: 3px;
+	padding: 3px;
+    color: black;
+	cursor: default;
+	overflow: hidden;
+	position: relative;
+	
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+}
+.iui-treeview div /*Compatibility with Bootstrap */
+{
+	-webkit-box-sizing: content-box; /* Safari/Chrome, other WebKit */
+	-moz-box-sizing: content-box;    /* Firefox, other Gecko */
+	box-sizing: content-box; 
+}
+.iui-treeview-rtl
+{
+	direction: rtl;
+}
+.iui-treeview-block
+{
+	margin: 0;
+	overflow: hidden;
+	padding: 1px;
+	position: absolute;
+	top: 1px;
+	left: 2px;
+}
+.iui-treeview-block-rtl
+{
+	direction: rtl;
+}
+.iui-treeview-block-shift-left
+{
+	/*margin-left: 16px !important;*/
+	padding-left: 15px;
+}
+.iui-treeview-block-shift-right
+{
+	margin-right: 16px;
+}
+.iui-treeview-item-block
+{
+	padding: 0 0 0 15px;
+}
+.iui-treeview-item-block-rtl
+{
+	padding: 0 15px 0 0;
+}
+.iui-treeview-item
+{
+	display: block;
+	list-style-type: none;
+	margin: 2px 0;
+	padding: 0;
+	white-space: nowrap;
+}
+.iui-treeview-item-content
+{
+	border-radius: 3px;
+	margin: 0;
+	vertical-align: middle;
+}
+.iui-treeview-expand-box
+{
+	background: url(../resources/empty.png) no-repeat 0 0;
+	display: inline-block;
+	width: 16px;
+	height: 16px;
+	vertical-align: middle;
+}
+.iui-treeview-expand-box-load
+{
+	background: url(../resources/load.gif) no-repeat 0 0;
+}
+.iui-treeview-expand-box-open
+{
+	background: url(../resources/expand.png) no-repeat 0 0;
+}
+.iui-treeview-expand-box-open-disabled
+{
+	background: url(../resources/expand-disabled.png) no-repeat 0 0;
+}
+.iui-treeview-expand-box-close
+{
+	background: url(../resources/collapse.png) no-repeat 0 0;
+}
+.iui-treeview-expand-box-close-disabled
+{
+	background: url(../resources/collapse-disabled.png) no-repeat 0 0;
+}
+.iui-treeview-expand-box-open-rtl
+{
+	background: url(../resources/expand-rtl.png) no-repeat 0 0;
+}
+.iui-treeview-expand-box-open-rtl-disabled
+{
+	background: url(../resources/expand-rtl-disabled.png) no-repeat 0 0;
+}
+.iui-treeview-expand-box-close-rtl
+{
+	background: url(../resources/collapse-rtl.png) no-repeat 0 0;
+}
+.iui-treeview-expand-box-close-rtl-disabled
+{
+	background: url(../resources/collapse-rtl-disabled.png) no-repeat 0 0;
+}
+.iui-treeview-status-icon
+{
+	position: absolute;
+	left: 0px;
+}

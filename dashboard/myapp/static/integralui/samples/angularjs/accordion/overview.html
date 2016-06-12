@@ -1,0 +1,121 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>Accordion - Overview</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/integralui.accordion.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-flat-blue.css" />
+    <script type="text/javascript" src="../../../external/angular.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.accordion.min.js"></script>
+    <script type="text/javascript">
+ 		angular
+			.module("appModule", ["integralui"])
+			.controller("appCtrl", ["$scope", "IntegralUIAccordionService", function($scope, $ctrlService){
+                $scope.ctrlName = "ctrlSample";
+                $scope.groups = [
+                    { 
+                        name: 'group1',
+                        icon: 'library',
+                        text: 'Books',
+                        body: 'Curabitur pretium tincidunt lacus. Nulla gravida orci a odio. Nullam varius, turpis et commodo pharetra, est eros bibendum elit, nec luctus magna felis sollicitudin mauris. Integer in mauris eu nibh euismod gravida. Duis ac tellus et risus vulputate vehicula. Donec lobortis risus a elit. Etiam tempor.'
+                    },
+                    { 
+                        name: 'group2',
+                        icon: 'album',
+                        text: 'Music',
+                        body: 'Pellentesque malesuada nulla a mi. Duis sapien sem, aliquet nec, commodo eget, consequat quis, neque. Aliquam faucibus, elit ut dictum aliquet, felis nisl adipiscing sapien, sed malesuada diam lacus eget erat. Cras mollis scelerisque nunc. Nullam arcu. Aliquam consequat.'
+                    },
+                    { 
+                        name: 'group3',
+                        icon: 'star-empty',
+                        text: 'Favorites',
+                        body: 'Fusce convallis, mauris imperdiet gravida bibendum, nisl turpis suscipit mauris, sed placerat ipsum urna sed risus. In convallis tellus a mauris. Curabitur non elit ut libero tristique sodales. Mauris a lacus. Donec mattis semper leo. In hac habitasse platea dictumst.'
+                    }
+                ];
+		}]);
+    </script>
+    <style type="text/css">
+        .directive
+        {
+        }
+        .box
+        {
+            background-image: url(../../../resources/icons.png);
+            background-repeat: no-repeat;
+            display: inline-block;
+            overflow: hidden;
+            padding: 0;
+            margin: 0 1px 2px 0;
+            width: 16px;
+            height: 16px;
+            vertical-align: middle;
+        }
+        .expand
+        {
+            background-position: -80px 0;
+        }
+        .collapse
+        {
+            background-position: -224px -80px;
+        }
+        .custom-content
+        {
+            margin: 0;
+            padding: 5px;
+            height: 150px;
+        }
+        .group-icon
+        {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+        }
+    </style>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span style="color:#c60d0d">IntegralUI</span> Studio <span style="font-size:0.75em; font-style:italic">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content" ng-app="appModule">
+        <div class="feature" ng-controller="appCtrl">
+	        <h2 class="feature-title">Accordion / Overview</h2>
+	        <div class="feature-content">
+                <iui-accordion name="{{ctrlName}}" class="directive" groups="groups">
+                    <iui-accordion-group ng-repeat="group in groups" name="{{group.name}}">
+                        <iui-accordion-header>
+                            <span class="box" ng-class="group.selected == false ? 'expand' : 'collapse'"></span>
+                            <span>{{group.text}}</span>
+                            <span class="group-icon icons-medium {{group.icon}}"></span>
+                        </iui-accordion-header>
+                        <p class="custom-content">{{group.body}}</p>
+                    </iui-accordion-group>
+                </iui-accordion>
+                <div class="control-panel">
+                    <h3>Sample List:</h3>
+                    <ul class="feature-list">
+                        <li><a href="add-remove.html">Add/Remove</a></li>
+                        <li><a href="context-menu.html">Context Menu</a></li>
+                        <li><a href="events.html">Events</a></li>
+                        <li><a href="header-buttons.html">Header Buttons</a></li>
+                        <li><a href="horizontal-expand.html">Horizontal Expand</a></li>
+                        <li><a href="icons.html">Icons</a></li>
+                        <li><a href="rtl.html">Right to Left</a></li>
+                        <li><a href="vertical-expand.html">Vertical Expand</a></li>
+                    </ul>
+                </div>
+                <br style="clear:both;"/>
+                <div class="feature-help">
+                    <p><span class="initial-space"></span>IntegralUI Accordion is a native AngularJS directive that allows you to organize your content in groups. Each group can have a header and content panel. The appearance and layout of groups is determined by customizable CSS themes and styles.</p>
+                    <p><span class="initial-space"></span>Using links in right panel, you can check out different features of Accordion directive.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

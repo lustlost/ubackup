@@ -1,0 +1,256 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>Grids - Select Rows Using CheckBox and/or CTRL+SHIFT keys</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/integralui.css" />
+    <link rel="stylesheet" href="../../../css/integralui.treegrid.css" />
+    <link rel="stylesheet" href="../../../css/integralui.contextmenu.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-flat-blue.css" />
+    <script type="text/javascript" src="../../../external/angular.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.lists.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.treegrid.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.contextmenu.min.js"></script>
+    <script type="text/javascript">
+ 		angular
+			.module("appModule", ["integralui"])
+			.controller("appCtrl", ["$scope", "$timeout", "IntegralUITreeGridService", function($scope, $timeout, $gridService){
+				$scope.gridName = "gridSample";
+
+				// Variables that determine whether event handler code will execute or not
+				var suppressChangeValueCallback = false;
+				var suppressSelectCallback = false;
+
+				var imageChecked = '../../../resources/checkbox/checkbox-checked-7.png';
+				var imageUnchecked = '../../../resources/checkbox/checkbox-unchecked-7.png';
+
+				$scope.columns = [
+					{ 
+						id: 9,
+					 	editorType: 'image',
+					 	editorSettings: {
+					 		allowSelection: false
+					 	},
+					 	contentAlignment: 'center',
+					 	width: 30,
+					 	fixedWidth: true
+					},
+					{ id: 2, headerText: "Continents/Countries", width: 250 },
+					{ id: 3, headerText: "Population", headerAlignment: "center", contentAlignment: "right", width: 125 },
+					{ id: 4, headerText: "Date", headerAlignment: "center", contentAlignment: "center", width: 120 },
+					{ id: 6, headerText: "Land in km2", headerAlignment: "center", contentAlignment: "right", width: 90 },
+					{ id: 7, headerText: "Capital", headerAlignment: "center", width: 120 }
+				];
+
+				$scope.rows = [
+					{ 
+						id: 1,
+						text: "Africa",
+						expanded: false,
+						cells: [{ cid: 9, value: imageUnchecked }, { cid: 2, text: "Africa" }],
+						rows: [
+							{ id: 11, pid: 1, text: "Egypt", cells: [{ cid: 9, value: imageUnchecked }, { cid: 2, text: "Egypt" }, { cid: 3, text: "88,311,000" }, { cid: 4, text: "06 Apr 2015" }, { cid: 6, text: "995,450" }, { cid: 7, text: "Cairo" }] },
+							{ id: 12, pid: 1, text: "Nigeria", cells: [{ cid: 9, value: imageUnchecked }, { cid: 2, text: "Nigeria" }, { cid: 3, text: "185,043,000" }, { cid: 4, text: "01 Jul 2015" }, { cid: 6, text: "910,768" }, { cid: 7, text: "Abuja" }] },
+							{ id: 13, pid: 1, text: "South Africa", cells: [{ cid: 9, value: imageUnchecked }, { cid: 2, text: "South Africa" }, { cid: 3, text: "54,002,000" }, { cid: 4, text: "01 Jul 2014" }, { cid: 6, text: "1,214,470" }, { cid: 7, text: "Pretoria" }] }
+						]
+					},
+					{ 
+						id: 2,
+						text: "Asia",
+						cells: [{ cid: 9, value: imageUnchecked }, { cid: 2, text: "Asia" }],
+						rows: [
+							{ id: 21, pid: 2, text: "China", cells: [{ cid: 9, value: imageUnchecked }, { cid: 2, text: "China" }, { cid: 3, text: "1,369,140,000" }, { cid: 4, text: "06 Apr 2015" }, { cid: 6, text: "9,326,410" }, { cid: 7, text: "Beijing" }] },
+							{ id: 22, pid: 2, text: "India", cells: [{ cid: 9, value: imageUnchecked }, { cid: 2, text: "India" }, { cid: 3, text: "1,269,545,000" }, { cid: 4, text: "01 Jul 2015" }, { cid: 6, text: "2,864,021" }, { cid: 7, text: "New Delhi" }] },
+							{ id: 23, pid: 2, text: "Japan", cells: [{ cid: 9, value: imageUnchecked }, { cid: 2, text: "Japan" }, { cid: 3, text: "126,910,000" }, { cid: 4, text: "01 Mar 2015" }, { cid: 6, text: "364,485" }, { cid: 7, text: "Tokyo" }] },
+							{ id: 24, pid: 2, text: "Saudi Arabia", cells: [{ cid: 9, value: imageUnchecked }, { cid: 2, text: "Saudi Arabia" }, { cid: 3, text: "31,521,418" }, { cid: 4, text: "01 Jul 2015" }, { cid: 6, text: "2,149,690" }, { cid: 7, text: "Riyadh" }] },
+							{ id: 25, pid: 2, text: "South Korea", cells: [{ cid: 9, value: imageUnchecked }, { cid: 2, text: "South Korea" }, { cid: 3, text: "51,342,881" }, { cid: 4, text: "01 Jan 2015" }, { cid: 6, text: "100,032" }, { cid: 7, text: "Seoul" }] }
+						]
+					},
+					{ 
+						id: 3,
+						text: "Europe",
+						cells: [{ cid: 9, value: imageUnchecked }, { cid: 2, text: "Europe" }],
+						rows: [
+							{ id: 31, pid: 3, text: "France", cells: [{ cid: 9, value: imageUnchecked }, { cid: 2, text: "France" }, { cid: 3, text: "66,109,000" }, { cid: 4, text: "01 Mar 2015" }, { cid: 6, text: "640,427" }, { cid: 7, text: "Paris" }] },
+							{ id: 32, pid: 3, text: "Germany", cells: [{ cid: 9, value: imageUnchecked }, { cid: 2, text: "Germany" }, { cid: 3, text: "80,925,000" }, { cid: 4, text: "30 Jun 2014" }, { cid: 6, text: "348,672" }, { cid: 7, text: "Berlin" }] },
+							{ id: 33, pid: 3, text: "Italy", cells: [{ cid: 9, value: imageUnchecked }, { cid: 2, text: "Italy" }, { cid: 3, text: "60,788,845" }, { cid: 4, text: "30 Nov 2014" }, { cid: 6, text: "294,140" }, { cid: 7, text: "Rome" }] },
+							{ id: 34, pid: 3, text: "Macedonia", cells: [{ cid: 9, value: imageUnchecked }, { cid: 2, text: "Macedonia" }, { cid: 3, text: "2,065,769" }, { cid: 4, text: "31 Dec 2013" }, { cid: 6, text: "25,433" }, { cid: 7, text: "Skopje" }] }
+						]
+					},
+					{ 
+						id: 4,
+						text: "North America",
+						cells: [{ cid: 9, value: imageUnchecked }, { cid: 2, text: "North America" }],
+						rows: [
+							{ id: 41, pid: 4, text: "Canada", cells: [{ cid: 9, value: imageUnchecked }, { cid: 2, text: "Canada" }, { cid: 3, text: "35,702,707" }, { cid: 4, text: "01 Jan 2015" }, { cid: 6, text: "9,093,507" }, { cid: 7, text: "Ottawa" }] },
+							{ id: 42, pid: 4, text: "Mexico", cells: [{ cid: 9, value: imageUnchecked }, { cid: 2, text: "Mexico" }, { cid: 3, text: "121,005,815" }, { cid: 4, text: "01 Jul 2015" }, { cid: 6, text: "1,943,945" }, { cid: 7, text: "Mexico City" }] },
+							{ id: 43, pid: 4, text: "USA", cells: [{ cid: 9, value: imageUnchecked }, { cid: 2, text: "USA" }, { cid: 3, text: "320,651,000" }, { cid: 4, text: "07 Apr 2015" }, { cid: 6, text: "9,161,966" }, { cid: 7, text: "Washington" }] }
+						]
+					},
+					{ 
+						id: 5,
+						text: "South America",
+						cells: [{ cid: 9, value: imageUnchecked }, { cid: 2, text: "South America" }],
+						rows: [
+							{ id: 51, pid: 5, text: "Argentina", cells: [{ cid: 9, value: imageUnchecked }, { cid: 2, text: "Argentina" }, { cid: 3, text: "43,131,966" }, { cid: 4, text: "01 Jul 2015" }, { cid: 6, text: "2,736,690" }, { cid: 7, text: "Buenos Aires" }] },
+							{ id: 52, pid: 5, text: "Brazil", cells: [{ cid: 9, value: imageUnchecked }, { cid: 2, text: "Brazil" }, { cid: 3, text: "204,134,000" }, { cid: 4, text: "08 Apr 2015" }, { cid: 6, text: "8,460,415" }, { cid: 7, text: "Brasília" }] }
+						]
+					}
+				];
+
+				// Handler for afterSelect event to update checkboxes of all selected rows
+				// and also clear any non-selected rows
+				$scope.onAfterSelect = function(e){
+					if (suppressSelectCallback)
+						return;
+
+					if (e.object && e.object.type == 'row'){
+						e.object.cells[0].value = imageChecked;
+						$scope.$apply();
+
+						updateSelection();
+					}
+				}
+
+				// A method that handles the checkbox value update 
+				var updateSelection = function(){
+					// Get a linear list of all rows and clear their checkbox status
+					var fullList =  $gridService.getFlatList($scope.gridName, true);
+					for (var i = 0; i < fullList.length; i++)
+						fullList[i].cells[0].value = imageUnchecked;
+
+					// Get a list of all selected rows and mark their checkboxes to true
+					var selList = $gridService.selectedRows($scope.gridName);
+					for (var i = 0; i < selList.length; i++)
+						selList[i].cells[0].value = imageChecked;
+				}
+
+				// Handler for cellCLick event, this is required if a click is made in a cell with a checkbox, but outside checkbox space
+				$scope.onCellClick = function(e){
+					if (e.cell && e.cell.cid == 9){
+						e.cell.value = e.cell.value == imageChecked ? imageUnchecked : imageChecked;
+						$scope.$apply();
+
+						suppressSelectCallback = true;
+
+						if (e.row){
+							// Get a list of all selected rows
+							var list = $gridService.selectedRows($scope.gridName);
+							// Create a new list to avoid cyclic redundancy error
+							var newList = [];
+
+							// If checkbox is checked, add the new row to the list of selected rows
+							if (e.cell.value != imageUnchecked){
+								for (var i = 0; i < list.length; i++)
+									newList.push(list[i]);
+
+								newList.push(e.row);
+							}
+							// If checkbox is unchecked, remove the selection flag from the row and skip the row during creation of selected rows list
+							else {
+								e.row.selected = false;
+
+								for (var i = 0; i < list.length; i++){
+									if (list[i] != e.row)
+										newList.push(list[i]);
+								}
+							}
+
+							$gridService.selectedRows($scope.gridName, newList);
+
+							// Repaint the grid
+							$gridService.refresh($scope.gridName);
+						}
+
+						$timeout(function(){
+							suppressSelectCallback = false;
+						}, 100);
+					}
+					else {
+						updateSelection();
+						$scope.$apply();
+					}
+				}
+
+				// An object that holds all grid events
+				$scope.gridEvents = {
+					afterSelect: function(e){
+						return $scope.onAfterSelect(e);
+					},
+					cellClick: function(e){
+						return $scope.onCellClick(e);
+					}
+				}
+
+				// Context menu data for Rows
+				$scope.rowContextMenu = [
+					{ 
+						key: 'REMOVE_ROW', 
+						text: "Remove Row", 
+						itemClick: function(e){
+							var list = $gridService.selectedRows($scope.gridName);
+							$gridService.suspendLayout($scope.gridName);
+
+							for (var i = 0; i < list.length; i++)
+								$gridService.removeRow($scope.gridName, list[i]);
+
+							$gridService.resumeLayout($scope.gridName);
+						}
+					} 
+				]
+
+				$timeout(function(){
+					var fullList =  $gridService.getFlatList($scope.gridName, true);
+					for (var i = 0; i < fullList.length; i++)
+						fullList[i].contextMenu = $scope.rowContextMenu;
+
+					$gridService.updateLayout($scope.gridName);
+				}, 1);
+			}]);
+    </script>
+    <style type="text/css">
+		/* Sample settings */
+		.feature-content
+		{
+			width: 750px;
+		}
+		.directive
+		{
+			border: thin solid #cecece;
+        	width: 800px;
+		}
+		.iui-treegrid-row-selected
+		{
+			background-color: #dedede;
+			color: #008000;
+		}
+    </style>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span style="color:#c60d0d">IntegralUI</span> Studio <span style="font-size:0.75em; font-style:italic">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content" ng-app="appModule">
+        <div class="feature" ng-controller="appCtrl">
+	        <h2 class="feature-title">Grids / Select Rows Using CheckBox and/or CTRL+SHIFT keys</h2>
+	        <div class="feature-content">
+	            <div style="display:inline-block">
+	                <iui-treegrid name="{{gridName}}" class="directive" columns="columns" rows="rows" show-footer="false" allow-focus="false" expanding-column-index="1" selection-mode="multi-extended" events="gridEvents"></iui-treegrid>
+                    <br style="clear:both;"/>
+                </div>
+                <div class="feature-help" style="margin:0">
+                    <p><span class="initial-space"></span>An example on how to use an image as a checkbox and select rows either from checkbox column or by using CTRL or SHIFT keys.</p>
+                    <p><span class="initial-space"></span>The functionality of this sample is similar to the behavior of Windows Explorer, where each row is selected either by single click on the checkbox or with multiple selection using CTRL + SHIFT keys.</p>
+                    <p style="padding-bottom:30px"><span class="initial-space"></span>For more information check out the source code of this sample.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

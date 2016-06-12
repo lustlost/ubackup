@@ -1,0 +1,170 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>TabStrip - Events</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/jquery.integralui.tabstrip.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-blue.css" />
+    <script type="text/javascript" src="../../../external/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="../../../external/jquery.ui.core.min.js"></script>
+    <script type="text/javascript" src="../../../external/jquery.ui.widget.min.js"></script>
+    <script type="text/javascript" src="../../../js/jquery.integralui.widget.min.js"></script>
+    <script type="text/javascript" src="../../../js/jquery.integralui.tabstrip.min.js"></script>
+    <script type="text/javascript">
+        var $tab = null;
+        $(document).ready(function() {
+            var localData = [
+            {
+                "id": "1",
+                "text": "Dairy"
+            }, {
+                "id": "2",
+                "text": "Fruits"
+            }, {
+                "id": "3",
+                "text": "Grains"
+            }, {
+                "id": "4",
+                "text": "Meat"
+            }, {
+                "id": "5",
+                "text": "Sweets"
+            }, {
+                "id": "6",
+                "text": "Vegetables"
+            }, {
+                "id": "7",
+                "text": "Water"
+            }]
+    
+            $tab = $('#tabstrip').tabstrip({
+                // Map tab data fields with fields from local data source
+                dataFields: {
+                    id : 'id',
+                    text : 'text',
+                    dataSource : localData
+                },
+                showCloseButton: true
+            });
+            
+            $eventLog = $("#eventLog");
+            
+            $tab
+                .on({
+                    "afterselect": function(e){
+                        $eventLog.append("<li><span style='color:#c60d0d'>afterselect</span> event was fired for tab: <i>" + e.object.text + "</i></li>"); 
+                    },
+                    "beforeselect": function(e){
+                       $eventLog.append("<li><span style='color:#c60d0d'>beforeselect</span> event was fired for tab: <i>" + e.object.text + "</i></li>"); 
+                    },
+                    "buttonclicking": function(e){
+                       $eventLog.append("<li><span style='color:#c60d0d'>buttonclicking</span> event was fired before button of type: <i>" + e.object + "</i> was clicked</li>"); 
+                    },
+                    "buttonclicked": function(e){
+                        $eventLog.append("<li><span style='color:#c60d0d'>buttonclicked</span> event was fired after button of type: <i>" + e.object + "</i> was clicked</li>"); 
+                    },
+                    "clear": function(e){
+                       $eventLog.append("<li><span style='color:#c60d0d'>clear</span> event was fired all tabs are removed</li>"); 
+                    },
+                    "selectionchanged": function(e){
+                       $eventLog.append("<li><span style='color:#c60d0d'>selectionchanged</span> event was fired when selection changes</li>"); 
+                    },
+                    "tabadding": function(e){
+                       $eventLog.append("<li><span style='color:#c60d0d'>tabadding</span> event was fired before <i>" + e.object.text + "</i> is added</li>"); 
+                    },
+                    "tabadded": function(e){
+                        $eventLog.append("<li><span style='color:#c60d0d'>tabadded</span> event was fired after <i>" + e.object.text + "</i> is added</li>"); 
+                    },
+                    "tabclick": function(e){
+                        $eventLog.append("<li><span style='color:#c60d0d'>tabclick</span> event was fired when <i>" + e.object.text + "</i> was clicked</li>"); 
+                    },
+                    "tabhover": function(e){
+                        $eventLog.append("<li><span style='color:#c60d0d'>tabhover</span> event was fired when the mouse cursor hovers over <i>" + e.object.text + "</i> space</li>"); 
+                    },
+                    "tabremoving": function(e){
+                       $eventLog.append("<li><span style='color:#c60d0d'>tabremoving</span> event was fired before <i>" + e.object.text + "</i> is removed</li>"); 
+                    },
+                    "tabremoved": function(e){
+                        $eventLog.append("<li><span style='color:#c60d0d'>tabremoved</span> event was fired after <i>" + e.object.text + "</i> is removed</li>"); 
+                        if ($tab.tabstrip("getList").length === 0){
+                            tabCount = 0;
+                            updateTabAppearance();
+                        }
+                    },
+                    "tabrightclick": function(e){
+                        $eventLog.append("<li><span style='color:#c60d0d'>tabrightclick</span> event was fired when <i>" + e.object.text + "</i> was clicked using right mouse button</li>"); 
+                    }
+                });
+          
+            $('#clear').click(function(e){
+               $eventLog.empty();
+           });
+            
+            updateTabAppearance = function(){
+                var cssValue = {
+                    "background-color": "transparent",
+                    border: 0
+                }
+                
+                if ($tab.tabstrip("getList").length === 0)
+                    cssValue = {
+                       "background-color": "white",
+                       "border": "thin solid gray",
+                        "border-radius": "3px"
+                    }
+                    
+                $tab.css(cssValue);
+            }
+        });
+    </script>
+</head>
+<body oncontextmenu="return false;">
+	<div class="header">
+        <div class="header-content">
+		    <h1><span style="color:#c60d0d">IntegralUI</span> Studio <span style="font-size:0.75em; font-style:italic">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content">
+        <div class="feature">
+	        <h2 class="feature-title">TabStrip / Events</h2>
+	        <div class="feature-content" style="width:750px">
+                <div id="tabstrip" class="widget"></div>
+                <div class="control-panel" style="width:300px;">
+                    <div style="background: white; border: thin solid gray; border-radius:3px; width: 350px;height: 400px">
+                        <form name="frm">
+                            <button type="button" id="clear" style="float:right;margin:3px 12px; width:50px">Clear</button>
+                            <p style="margin:0 10px; padding: 3px; border-bottom: thin solid #c5c5c5">Event log:</p>
+                        </form>
+                        <ul id="eventLog">
+                        </ul>
+                    </div>
+                </div>
+                <br style="clear:both;"/>
+                <div class="feature-help">
+                    <p><span class="initial-space"></span>This sample presents most of events that are fired from TabStrip widget. Depending on action, a specific event is fired, which you can handle by simple creating an event handler. Here is list of events that are supported:</p>
+                     <ul class="feature-points">
+                        <li><span style="color:#c60d0d">afterselect</span> - Occurs after tab is selected</li>
+                        <li><span style="color:#c60d0d">beforeselect</span> - Occurs before tab is selected</li>
+                        <li><span style="color:#c60d0d">buttonclicking</span> - Occurs before tab strip button is clicked</li>
+                        <li><span style="color:#c60d0d">buttonclicked</span> - Occurs after tab strip button is clicked</li>
+                        <li><span style="color:#c60d0d">clear</span> - Occurs when all tabs are removed</li>
+                        <li><span style="color:#c60d0d">selectionchanged</span> - Occurs when selection changes</li>
+                        <li><span style="color:#c60d0d">tabadding</span> - Occurs before a new tab is added</li>
+                        <li><span style="color:#c60d0d">tabadded</span> - Occurs after a new tab is added</li>
+                        <li><span style="color:#c60d0d">tabclick</span> - Occurs when tab is clicked</li>
+                        <li><span style="color:#c60d0d">tabhover</span> - Occurs when the mouse cursor hovers over tab header space</li>
+                        <li><span style="color:#c60d0d">tabremoving</span> - Occurs before tab is removed</li>
+                        <li><span style="color:#c60d0d">tabremoved</span> - Occurs after tab is removed</li>
+                        <li><span style="color:#c60d0d">tabrightclick</span> - Occurs when tab is clicked using right mouse button</li>
+                    </ul>
+                    <p><span class="initial-space"></span>Depending on some conditions, when handling some of above events you can prevent the default action to proceed, by canceling the operation.</p>
+                    <p><span class="initial-space"></span>In this sample event log will not register add/remove events, because this kind of operation is not demonstrated here.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

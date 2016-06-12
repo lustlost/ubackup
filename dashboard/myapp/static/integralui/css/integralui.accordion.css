@@ -1,0 +1,82 @@
+.iui-accordion
+{
+	border: 0;
+    color: black;
+	cursor: default;
+	position: relative;
+}
+.iui-accordion-group
+{
+	padding: 0;
+	margin: 2px 0;
+}
+.iui-accordion-group-header
+{
+	padding: 5px;
+	margin: 0;
+	position: relative;
+}
+.iui-accordion-group-content
+{
+	border: thin solid red;
+	padding: 3px;
+	margin: 0;
+}
+
+
+
+/*
+.iui-accordion-expand-box
+{
+	position: absolute;
+	width: 16px;
+	height: 16px;
+}
+.iui-accordion-horizontal
+{
+	position: absolute;
+	transform: rotate(90deg);
+	-ms-transform: rotate(90deg); 
+	-webkit-transform: rotate(90deg);  
+}
+.iui-accordion-header span, .iui-accordion-group-header-content
+{
+	white-space: nowrap;
+}
+.iui-accordion-header-collapse
+{
+	border-radius: 3px;
+}
+.iui-accordion-header-expand-down
+{
+	border-radius: 3px 3px 0 0;
+}
+.iui-accordion-header-expand-right
+{
+	border-radius: 3px 0 0 3px;
+}
+.iui-accordion-header-expand-up
+{
+	border-radius: 0 0 3px 3px;
+}
+.iui-accordion-header-expand-left
+{
+	border-radius: 0 3px 3px 0;
+}
+.iui-accordion-content-expand-down
+{
+	border-radius: 0 0 3px 3px;
+}
+.iui-accordion-content-expand-right
+{
+	border-radius: 0 3px 3px 0;
+}
+.iui-accordion-content-expand-up
+{
+	border-radius: 3px 3px 0 0;
+}
+.iui-accordion-content-expand-left
+{
+	border-radius: 3px 0 0 3px;
+}
+*/

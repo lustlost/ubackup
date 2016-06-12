@@ -1,0 +1,264 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>Grids - Column Reorder</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/integralui.css" />
+    <link rel="stylesheet" href="../../../css/integralui.treegrid.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-flat-blue.css" />
+    <script type="text/javascript" src="../../../external/angular.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.lists.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.treegrid.min.js"></script>
+    <script type="text/javascript">
+ 		angular
+			.module("appModule", ["integralui"])
+			.controller("appCtrl", ["$scope", "IntegralUITreeGridService", "$timeout", function($scope, $gridService, $timeout){
+				$scope.gridName = "gridSample";
+				$scope.rows = [];
+				$scope.defaultIcon = "icons-medium empty-doc";
+				$scope.gridLines = 'horizontal';
+				$scope.allowDrag = true;
+				$scope.allowDrop = true;
+
+				var supressCallback = false;
+
+				$scope.columns = [
+					{ id: 1, headerText: "Name", width: 200 },
+					{ id: 2, headerText: "Date Modified", headerAlignment: "center", contentAlignment: "center", width: 125, allowDrag: false },
+					{ id: 3, headerText: "Type", headerAlignment: "center", width: 120 },
+					{ id: 4, headerText: "Size", headerAlignment: "center", contentAlignment: "right", width: 125 }
+				];
+
+				$scope.flatData = [
+					{ 
+						id: 1,
+						text: "Favorites",
+						icon: "icons-medium favorites",
+						cells: [{ cid: 1, text: "Favorites" }]
+					},
+					{ 
+						id: 11,
+						pid: 1,
+						text: "Desktop",
+						cells: [{ cid: 1, text: "Desktop" }, { cid: 2, text: "4/7/2015" }, { cid: 3, text: "File Folder" }, { cid: 4, text: "7 KB" }]
+					},
+					{ 
+						id: 12,
+						pid: 1,
+						text: "Downloads",
+						icon: "icons-medium downloads",
+						cells: [{ cid: 1, text: "Downloads" }, { cid: 2, text: "4/3/2015" }, { cid: 3, text: "File Folder" }, { cid: 4, text: "23,719 KB" }]
+					},
+					{ 
+						id: 2,
+						text: "Libraries",
+						icon: "icons-medium folder",
+						cells: [{ cid: 1, text: "Libraries" }]
+					},
+					{ 
+						id: 21,
+						pid: 2,
+						text: "Documents",
+						icon: "icons-medium documents",
+						expanded: false,
+						cells: [{ cid: 1, text: "Documents" }, { cid: 3, text: "Library" }, { cid: 4, text: "104 KB" }]
+					},
+					{ 
+						id: 211,
+						pid: 21,
+						text: "My Documents",
+						cells: [{ cid: 1, text: "My Documents" }, { cid: 2, text: "4/7/2015" }, { cid: 3, text: "File Folder" }, { cid: 4, text: "61 GB" }]
+					},
+					{ 
+						id: 212,
+						pid: 21,
+						text: "Public Documents",
+						cells: [{ cid: 1, text: "Public Documents" }, { cid: 2, text: "2/17/2015" }, { cid: 3, text: "File Folder" }, { cid: 4, text: "43 KB" }]
+					},
+					{ 
+						id: 22,
+						pid: 2,
+						text: "Music",
+						icon: "icons-medium music-note",
+						cells: [{ cid: 1, text: "Music" }, { cid: 2, text: "3/19/2015" }, { cid: 3, text: "Library" }, { cid: 4, text: "12,748 KB" }]
+					},
+					{ 
+						id: 23,
+						pid: 2,
+						text: "Pictures",
+						icon: "icons-medium pictures",
+						cells: [{ cid: 1, text: "Pictures" }, { cid: 2, text: "1/29/2015" }, { cid: 3, text: "Library" }, { cid: 4, text: "1,079 KB" }]
+					},
+					{ 
+						id: 24,
+						pid: 2,
+						text: "Videos",
+						icon: "icons-medium videos",
+						cells: [{ cid: 1, text: "Videos" }, { cid: 2, text: "4/5/2015" }, { cid: 3, text: "Library" }, { cid: 4, text: "37,251 KB" }]
+					},
+					{ 
+						id: 3,
+						icon: "icons business",
+						text: "Computer",
+						icon: "icons-medium pc",
+						cells: [{ cid: 1, text: "Computer" }]
+					},
+					{ 
+						id: 31,
+						pid: 3,
+						text: "Local Disk (C:)",
+						icon: "icons-medium disk",
+						cells: [{ cid: 1, text: "Local Disk (C:)" }, { cid: 2, text: "4/3/2015" }, { cid: 3, text: "Local Disk" }, { cid: 4, text: "249 GB" }]
+					},
+					{ 
+						id: 32,
+						pid: 3,
+						text: "Storage (D:)",
+						icon: "icons-medium disk",
+						cells: [{ cid: 1, text: "Storage (D:)" }, { cid: 2, text: "1/27/2015" }, { cid: 3, text: "Local Disk" }, { cid: 4, text: "449 GB" }]
+					},
+					{ 
+						id: 4,
+						text: "Network",
+						icon: "icons-medium network",
+						cells: [{ cid: 1, text: "Network" }]
+					},
+					{ 
+						id: 5,
+						text: "Recycle Bin",
+						icon: "icons-medium recycle",
+						cells: [{ cid: 1, text: "Recycle Bin" }, { cid: 2, text: "2/7/2015" }, { cid: 4, text: "5,296 KB" }]
+					}
+				];
+
+				var loadTimer = $timeout(function(){
+					$gridService.loadData($scope.gridName, $scope.flatData);
+					$scope.selColumn = $scope.columns[0];
+
+					$timeout.cancel(loadTimer);
+				}, 1);
+
+				var updatePermissionValues = function(column){
+					$scope.allowDrag = column.allowDrag != undefined ? column.allowDrag : true;
+					$scope.allowDrop = column.allowDrop != undefined ? column.allowDrop : true;
+				}
+
+				$scope.onAfterSelect = function(e){
+					if (supressCallback)
+						return;
+
+					if (e.object && e.object.type == 'column'){
+						$scope.selColumn = $gridService.selectedColumn($scope.gridName);
+
+						updatePermissionValues(e.object);
+						$scope.$apply();
+					}
+				}
+
+				$scope.$watch("selColumn", function(newValue, oldValue){
+					if (newValue != oldValue){
+						var selTimer = $timeout(function(){
+							supressCallback = true;
+							$gridService.selectedColumn($scope.gridName, newValue);
+							supressCallback = false;
+
+							updatePermissionValues(newValue);
+
+							$gridService.updateView($scope.gridName);
+
+							$timeout.cancel(selTimer);
+						}, 1);
+					}
+				});
+
+				$scope.$watch("allowDrag", function(newValue, oldValue){
+					if (newValue != oldValue)
+						$scope.selColumn.allowDrag = newValue;
+				});
+
+				$scope.$watch("allowDrop", function(newValue, oldValue){
+					if (newValue != oldValue)
+						$scope.selColumn.allowDrop = newValue;
+				});
+			}]);
+    </script>
+    <style type="text/css">
+		.iui-treegrid-column-header-cell
+		{
+			padding: 0 3px;
+		}
+		.iui-treegrid-row-cell-content
+		{
+			padding: 4px 3px;
+		}
+		.iui-treegrid-column-reorder-mark-left
+		{
+		    background-image: url(../../../resources/move-left-white.png);
+		}
+		.iui-treegrid-column-reorder-mark-right
+		{
+		    background-image: url(../../../resources/move-right-white.png);
+		}
+		.control-panel
+		{
+			width: 170px;
+		}
+		.feature-content
+		{
+			width: 850px;
+		}
+		.feature-list
+		{
+			width: 300px;
+		}
+        .directive
+        {
+        	border: thin solid #cecece;
+        	width: 600px;
+        	height: 350px;
+        }
+        .alignBlock
+        {
+        	margin: 10px 0 5px 0;
+        	padding: 0;
+        }
+    </style>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span class="product-name">IntegralUI</span> Studio <span class="product-platform">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content" ng-app="appModule">
+        <div class="feature" ng-controller="appCtrl">
+	        <h2 class="feature-title">Grids / Column Reorder</h2>
+	        <div class="feature-content">
+                <iui-treegrid name="{{gridName}}" class="directive" columns="columns" rows="rows" row-icon="defaultIcon" show-footer="false" grid-lines="gridLines" after-select="onAfterSelect(e)" allow-column-reorder="true" ></iui-treegrid>
+                <div class="control-panel">
+                	<label>Selected Column: </label>
+                	<select ng-model="selColumn" ng-options="column.headerText for column in columns"></select>
+					<p class="alignBlock">Reorder permissions:</p>
+					<label class="alignVal"><input type="checkbox" ng-model="allowDrag" value="true" />Allow Drag</label><br/>
+					<label class="alignVal"><input type="checkbox" ng-model="allowDrop" value="true" />Allow Drop</label>
+                </div>
+                <br style="clear:both;"/>
+                <div class="feature-help">
+                    <p><span class="initial-space"></span>This sample shows how to reorder columns by simply left-click on column header and drag&amp;drop it to other column header. The reorder process is controlled by three variables:</p>
+                     <ul class="feature-points">
+                        <li><span style="color:#c60d0d">allowColumnReorder</span> - a TreeGrid attribute which determines whether all columns can be reordered</li>
+                        <li><span style="color:#c60d0d">allowDrag</span> - a field in column object which determines whether specified column can be moved</li>
+                        <li><span style="color:#c60d0d">allowDrop</span> - a field in column object which determines whether other columns can drop over specified column</li>
+                    </ul>
+                    <p><span class="initial-space"></span>You can prevent specific column from dragging by setting the allowDrag field for that column object to false. In similar way if you dont want dragged columns to be dropped over specific column, you can set the allowDrop field for that column object to false.</p>
+                    <p><span class="initial-space"></span>You can change the names of thee fields by using custom names set in your code. To see how this can be done, check out the <strong>Data Bindings</strong> sample.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

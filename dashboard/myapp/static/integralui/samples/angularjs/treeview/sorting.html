@@ -1,0 +1,163 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>TreeView - Sorting</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/integralui.css" />
+    <link rel="stylesheet" href="../../../css/integralui.treeview.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-flat-blue.css" />
+    <script type="text/javascript" src="../../../external/angular.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.lists.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.treeview.min.js"></script>
+    <script type="text/javascript">
+ 		angular
+			.module("appModule", ["integralui"])
+			.controller("appCtrl", ["$scope", "$timeout", "IntegralUITreeViewService", function($scope, $timeout, $treeService){
+				$scope.treeName = "treeSample";
+				$scope.sorting = 'none';
+
+				$scope.data = [
+					{ 
+						id: 1,
+						text: "PC",
+						items: [
+							{ id: 11, pid: 1, text: "Driving/Racing", expanded: false,
+								items: [
+									{ id: 111, pid: 11, text: "DiRT 3" },
+									{ id: 112, pid: 11, text: "Ridge Racer Unbounded" },
+									{ id: 113, pid: 11, text: "TrackMania 2" }
+								]
+							},
+							{ id: 12, pid: 1, text: "Role-Playing",
+								items: [
+									{ id: 121, pid: 12, text: "Dark Souls 2" },
+									{ id: 122, pid: 12, text: "Mass Effect 3" },
+									{ id: 123, pid: 12, text: "The Elder Scrolls V: Skyrim" },
+									{ id: 123, pid: 12, text: "Divinity: Original Sin" },
+									{ id: 123, pid: 12, text: "Fallout: New Vegas" }
+								]
+							},
+							{ id: 13, pid: 1, text: "Action", expanded: false,
+								items: [
+									{ id: 131, pid: 13, text: "Diablo 3" },
+									{ id: 132, pid: 13, text: "Gears of War" },
+									{ id: 133, pid: 13, text: "F.E.A.R." },
+									{ id: 134, pid: 13, text: "Path of Exile" },
+									{ id: 135, pid: 13, text: "Grand Theft Auto IV" },
+									{ id: 136, pid: 13, text: "Divine Divinity" },
+									{ id: 137, pid: 13, text: "The Witcher 2" }
+								]
+							},
+							{ id: 14, pid: 1, text: "Shooter", expanded: false,
+								items: [
+									{ id: 141, pid: 14, text: "Battlefield: Bad Company 2" },
+									{ id: 142, pid: 14, text: "Call of Duty: Black Ops" },
+									{ id: 143, pid: 14, text: "BioShock Infinite" },
+									{ id: 143, pid: 14, text: "Crysis 2" }
+								]
+							}
+						]
+					},
+					{ 
+						id: 2,
+						text: "Xbox One",
+						items: [
+							{ id: 21, pid: 2, text: "Sports", expanded: false,
+								items: [
+									{ id: 211, pid: 21, text: "FIFA 14" },
+									{ id: 212, pid: 21, text: "Madden NFL 25" }
+								]
+							},
+							{ id: 22, pid: 2, text: "Adventure",
+								items: [
+									{ id: 221, pid: 22, text: "Assassin's Creed IV" },
+									{ id: 222, pid: 22, text: "Tomb Raider" },
+									{ id: 223, pid: 22, text: "Metal Gear Solid V" }
+								]
+							},
+							{ id: 23, pid: 2, text: "Miscellaneous", expanded: false,
+								items: [
+									{ id: 231, pid: 23, text: "Peggle 2" }
+								]
+							}
+						]
+					},
+					{ 
+						id: 3,
+						text: "PlayStation", 
+						items: [
+							{ id: 31, pid: 3, text: "First-Person",
+								items: [
+									{ id: 311, pid: 31, text: "Battlefield 4" },
+									{ id: 312, pid: 31, text: "Call of Duty: Ghosts" },
+									{ id: 313, pid: 31, text: "Killzone: Shadow Fall" }
+								]
+							},
+							{ id: 32, pid: 3, text: "Platformer", expanded: false,
+								items: [
+									{ id: 321, pid: 32, text: "Rayman Legends" },
+									{ id: 322, pid: 32, text: "Rogue Legacy" },
+									{ id: 323, pid: 32, text: "1001 Spikes" }
+								]
+							},
+							{ id: 33, pid: 3, text: "MMO", expanded: false,
+								items: [
+									{ id: 333, pid: 33, text: "Final Fantasy XIV Online" }
+								]
+							}
+						]
+					}
+				];
+				
+				$scope.sortAscending = function(){
+					$treeService.sort($scope.treeName, 'ascending');
+				}
+				
+				$scope.sortDescending = function(){
+					$treeService.sort($scope.treeName, 'descending');
+				}
+		}]);
+    </script>
+	<style type="text/css">
+		button
+		{
+			margin: 5px 0;
+			width: 125px;
+		}
+	</style>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span class="product-name">IntegralUI</span> Studio <span class="product-platform">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content" ng-app="appModule">
+        <div class="feature" ng-controller="appCtrl">
+	        <h2 class="feature-title">TreeView / Sorting</h2>
+	        <div class="feature-content">
+				<iui-treeview name="{{treeName}}" class="directive" items="data" sorting="sorting"></iui-treeview>
+                <div class="control-panel" align="center" style="width:150px">
+					<button ng-click="sortAscending()">Ascending</button><br />
+					<button ng-click="sortDescending()">Descending</button><br /><br /><br />
+                </div>
+                <br style="clear:both;"/>
+                <div class="feature-help">
+                    <p><span class="initial-space"></span>This sample demonstrates how to sort TreeView items in ascending or descending order. By clicking on buttons on right panel, you can see how items are sorted.</p>
+                    <p>The following properties and methods are presented:</p>
+					<ul class="feature-points" style="padding-bottom:10px;width:800px">
+						<li><span style="color:#c60d0d">sorting</span> a property which determines the sort order</li>
+						<li><span style="color:#c60d0d">sort</span> a method which sorts the TreeView items based on applied order</li>
+					</ul>
+                    <p><span class="initial-space"></span>Sorting is performed using the item text, but if item has its value field set (it has higher priority than text), the value will be used.</p>
+                    <p><span class="initial-space"></span>Although in this sample a basic sorting is used (a sorting of string values), you can create your own custom sorting by providing a <span style="color:#c60d0d">comparer</span> function as a third parameter of the sort method. In this way you can create any kind of custom sort operations.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

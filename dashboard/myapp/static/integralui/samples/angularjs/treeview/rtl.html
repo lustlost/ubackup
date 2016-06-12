@@ -1,0 +1,179 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>TreeView - Right to Left</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/integralui.css" />
+    <link rel="stylesheet" href="../../../css/integralui.treeview.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-flat-blue.css" />
+    <script type="text/javascript" src="../../../external/angular.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.lists.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.treeview.min.js"></script>
+    <script type="text/javascript">
+ 		angular
+			.module("appModule", ["integralui"])
+			.controller("appCtrl", function($scope){
+				$scope.treeName = "treeSample";
+				$scope.showRTL = true;
+				$scope.showIcons = true;
+
+				$scope.data = [
+					{ 
+						id: 1,
+						text: "Books",
+						icon: "icons-medium library",
+						items: [
+							{ id: 11, pid: 1, text: "Art" },
+							{ 
+								id: 12,
+								pid: 1,
+								text: "Business",
+								icon: "icons-medium people",
+								items: [
+									{ id: 121, pid: 12, text: "Economics" },
+									{ 
+										id: 122,
+										pid: 12,
+										checked: true,
+										text: "Investing", 
+										expanded: false,
+										icon: "icons-medium economics",
+										items: [
+											{ id: 1221, pid: 122, text: "Bonds" },
+											{ id: 1222, pid: 122, text: "Options" },
+											{ id: 1223, pid: 122, text: "Stocks" }
+										]
+									},
+									{ id: 123, pid: 12, text: "Management" },
+									{ id: 124, pid: 12, text: "Small Business" }
+								]
+							},
+							{ id: 13, pid: 1, text: "Health", icon: "icons-medium heart", checked: true },
+							{ id: 14, pid: 1, text: "Literature" },
+							{ 
+								id: 15,
+								pid: 1,
+								text: "Science",
+								expanded: false,
+								items: [
+									{ id: 151, pid: 15, text: "Astronomy" },
+									{ id: 152, pid: 15, text: "Mathematics" },
+									{ id: 153, pid: 15, text: "Evolution" },
+									{ id: 154, pid: 15, text: "Nature" }
+								]
+							}
+						]
+					},
+					{ id: 2, text: "Computers" },
+					{
+						id: 3,
+						checked: true,
+						text: "Electronics",
+						items: [
+							{ id: 31, pid: 3, text: "Camera", icon: "icons-medium camera" },
+							{ id: 32, pid: 3, text: "Cell Phones" },
+							{ id: 33, pid: 3, text: "Video Game Consoles" }
+						]
+					},
+					{ 
+						id: 4,
+						text: "Music", 
+						expanded: false,
+						icon: "icons-medium album",
+						items: [
+							{ id: 41, pid: 4, text: "Blues" },
+							{ id: 42, pid: 4, text: "Classic Rock" },
+							{ id: 43, pid: 4, text: "Pop" },
+							{ id: 44, pid: 4, text: "Jazz" }
+						]
+					},
+					{ 
+						id: 5,
+						text: "Software",
+						icon: "icons-medium software",
+						items: [
+							{ id: 51, pid: 5, text: "Games", checked: true },
+							{ id: 52, pid: 5, text: "Operating Systems" },
+							{ id: 53, pid: 5, text: "Network & Servers" },
+							{ id: 54, pid: 5, text: "Security" }
+						]
+					},
+					{ 
+						id: 6,
+						text: "Sports",
+						expanded: false,
+						icon: "icons-medium sports",
+						items: [
+							{ id: 61, pid: 6, text: "Baseball" },
+							{ id: 62, pid: 6, text: "Martial Arts", checked: true },
+							{ id: 63, pid: 6, text: "Running" },
+							{ 
+								id: 64,
+								pid: 6,
+								text: "Tennis",
+								expanded: false,
+								items: [
+									{ id: 641, pid: 64, text: "Accessories" },
+									{ id: 642, pid: 64, text: "Balls" },
+									{ id: 643, pid: 64, text: "Racquets" }
+								]
+							}
+						]
+					},
+					{ id: 7, text: "Video Games" },
+					{ id: 8, text: "Watches", icon: "icons-medium clock" }
+				];
+				
+				$scope.toggleRTL = function(){
+					$scope.showRTL = !$scope.showRTL;
+				}
+				
+				$scope.toggleIcons = function(){
+					$scope.showIcons = !$scope.showIcons;
+				}
+			});
+    </script>
+    <style type="text/css">
+		.directive
+		{
+			font-size: 0.75em;
+		}
+		.icons-medium
+		{
+		    margin: 0 5px;
+		}
+    </style>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span style="color:#c60d0d">IntegralUI</span> Studio <span style="font-size:0.75em; font-style:italic">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content" ng-app="appModule">
+        <div class="feature" ng-controller="appCtrl">
+	        <h2 class="feature-title">TreeView / RTL</h2>
+	        <div style="position:relative; width: 550px; margin:0 auto 0 0;">
+                <iui-treeview name="{{treeName}}" class="directive" items="data" rtl="showRTL" show-icons="showIcons" auto-check="true" ></iui-treeview>
+                <div style="float:right; width: 100px; font-size:0.8em; white-space:nowrap;">
+					<label><input type="checkbox" ng-click="toggleRTL()" checked="checked" /> Right to Left</label><br />
+					<label><input type="checkbox" ng-click="toggleIcons()" checked="checked" /> Show Icons</label><br />
+                </div>
+                <div style="clear: both; height: 1px;"></div>
+            </div>
+            <div style="font-size:0.75em; color:#000000; padding-right:25%">
+                <p>In this sample TreeView shows all its items aligned to the right side. By clicking on check boxes on the right, you can change the built-in properties:
+                    <ul class="feature-points">
+                        <li><span style="color:#c60d0d">rtl</span> - determines whether items are shown in left-to-right or right-to-left order</li>
+                        <li><span style="color:#c60d0d">showIcons</span> - determines whether an icon is shown before the item label</li>
+                    </ul>
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

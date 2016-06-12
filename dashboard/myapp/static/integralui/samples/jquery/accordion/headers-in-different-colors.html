@@ -1,0 +1,179 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>Accordion - Headers in Different Colors</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/jquery.integralui.accordion.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-blue.css" />
+    <script type="text/javascript" src="../../../external/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="../../../external/jquery.ui.core.min.js"></script>
+    <script type="text/javascript" src="../../../external/jquery.ui.widget.min.js"></script>
+    <script type="text/javascript" src="../../../js/jquery.integralui.widget.min.js"></script>
+    <script type="text/javascript" src="../../../js/jquery.integralui.accordion.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            // Create the content of group panel
+            var generateGroupContent = function(){
+                return "<div class='group-content-panel'>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.</div>";
+            }
+
+            // Create an instance of Accordion widget
+            var $bar = $('#accordion').accordion({
+                animationSpeed: 250,
+                expandDirection: 'right',
+                headerContentOrientation: 'vertical',
+                hoverSelection: true,
+                showExpandBox: false
+            });
+            
+            // Suspend the Accordion layout to increase performance
+            $bar.accordion("suspendLayout");
+            
+            $bar.accordion("addGroup", {
+                text: "Art",
+                content: generateGroupContent(),
+                style: {
+                    header: {
+                        normal: "group-header-red",
+                        selected: "group-header-red"
+                    },
+                    content: "group-content"
+                }
+            });
+            $bar.accordion("addGroup", {
+               text: "Books",
+               content: generateGroupContent(),
+               style: {
+                    header: {
+                        normal: "group-header-yellow",
+                        selected: "group-header-yellow"
+                    },
+                    content: "group-content"
+               }
+            });
+            $bar.accordion("addGroup", {
+                text: "Music",
+                content: generateGroupContent(),
+                style: {
+                    header: {
+                        normal: "group-header-green",
+                        selected: "group-header-green"
+                    },
+                    content: "group-content"
+                }
+            });
+            $bar.accordion("addGroup", {
+                text: "Sports",
+                content: generateGroupContent(),
+                style: {
+                    header: {
+                        normal: "group-header-blue",
+                        selected: "group-header-blue"
+                    },
+                    content: "group-content"
+                }
+            });
+            
+            // Resume and update the layout of Accordion
+            $bar.accordion("resumeLayout");
+        });
+    </script>
+    <style type="text/css">
+    .caption
+    {
+        margin: 0;
+        padding: 0 5px;
+        font-size: 1em;
+        font-weight: normal;
+    }
+    .group-content-panel
+    {
+        padding: 5px;
+        position: relative;
+    }
+    .widget
+    {
+        height: 300px;
+    }
+    .group-header-red
+    {
+	    background: -webkit-linear-gradient(#b90000, #ff6c6c);
+	    background:    -moz-linear-gradient(#b90000, #ff6c6c);
+	    background:     -ms-linear-gradient(#b90000, #ff6c6c);
+	    background:      -o-linear-gradient(#b90000, #ff6c6c);
+        background :         linear-gradient(#b90000, #ff6c6c);
+
+	    background-color: #b90000;
+	    border: solid thin gray;
+	    color: white;
+    }
+    .group-header-yellow
+    {
+	    background: -webkit-linear-gradient(#ecec00, #ffff9b);
+	    background:    -moz-linear-gradient(#ecec00, #ffff9b);
+	    background:     -ms-linear-gradient(#ecec00, #ffff9b);
+	    background:      -o-linear-gradient(#ecec00, #ffff9b);
+        background :         linear-gradient(#ecec00, #ffff9b);
+
+	    background-color: #ecec00;
+	    border: solid thin gray;
+	    color: white;
+    }
+    .group-header-green
+    {
+	    background: -webkit-linear-gradient(green, #00ff00);
+	    background:    -moz-linear-gradient(green, #00ff00);
+	    background:     -ms-linear-gradient(green, #00ff00);
+	    background:      -o-linear-gradient(green, #00ff00);
+        background :         linear-gradient(green, #00ff00);
+
+	    background-color: green;
+	    border: solid thin gray;
+	    color: white;
+    }
+    .group-header-blue
+    {
+	    background: -webkit-linear-gradient(#0075c4, #93d3ff);
+	    background:    -moz-linear-gradient(#0075c4, #93d3ff);
+	    background:     -ms-linear-gradient(#0075c4, #93d3ff);
+	    background:      -o-linear-gradient(#0075c4, #93d3ff);
+        background :         linear-gradient(#0075c4, #93d3ff);
+
+	    background-color: #0075c4;
+	    border: solid thin gray;
+	    color: white;
+    }
+    .group-content
+    {
+	    background: white;
+	    border: solid thin gray;
+	    border-left: 0;
+        overflow: hidden;
+    }
+    </style>
+</head>
+<body>
+    <div id="header"></div>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span class="product-name">IntegralUI</span> Studio <span class="product-platform">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content">
+        <div class="feature">
+	        <h2 class="feature-title">Accordion / Headers in Different Colors</h2>
+	        <div class="feature-content">
+                <div id="accordion" class="widget"></div>
+                <br style="clear:both;"/>
+                <div class="feature-help">
+                    <p><span class="initial-space"></span>A demonstration on how to use different CSS style for each group header in Accordion widget.</p>
+                    <p><span class="initial-space"></span>Each group object has a style property which allows different color styles to be used for each state: normal, hovered, selected, etc. By applying a custom CSS style to this property you can customize the overall appearance of the widget.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

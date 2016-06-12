@@ -1,0 +1,238 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>Grids - Column Alignment</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/integralui.css" />
+    <link rel="stylesheet" href="../../../css/integralui.treegrid.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-flat-blue.css" />
+    <script type="text/javascript" src="../../../external/angular.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.lists.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.treegrid.min.js"></script>
+    <script type="text/javascript">
+ 		angular
+			.module("appModule", ["integralui"])
+			.controller("appCtrl", ["$scope", "IntegralUITreeGridService", "$timeout", function($scope, $gridService, $timeout){
+				$scope.gridName = "gridSample";
+				$scope.headerAlignment = 'left';
+				$scope.contentAlignment = 'left';
+				$scope.footerAlignment = 'left';
+				$scope.gridLines = 'vertical';
+
+				var supressCallback = false;
+
+				$scope.columns = [
+					{ name: 'Column1', headerText: 'Header1', footerText: 'Footer1', headerAlignment: 'center', footerAlignment: 'right', width: 200 },
+					{ name: 'Column2', headerText: 'Header2', footerText: 'Footer2', headerAlignment: 'center', contentAlignment: 'center', width: 250 },
+					{ name: 'Column3', headerText: 'Header3', footerText: 'Footer3', contentAlignment: 'right', footerAlignment: 'right', width: 120 }
+				];
+
+				$scope.rows = [
+					{ 
+						id: 1,
+						text: "Item1",
+						cells: [{ text: "Item11" }, { text: "Item12" }, { text: "Item13" }],
+						rows: [
+							{ id: 11, pid: 1, text: "Item11", cells: [{ text: "Item111" }, { text: "Item112" }, { text: "Item113" }] },
+							{ 
+								id: 12,
+								pid: 1,
+								text: "Item12",
+								cells: [{ text: "Item121" }, { text: "Item122" }, { text: "Item123" }],
+								rows: [
+									{ id: 121, pid: 12, text: "Item121", cells: [{ text: "Item1211" }, { text: "Item1212" }, { text: "Item1213" }] },
+									{ 
+										id: 122,
+										pid: 12,
+										text: "Item122", 
+										cells: [{ text: "Item1221" }, { text: "Item1222" }, { text: "Item1223" }],
+										expanded: false,
+										rows: [
+											{ id: 1221, pid: 122, text: "Item1221", cells: [{ text: "Item12211" }, { text: "Item12212" }, { text: "Item12213" }] },
+											{ id: 1222, pid: 122, text: "Item1222", cells: [{ text: "Item12221" }, { text: "Item12222" }, { text: "Item12223" }] }
+										]
+									},
+									{ id: 123, pid: 12, text: "Item123", cells: [{ text: "Item1231" }, { text: "Item1232" }, { text: "Item1233" }] }
+								]
+							},
+							{ id: 13, pid: 1, text: "Item13", cells: [{ text: "Item131" }, { text: "Item132" }, { text: "Item133" }] },
+							{
+								id: 14,
+								pid: 1,
+								text: "Item14",
+								cells: [{ text: "Item141" }, { text: "Item142" }, { text: "Item143" }],
+								expanded: false,
+								rows: [
+									{ id: 141, pid: 14, text: "Item141", cells: [{ text: "Item1411" }, { text: "Item1412" }, { text: "Item1413" }] },
+									{ id: 142, pid: 14, text: "Item142", cells: [{ text: "Item1421" }, { text: "Item1422" }, { text: "Item1423" }] }
+								]
+							}
+						]
+					},
+					{
+						id: 2,
+						text: "Item2",
+						cells: [{ text: "Item21" }, { text: "Item22" }, { text: "Item23" }],
+						rows: [
+							{ id: 21, pid: 2, text: "Item21", cells: [{ text: "Item211" }, { text: "Item212" }, { text: "Item213" }] },
+							{ id: 22, pid: 2, text: "Item22", cells: [{ text: "Item221" }, { text: "Item222" }, { text: "Item223" }] },
+							{
+								id: 23,
+								pid: 2,
+								text: "Item23", 
+								cells: [{ text: "Item231" }, { text: "Item232" }, { text: "Item233" }],
+								expanded: false,
+								rows: [
+									{ id: 231, pid: 23, text: "Item231", cells: [{ text: "Item2311" }, { text: "Item2312" }, { text: "Item2313" }] },
+									{ id: 232, pid: 23, text: "Item232", cells: [{ text: "Item2321" }, { text: "Item2322" }, { text: "Item2323" }] }
+								]
+							}
+						]
+					},
+					{ id: 3, text: "Item3", cells: [{ text: "Item31" }, { text: "Item32" }, { text: "Item33" }] }
+				];
+
+				var initTimer = $timeout(function(){
+					$scope.selColumn = $scope.columns[0];
+
+					updateAlignValues($scope.selColumn);
+
+					$timeout.cancel(initTimer);
+				}, 1);
+
+				$scope.onAfterSelect = function(e){
+					if (supressCallback)
+						return;
+
+					if (e.object && e.object.type == 'column'){
+						$scope.selColumn = $gridService.selectedColumn($scope.gridName);
+
+						updateAlignValues(e.object);
+
+						$scope.$apply();
+					}
+				}
+
+				var updateAlignValues = function(column){
+					$scope.headerAlignment = column.headerAlignment ? column.headerAlignment : 'left';
+					$scope.contentAlignment = column.contentAlignment ? column.contentAlignment : 'left';
+					$scope.footerAlignment = column.footerAlignment ? column.footerAlignment : 'left';
+				}
+
+				$scope.$watch("headerAlignment", function(newValue, oldValue){
+					if (newValue != oldValue){
+						$scope.selColumn.headerAlignment = newValue;
+						$gridService.updateView($scope.gridName);
+					}
+				});
+
+				$scope.$watch("contentAlignment", function(newValue, oldValue){
+					if (newValue != oldValue){
+						$scope.selColumn.contentAlignment = newValue;
+						$gridService.updateView($scope.gridName);
+					}
+				});
+
+				$scope.$watch("footerAlignment", function(newValue, oldValue){
+					if (newValue != oldValue){
+						$scope.selColumn.footerAlignment = newValue;
+						$gridService.updateView($scope.gridName);
+					}
+				});
+
+				$scope.$watch("selColumn", function(newValue, oldValue){
+					if (newValue != oldValue){
+						var selTimer = $timeout(function(){
+							supressCallback = true;
+							$gridService.selectedColumn($scope.gridName, newValue);
+							supressCallback = false;
+
+							updateAlignValues(newValue);
+
+							$gridService.updateView($scope.gridName);
+
+							$timeout.cancel(selTimer);
+						}, 1);
+					}
+				});
+			}]);
+    </script>
+    <style type="text/css">
+		.control-panel
+		{
+			margin-left: 35px;
+			width: 250px;
+		}
+		.feature-content
+		{
+			width: 900px;
+		}
+        .directive
+        {
+        	border: thin solid #dadada;
+        	width: 600px;
+        	height: 350px;
+        }
+        .alignBlock
+        {
+        	margin: 25px 0 5px 0;
+        	padding: 0;
+        }
+        .alignVal
+        {
+        	margin: 0 5px;
+        }
+        select
+        {
+        	margin: 5px 0 0 0;
+        	width: 100px;
+        }
+    </style>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span style="color:#c60d0d">IntegralUI</span> Studio <span style="font-size:0.75em; font-style:italic">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content" ng-app="appModule">
+        <div class="feature" ng-controller="appCtrl">
+	        <h2 class="feature-title">Grids / Column Alignment</h2>
+	        <div class="feature-content">
+                <iui-treegrid name="{{gridName}}" class="directive" columns="columns" rows="rows" after-select="onAfterSelect(e)" grid-lines="gridLines" ></iui-treegrid>
+                <div class="control-panel">
+                	<label>Selected Column: </label>
+                	<select ng-model="selColumn" ng-options="column.name for column in columns"></select>
+					<p class="alignBlock">Header Alignment</p>
+					<label class="alignVal"><input type="radio" ng-model="headerAlignment" value="left" />Left</label>
+					<label class="alignVal"><input type="radio" ng-model="headerAlignment" value="center" />Center</label>
+					<label class="alignVal"><input type="radio" ng-model="headerAlignment" value="right" />Right</label><br />
+					<p class="alignBlock">Content Alignment</p>
+					<label class="alignVal"><input type="radio" ng-model="contentAlignment" value="left" />Left</label>
+					<label class="alignVal"><input type="radio" ng-model="contentAlignment" value="center" />Center</label>
+					<label class="alignVal"><input type="radio" ng-model="contentAlignment" value="right" />Right</label><br />
+					<p class="alignBlock">Footer Alignment</p>
+					<label class="alignVal"><input type="radio" ng-model="footerAlignment" value="left" />Left</label>
+					<label class="alignVal"><input type="radio" ng-model="footerAlignment" value="center" />Center</label>
+					<label class="alignVal"><input type="radio" ng-model="footerAlignment" value="right" />Right</label><br />
+                </div>
+                <br style="clear:both;"/>
+                <div class="feature-help">
+                    <p><span class="initial-space"></span>A demonstration on how to change alignment of column header, content and footer in TreeGrid directive for AngularJS. By clicking on radio-buttons on right panel, you can change the alignment of each cell for currently selected column. By default column's content is aligned to the left.</p>
+                    <p><span class="initial-space"></span>Each column object has three fields which allows you to horizontally align the content of cells that belong to specified column.</p>
+                        <ul class="feature-points">
+                            <li><span style="color:#c60d0d">headerAlignment</span> - aligns the content of column header</li>
+                            <li><span style="color:#c60d0d">contentAlignment</span> - aligns the content of column body</li>
+                            <li><span style="color:#c60d0d">footerAlignment</span> - aligns the content of column footer</li>
+                        </ul>
+                    </p>
+               </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

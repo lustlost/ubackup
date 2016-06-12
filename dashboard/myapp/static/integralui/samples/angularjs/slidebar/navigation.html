@@ -1,0 +1,83 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>SlideBar - Navigation Buttons</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/integralui.slidebar.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-flat-blue.css" />
+    <script type="text/javascript" src="../../../external/angular.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.slidebar.min.js"></script>
+    <script type="text/javascript">
+ 		angular
+			.module("appModule", ["integralui"])
+			.controller("appCtrl", ["$scope", "IntegralUISlideBarService", "$timeout", function($scope, $ctrlService, $timeout){
+                $scope.ctrlName = "ctrlSample";
+                $scope.slides = [
+                    { id: 1, name: 'Slide1', text: 'Slide 1' },
+                    { id: 2, name: 'Slide2', text: 'Slide 2' },
+                    { id: 3, name: 'Slide3', text: 'Slide 3' }
+                ];
+                
+                $scope.showButtons = true;
+
+                $scope.toggleNavigation = function(){
+                    $scope.showButtons = !$scope.showButtons;
+                }
+		}]);
+    </script>
+    <style type="text/css">
+        .directive
+        {
+            height: 300px;
+        }
+        label
+        {
+            display: inline-block;
+            margin: 5px 0;
+        }
+        .slide-content
+        {
+            padding: 30% 10px;
+            font-size: 2em;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span style="color:#c60d0d">IntegralUI</span> Studio <span style="font-size:0.75em; font-style:italic">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content" ng-app="appModule">
+        <div class="feature" ng-controller="appCtrl">
+	        <h2 class="feature-title">SlideBar / Navigation Buttons</h2>
+	        <div class="feature-content">
+                <iui-slidebar name="{{ctrlName}}" class="directive" slides="slides" show-navigation-panel="showButtons">
+                    <iui-slide ng-repeat="slide in slides" name="{{slide.name}}">
+                        <div class="slide-content">
+                            {{slide.name}}
+                        </div>
+                    </iui-slide>
+                </iui-slidebar>
+                <div class="control-panel" align="center" style="width:250px">
+                    <label><input type="checkbox" ng-click="toggleNavigation()" checked="checked" /> Show Navigation Buttons</label><br />
+                </div>
+                <br style="clear:both;"/>
+                <div class="feature-help">
+                    <p><span class="initial-space"></span>In this sample you can show/hide navigation buttons in SlideBar directive. By clicking on check box on the right, you can change the built-in properties:</p>
+                     <ul class="feature-points">
+                        <li><span style="color:#c60d0d">showNavigationPanel</span> - determines whether navigation buttons are visible or hidden</li>
+                    </ul>
+                    <p><span class="initial-space"></span>To navigate among slides, click on buttons. The order of buttons corresponds with the order of slides.</p>
+                    <p><span class="initial-space"></span>Whenever a button is clicked, the animation is interrupted.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,79 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>SlideBar - Navigation Buttons</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/jquery.integralui.slidebar.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-blue.css" />
+    <script type="text/javascript" src="../../../external/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="../../../external/jquery.ui.core.min.js"></script>
+    <script type="text/javascript" src="../../../external/jquery.ui.widget.min.js"></script>
+    <script type="text/javascript" src="../../../js/jquery.integralui.widget.min.js"></script>
+    <script type="text/javascript" src="../../../js/jquery.integralui.slidebar.min.js"></script>
+    <script type="text/javascript">
+        var $group = null;
+        $(document).ready(function() {
+            $bar = $('#slidebar').slidebar({
+                    slideWidth: 500,
+                    slideHeight: 300
+                });
+        });
+         
+        function toggleButtons(elem){
+            $bar.slidebar("option", "showButtons", elem.checked);
+        }
+    </script>
+    <style type="text/css">
+        .feature-content
+        {
+	        width: 750px;
+        }
+        .widget
+        {
+	        background-color: transparent;
+	        height:auto;
+        }
+    </style>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span style="color:#c60d0d">IntegralUI</span> Studio <span style="font-size:0.75em; font-style:italic">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content">
+        <div class="feature">
+	        <h2 class="feature-title">SlideBar / Navigation Buttons</h2>
+	        <div class="feature-content">
+                <div id="slidebar" class="widget">
+                    <div>
+                        <ul>
+	                        <li><img src="../../../resources/slide1.jpg" /></li>
+	                        <li><img src="../../../resources/slide2.jpg" /></li>
+	                        <li><img src="../../../resources/slide3.jpg" /></li>
+	                        <li><img src="../../../resources/slide4.jpg" /></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="control-panel">
+                    <form name="frm">
+                        <label><input type="checkbox" name="checkButtons" checked="checked" onclick="toggleButtons(this)" /> Show Buttons</label>
+                    </form>
+                </div>
+                <br style="clear:both;"/>
+                <div class="feature-help">
+                    <p><span class="initial-space"></span>In this sample you can show/hide navigation buttons in SlideBar widget. By clicking on check box on the right, you can change the built-in properties:</p>
+                     <ul class="feature-points">
+                        <li><span style="color:#c60d0d">showButtons</span> - determines whether navigation buttons are visible or hidden</li>
+                    </ul>
+                    <p><span class="initial-space"></span>To navigate among slides, click on buttons. The order of buttons corresponds with the order of slides.</p>
+                    <p><span class="initial-space"></span>Whenever a button is clicked, the animation is interrupted and stopped, and in order to continue with animation, you need to call <span style="color:#c60d0d">startAnimation</span> method. More information can be found in <a href="animation.html">Animations</a> sample</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

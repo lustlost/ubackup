@@ -1,0 +1,134 @@
+.iui-combobox
+{
+	background-color: white;
+	border: solid thin gray;
+	border-radius: 3px;
+	padding: 3px;
+    color: black;
+	cursor: default;
+	overflow: hidden;
+	position: relative;
+	
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+}
+.iui-combobox div /*Compatibility with Bootstrap */
+{
+	-webkit-box-sizing: content-box; /* Safari/Chrome, other WebKit */
+	-moz-box-sizing: content-box;    /* Firefox, other Gecko */
+	box-sizing: content-box; 
+}
+.iui-combobox-rtl
+{
+	direction: rtl;
+}
+.iui-combobox-disabled
+{
+	border: thin solid #cecece;
+	color: #cecece;
+	opacity: 0.5;
+}
+.iui-combobox-button
+{
+	display: inline-block;
+	border-radius: 3px;
+	margin: 0;
+	vertical-align: middle;
+}
+.iui-combobox-button-disabled
+{
+	opacity: 0.5;
+}
+.iui-combobox-button-dropdown
+{
+	background: url(../resources/icons.png) no-repeat -144px -81px;
+    background-position: -144px -81px;
+	display: inline-block;
+	width: 16px;
+	height: 16px;
+	vertical-align: middle;
+}
+.iui-combobox-button-dropdown-disabled
+{
+	opacity: 0.5;
+}
+.iui-combobox-content
+{
+	border-radius: 3px;
+	display: inline-block;
+	margin: 0;
+	vertical-align: middle;
+}
+.iui-combobox-content-disabled
+{
+	color: #cecece;
+}
+.iui-list
+{
+	background-color: white;
+	border: solid thin gray;
+	border-radius: 3px;
+	padding: 3px;
+    color: black;
+	cursor: default;
+	overflow: hidden;
+	position: relative;
+	
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+}
+.iui-list-rtl
+{
+	direction: rtl;
+}
+.iui-list-block
+{
+	margin: 0;
+	overflow: hidden;
+	padding: 1px;
+	position: absolute;
+	top: 1px;
+	left: 2px;
+}
+.iui-list-block-rtl
+{
+	direction: rtl;
+}
+.iui-list-block-shift-left
+{
+	/*margin-left: 16px !important;*/
+	padding-left: 15px;
+}
+.iui-list-block-shift-right
+{
+	margin-right: 16px;
+}
+.iui-list-item-block
+{
+	padding: 0 0 0 15px;
+}
+.iui-list-item-block-rtl
+{
+	padding: 0 15px 0 0;
+}
+.iui-list-item
+{
+	display: block;
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	white-space: nowrap;
+}
+.iui-list-item-content
+{
+	display: inline-block;
+	border-radius: 3px;
+	margin: 0;
+	vertical-align: middle;
+}

@@ -1,0 +1,103 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>Grids - Loading Icon</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/integralui.css" />
+    <link rel="stylesheet" href="../../../css/integralui.treegrid.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-flat-blue.css" />
+    <script type="text/javascript" src="../../../external/angular.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.lists.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.treegrid.min.js"></script>
+    <script type="text/javascript">
+ 		angular
+			.module("appModule", ["integralui"])
+			.controller("appCtrl", ["$scope", "$timeout", "IntegralUITreeGridService", function($scope, $timeout, $gridService){
+				$scope.gridName = "treeSample";
+
+				$scope.columns = [
+					{ id: 1, headerText: "Column1", width: 250 },
+					{ id: 2, headerText: "Column2" },
+					{ id: 3, headerText: "Column3" }
+				];
+
+				$scope.rows = [];
+				
+				var rowCount = 0;
+
+				var createNewRow = function(){
+					rowCount++;
+
+					var row = {
+						text: "Row" + rowCount, 
+						expanded: false, 
+						hasChildren: true, 
+						cells: []
+					}
+
+					for (var j = 0; j < $scope.columns.length; j++)
+						row.cells.push({ text: "Cell" + rowCount + j });
+
+					return row;
+				}
+				
+				var initTimer = $timeout(function(){
+					$gridService.addRow($scope.gridName, createNewRow());
+					$timeout.cancel(initTimer);
+				}, 1);
+				
+				$scope.onBeforeExpand = function(e){
+					if (e.row.rows && e.row.rows.length > 0)
+						return;
+					else {
+						$gridService.beginLoad($scope.gridName, e.row);
+						
+						var loadTImer = $timeout(function(){
+							
+							for (var i = 0; i < 3; i++)
+								$gridService.addRow($scope.gridName, createNewRow(), e.row);
+								
+							$gridService.endLoad($scope.gridName, e.row);
+						}, 1000);
+					}
+				}
+
+		}]);
+    </script>
+    <style type="text/css">
+    	.directive
+    	{
+    		width: 600px;
+    	}
+    </style>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span style="color:#c60d0d">IntegralUI</span> Studio <span style="font-size:0.75em; font-style:italic">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content" ng-app="appModule">
+        <div class="feature" ng-controller="appCtrl">
+	        <h2 class="feature-title">Grids / Loading Icon</h2>
+	        <div class="feature-content">
+                <iui-treegrid name="{{gridName}}" class="directive" columns="columns" rows="rows" before-expand="onBeforeExpand(e)" show-footer="false" allow-focus="false" selection-mode="none"></iui-treegrid>
+                <br style="clear:both;"/>
+                <div class="feature-help">
+                    <p><span class="initial-space"></span>In this sample whenever an row is expanded the expand box icon is replaced with an animated gif which appears until data is fully loaded. For this purpose two methods are used:
+                        <ul class="feature-points">
+                            <li><span style="color:#c60d0d">beginLoad</span> - starts the load process and replaces the expand box icon with an animated gif</li>
+                            <li><span style="color:#c60d0d">endLoad</span> - ends the loading process and returns the default expand box appearance back to normal</li>
+                        </ul>
+                    </p>
+                    <p><span class="initial-space"></span>By using these methods you can notify the user that some data is about to be loaded inside a specified row. You can use any custom animated gif as loading icon, simply by changing the corresponding CSS style for the expand box.</p>
+               </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

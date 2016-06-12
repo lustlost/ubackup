@@ -1,0 +1,89 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>SlideBar - Overview</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/integralui.slidebar.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-flat-blue.css" />
+    <script type="text/javascript" src="../../../external/angular.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.slidebar.min.js"></script>
+    <script type="text/javascript">
+ 		angular
+			.module("appModule", ["integralui"])
+			.controller("appCtrl", function($scope){
+                $scope.ctrlName = "ctrlSample";
+                $scope.slides = [
+                    { id: 1, name: 'Slide1', text: 'Slide 1' },
+                    { id: 2, name: 'Slide2', text: 'Slide 2' },
+                    { id: 3, name: 'Slide3', text: 'Slide 3' }
+                ];
+		});
+    </script>
+    <style type="text/css">
+        .directive
+        {
+            height: 300px;
+        }
+        .slide-content-1
+        {
+            color: #800000;
+            padding: 30% 10px;
+            font-size: 2em;
+            text-align: center;
+        }
+        .slide-content-2
+        {
+            color: #008000;
+            padding: 30% 10px;
+            font-size: 2em;
+            text-align: center;
+        }
+        .slide-content-3
+        {
+            color: #000080;
+            padding: 30% 10px;
+            font-size: 2em;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span style="color:#c60d0d">IntegralUI</span> Studio <span style="font-size:0.75em; font-style:italic">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content" ng-app="appModule">
+        <div class="feature" ng-controller="appCtrl">
+	        <h2 class="feature-title">SlideBar / Overview</h2>
+	        <div class="feature-content">
+                <iui-slidebar name="{{ctrlName}}" class="directive" slides="slides" events="ctrlEvents">
+                    <iui-slide ng-repeat="slide in slides" name="{{slide.name}}">
+                        <div ng-class="{ 'slide-content-1': slide.id == 1, 'slide-content-2': slide.id == 2, 'slide-content-3': slide.id == 3 }">
+                            {{slide.name}}
+                        </div>
+                    </iui-slide>
+                </iui-slidebar>
+                <div class="control-panel">
+                    <h3>Sample List:</h3>
+                    <ul class="feature-list">
+                        <li><a href="add-remove.html">Add/Remove</a></li>
+                        <li><a href="animation.html">Animatons</a></li>
+                        <li><a href="events.html">Events</a></li>
+                        <li><a href="navigation.html">Navigation</a></li>
+                    </ul>
+                </div>
+                <br style="clear:both;"/>
+                <div class="feature-help">
+                    <p><span class="initial-space"></span>IntegralUI SlideBar is a native AngularJS directive that allows you to create and animate a list of slides. Each slide can contain custom content or presentation images.</p>
+                    <p><span class="initial-space"></span>Using links in right panel, you can check out different features of SlideBar directive.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

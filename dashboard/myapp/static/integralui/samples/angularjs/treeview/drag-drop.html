@@ -1,0 +1,201 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>TreeView - Drag Drop</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/integralui.css" />
+    <link rel="stylesheet" href="../../../css/integralui.treeview.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-flat-blue.css" />
+    <script type="text/javascript" src="../../../external/angular.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.lists.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.treeview.min.js"></script>
+    <script type="text/javascript">
+ 		angular
+			.module("appModule", ["integralui"])
+			.controller("appCtrl", function($scope){
+				$scope.treeName = "treeSample";
+				$scope.treeName2 = "treeSample2";
+				
+				$scope.allowDrag = true;
+				$scope.allowDrop = true;
+				$scope.allowDrag2 = true;
+				$scope.allowDrop2 = true;
+
+				$scope.treeData = [
+					{ 
+						id: 1,
+						text: "Books",
+						icon: "icons-medium library",
+						items: [
+							{ id: 11, pid: 1, text: "Art" },
+							{ 
+								id: 12,
+								pid: 1,
+								text: "Business",
+								icon: "icons-medium people",
+								items: [
+									{ id: 121, pid: 12, text: "Economics" },
+									{ 
+										id: 122,
+										pid: 12,
+										checkState: 'checked',
+										text: "Investing", 
+										expanded: false,
+										icon: "icons-medium economics",
+										items: [
+											{ id: 1221, pid: 122, text: "Bonds" },
+											{ id: 1222, pid: 122, text: "Options" },
+											{ id: 1223, pid: 122, text: "Stocks" }
+										]
+									},
+									{ id: 123, pid: 12, text: "Management" },
+									{ id: 124, pid: 12, text: "Small Business" }
+								]
+							},
+							{ id: 13, pid: 1, text: "Health", icon: "icons-medium heart", checkState: 'checked' },
+							{ id: 14, pid: 1, text: "Literature" },
+							{ 
+								id: 15,
+								pid: 1,
+								text: "Science",
+								expanded: false,
+								items: [
+									{ id: 151, pid: 15, text: "Astronomy" },
+									{ id: 152, pid: 15, text: "Mathematics" },
+									{ id: 153, pid: 15, text: "Evolution" },
+									{ id: 154, pid: 15, text: "Nature" }
+								]
+							}
+						]
+					},
+					{ id: 2, text: "Computers" },
+					{
+						id: 3,
+						checkState: 'checked',
+						text: "Electronics",
+						items: [
+							{ id: 31, pid: 3, text: "Camera", icon: "icons-medium camera" },
+							{ id: 32, pid: 3, text: "Cell Phones" },
+							{ id: 33, pid: 3, text: "Video Game Consoles" }
+						]
+					},
+					{ 
+						id: 4,
+						text: "Music", 
+						expanded: false,
+						icon: "icons-medium album",
+						items: [
+							{ id: 41, pid: 4, text: "Blues" },
+							{ id: 42, pid: 4, text: "Classic Rock" },
+							{ id: 43, pid: 4, text: "Pop" },
+							{ id: 44, pid: 4, text: "Jazz" }
+						]
+					},
+					{ 
+						id: 5,
+						text: "Software",
+						icon: "icons-medium software",
+						items: [
+							{ id: 51, pid: 5, text: "Games", checkState: 'checked' },
+							{ id: 52, pid: 5, text: "Operating Systems" },
+							{ id: 53, pid: 5, text: "Network & Servers" },
+							{ id: 54, pid: 5, text: "Security" }
+						]
+					},
+					{ 
+						id: 6,
+						text: "Sports",
+						expanded: false,
+						icon: "icons-medium sports",
+						items: [
+							{ id: 61, pid: 6, text: "Baseball" },
+							{ id: 62, pid: 6, text: "Martial Arts", checkState: 'checked' },
+							{ id: 63, pid: 6, text: "Running" },
+							{ 
+								id: 64,
+								pid: 6,
+								text: "Tennis",
+								expanded: false,
+								items: [
+									{ id: 641, pid: 64, text: "Accessories" },
+									{ id: 642, pid: 64, text: "Balls" },
+									{ id: 643, pid: 64, text: "Racquets" }
+								]
+							}
+						]
+					},
+					{ id: 7, text: "Video Games" },
+					{ id: 8, text: "Watches", icon: "icons-medium clock" }
+				];				
+				$scope.treeData2 = [];
+				
+				$scope.toggleAllowDrag = function(){
+					$scope.allowDrag = !$scope.allowDrag;
+				}
+				
+				$scope.toggleAllowDrop = function(){
+					$scope.allowDrop = !$scope.allowDrop;
+				}
+				
+				$scope.toggleAllowDrag2 = function(){
+					$scope.allowDrag2 = !$scope.allowDrag2;
+				}
+				
+				$scope.toggleAllowDrop2 = function(){
+					$scope.allowDrop2 = !$scope.allowDrop2;
+				}
+			});
+    </script>
+    <style type="text/css">
+	.iui-drop-marker
+	{
+		font-size: 0.75em;
+	}
+    </style>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span style="color:#c60d0d">IntegralUI</span> Studio <span style="font-size:0.75em; font-style:italic">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content" ng-app="appModule">
+        <div class="feature" ng-controller="appCtrl">
+	        <h2 class="feature-title">TreeView / Drag Drop</h2>
+	        <div class="feature-content">
+	            <div style="display:inline-block">
+					<iui-treeview name="{{treeName}}" class="directive" items="treeData" allow-drag="allowDrag" allow-drop="allowDrop"  style="width:300px;margin-right:30px"  selection-mode="multi-extended" ></iui-treeview>
+					<iui-treeview name="{{treeName2}}" class="directive" items="treeData2" allow-drag="allowDrag2" allow-drop="allowDrop2"  style="width:300px;" selection-mode="multi-extended"></iui-treeview>
+                    <br style="clear:both;"/>
+                </div>
+				<div style="display:inline-block; margin-top:20px">
+					<div style="float:left;width:300px;margin-right:30px" align="center">
+						<label style="margin-right:30px"><input type="checkbox" ng-click="toggleAllowDrag()" checked="checked" /> Allow Drag</label>
+						<label><input type="checkbox" ng-click="toggleAllowDrop()" checked="checked" /> Allow Drop</label>
+					</div>
+					<div style="float:left;width:300px;" align="center">
+						<label style="margin-right:30px"><input type="checkbox" ng-click="toggleAllowDrag2()" checked="checked" /> Allow Drag</label>
+						<label><input type="checkbox" ng-click="toggleAllowDrop2()" checked="checked" /> Allow Drop</label>
+					</div>
+					<br style="clear:both;"/>
+			   </div>
+                <div class="feature-help" style="margin:0">
+                    <p><span class="initial-space"></span>In this sample you can drag-drop items within the same TreeView or from left TreeView to the right TreeView and vice versa. When item is dragged a drop marker is displayed showing the exact location at which dragged item can drop. If the marker is not shown, the drop position is not allowed.</p>
+                    <p><span class="initial-space"></span>While dragging an item over middle space of some target item, when dropped the item will be added as a child of the target item.</p>
+                    <p><a href="multi-select.html">Multiple selection</a> of items is enabled, which allows multiple items to be dragged and dropped.</p>
+                    <p><span class="initial-space"></span>By clicking on check boxes, you can change the built-in properties:
+                        <ul class="feature-points">
+                            <li><span style="color:#c60d0d">allowDrag</span> - determines whether items can be dragged</li>
+                            <li><span style="color:#c60d0d">allowDrop</span> - determines whether items can be dropped</li>
+                       </ul>
+                    </p><br/>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

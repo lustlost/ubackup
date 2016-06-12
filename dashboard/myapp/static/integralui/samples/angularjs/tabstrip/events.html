@@ -1,0 +1,172 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>TabStrip - Events</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/integralui.tabstrip.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-flat-blue.css" />
+    <script type="text/javascript" src="../../../external/angular.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.tabstrip.min.js"></script>
+    <script type="text/javascript">
+ 		angular
+			.module("appModule", ["integralui"])
+			.controller("appCtrl", function($scope){
+                $scope.ctrlName = "ctrlSample";
+                $scope.ctrlEnabled = true;
+
+                $scope.tabs = [
+                    { id: 1, name: 'Tab1', text: 'Tab 1' },
+                    { id: 2, name: 'Tab2', text: 'Tab 2' },
+                    { id: 3, name: 'Tab3', text: 'Tab 3' }
+                ];
+
+                $scope.eventLog = [];
+                
+                $scope.onBeforeSelect = function(e){
+                    $scope.eventLog.unshift({ name: "beforeSelect", info: " event was fired before tab is selected: ", value: e.tab.text }); 
+                }
+                
+                $scope.onAfterSelect = function(e){
+                    $scope.eventLog.unshift({ name: "afterSelect", info: " event was fired after tab is selected: ", value: e.tab.text }); 
+                }
+                
+                $scope.onGroupClick = function(e){
+                    $scope.eventLog.unshift({ name: "tabClick", info: " event was fired when tab header is clicked: ", value: e.tab.text }); 
+                    $scope.$apply();
+                }
+                
+                $scope.onGroupDblClick = function(e){
+                    $scope.eventLog.unshift({ name: "tabDblClick", info: " event was fired when tab header is double-clicked: ", value: e.tab.text }); 
+                    $scope.$apply();
+                }
+                
+                $scope.onGroupHover = function(e){
+                    $scope.eventLog.unshift({ name: "tabHover", info: " event was fired when tab header is hovered: ", value: e.tab.text }); 
+                    $scope.$apply();
+                }
+                
+                $scope.onGroupRightClick = function(e){
+                    $scope.eventLog.unshift({ name: "tabRightClick", info: " event was fired when tab header is right-clicked: ", value: e.tab.text }); 
+                    $scope.$apply();
+                }
+                
+                $scope.onEnabledChanged = function(e){
+                    $scope.eventLog.unshift({ name: "enabledChanged", info: " event was fired when TabStrip becomes enabled or disabled, enabled property value set to: ", value: e.enabled }); 
+                }
+                
+                $scope.ctrlEvents = {
+                    beforeSelect: function(e){
+                        return $scope.onBeforeSelect(e);
+                    },
+                    afterSelect: function(e){
+                        return $scope.onAfterSelect(e);
+                    },
+                    tabClick: function(e){
+                        return $scope.onGroupClick(e);
+                    },
+                    tabDblClick: function(e){
+                        return $scope.onGroupDblClick(e);
+                    },
+                    tabHover: function(e){
+                        return $scope.onGroupHover(e);
+                    },
+                    tabRightClick: function(e){
+                        return $scope.onGroupRightClick(e);
+                    },
+                    enabledChanged: function(e){
+                        return $scope.onEnabledChanged(e);
+                    }
+                }
+
+                $scope.clearEventLog = function(){
+                    $scope.eventLog.length = 0;
+                }
+		});
+    </script>
+    <style type="text/css">
+        .feature-content
+        {
+            width: 900px;
+        }
+        .directive
+        {
+            height: 335px;
+        }
+        .control-panel
+        {
+            padding-left: 20px;
+            width: 250px;
+        }
+        .tab-content
+        {
+            padding: 25% 10px;
+            text-align: center;
+        }
+        .event-block
+        {
+            width: 450px;
+            height: 332px;
+        }
+        .event-log
+        {
+            height: 302px;
+        }
+    </style>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span style="color:#c60d0d">IntegralUI</span> Studio <span style="font-size:0.75em; font-style:italic">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content" ng-app="appModule">
+        <div class="feature" ng-controller="appCtrl">
+	        <h2 class="feature-title">TabStrip - Events</h2>
+	        <div class="feature-content">
+                <iui-tabstrip name="{{ctrlName}}" class="directive" tabs="tabs" enabled="ctrlEnabled" events="ctrlEvents">
+                    <iui-tab ng-repeat="tab in tabs" name="{{tab.name}}" heading="{{tab.text}}">
+                        {{tab.name}} Content
+                    </iui-tab>
+                </iui-tabstrip>
+                <div class="control-panel" style="width:300px;">
+                    <div class="event-block">
+                        <button type="button" ng-click="clearEventLog()" style="float:right;margin:3px 12px; width:50px">Clear</button>
+                        <p style="margin:0 10px; padding: 3px; border-bottom: thin solid #c5c5c5">Event log:</p>
+                        <ul class="event-log">
+                            <li ng-repeat="ev in eventLog"><span class="event-name">{{ev.name}}</span>{{ev.info}}<span class="event-value">{{ev.value}}</span></li>
+                        </ul>
+                    </div>
+                </div>
+                <br style="clear:both;"/><br/>
+                <label><input type="checkbox" ng-model="ctrlEnabled" /> Enabled</label><br />
+                <div class="feature-help">
+                    <p><span class="initial-space"></span>This sample presents most of events that are fired from TabStrip directive. Depending on action, a specific event is fired, which you can handle by simple creating an event handler. From control panel, you can change whether TabStrip is enabled or disabled.</p>
+                    <p><span class="initial-space"></span>Here is list of events that are supported:</p>
+                    <ul class="feature-points">
+                        <li><span style="color:#c60d0d">afterSelect</span> - Occurs after tab is selected</li>
+                        <li><span style="color:#c60d0d">beforeCollapse</span> - Occurs before tab is collapsed</li>
+                        <li><span style="color:#c60d0d">clear</span> - Occurs when all tabs are removed</li>
+                        <li><span style="color:#c60d0d">tabAdding</span> - Occurs before tab is added</li>
+                        <li><span style="color:#c60d0d">tabAdded</span> - Occurs after tab is added</li>
+                        <li><span style="color:#c60d0d">tabClick</span> - Occurs when tab is clicked</li>
+                        <li><span style="color:#c60d0d">tabDblClick</span> - Occurs when tab is double clicked</li>
+                        <li><span style="color:#c60d0d">tabHover</span> - Occurs when tab is hovered</li>
+                        <li><span style="color:#c60d0d">tabRemoving</span> - Occurs before tab is removed</li>
+                        <li><span style="color:#c60d0d">tabRemoved</span> - Occurs after tab is removed</li>
+                        <li><span style="color:#c60d0d">tabRightClick</span> - Occurs when tab is right-clicked</li>
+                        <li><span style="color:#c60d0d">enabledChanged</span> - Occurs when tabstrip is enabled or disabled</li>
+                        <li><span style="color:#c60d0d">styleChanged</span> - Occurs when tabstrip style has changed</li>
+                    </ul>
+                    <p><span class="initial-space"></span>Depending on some conditions, when handling some of above events you can prevent the default action to proceed, by canceling the operation.</p>
+                    <p><span class="initial-space"></span>In this sample event log will not register add/remove of tabs nor style changes events, because changes to the TabStrip appearance are not demonstrated here.</p>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

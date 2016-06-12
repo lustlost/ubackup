@@ -1,0 +1,166 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>TabStrip - Switch Between Tabs using Combo Box</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/integralui.css" />
+    <link rel="stylesheet" href="../../../css/integralui.tabstrip.css" />
+    <link rel="stylesheet" href="../../../css/integralui.combobox.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-flat-blue.css" />
+    <script type="text/javascript" src="../../../external/angular.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.tabstrip.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.lists.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.combobox.min.js"></script>
+    <script type="text/javascript">
+ 		angular
+			.module("appModule", ["integralui"])
+			.controller("appCtrl", ["$scope", "$timeout", "IntegralUITabStripService", "IntegralUIComboBoxService", function($scope, $timeout, $tabService, $comboService){
+                $scope.tabName = "tabSample";
+                $scope.comboName = "comboSample";
+
+                $scope.data = [
+                    { id: 1, text: "Option 1" },
+                    { id: 2, text: "Option 2" },
+                    { id: 3, text: "Option 3" }
+                ];
+
+                var comboTabStyle = {
+                    header: {
+                        normal: 'combo-tab-header',
+                        selected: 'combo-tab-header',
+                        hovered: 'combo-tab-header'
+                    }
+                }
+
+                $scope.tabs = [
+                    { id: 999, name: 'comboTab', style: comboTabStyle }
+                ];
+
+                var tabs1 = [
+                    { id: 1, name: 'Tab1', text: 'Tab 1' },
+                    { id: 2, name: 'Tab2', text: 'Tab 2' },
+                    { id: 3, name: 'Tab3', text: 'Tab 3' }
+                ];
+
+                var tabs2 = [
+                    { id: 4, name: 'Tab4', text: 'Tab 4' },
+                    { id: 5, name: 'Tab5', text: 'Tab 5' }
+                ];
+
+                var tabs3 = [
+                    { id: 6, name: 'Tab6', text: 'Tab 6' },
+                    { id: 7, name: 'Tab7', text: 'Tab 7' },
+                    { id: 8, name: 'Tab8', text: 'Tab 8' },
+                    { id: 9, name: 'Tab9', text: 'Tab 9' }
+                ];
+
+                var updateTabs = function(tabId){
+                    $tabService.suspendLayout($scope.tabName);
+                    $tabService.clearSelection($scope.tabName);
+
+                    var tabSet = null;
+                    switch (tabId){
+                        case 1:
+                            tabSet = tabs1;
+                            break;
+                        case 2:
+                            tabSet = tabs2;
+                            break;
+                        case 3:
+                            tabSet = tabs3;
+                            break;
+                    }
+
+                    $scope.tabs.splice.apply($scope.tabs, [1, $scope.tabs.length-1].concat(tabSet));
+
+                    $tabService.resumeLayout($scope.tabName);
+
+                    // Make sure at least the first tab from the choosen tab set is selected
+                    $timeout(function(){
+                        $tabService.selectedTab($scope.tabName, $scope.tabs[1]);
+                    }, 1);
+                }
+
+                $scope.onSelChanged = function(e){
+                    updateTabs(e.item.id);
+                }
+
+                // Initially select the first tab set
+                $timeout(function(){
+                   $comboService.selectedItem($scope.comboName, $scope.data[0]);
+                }, 1);
+		}]);
+    </script>
+    <style type="text/css">
+        .panel
+        {
+            height: 325px;
+        }
+        .directive
+        {
+            background: #f5f5f5;
+            height: 300px;
+        }
+        .iui-combobox
+        {
+            border: 0;
+            background: transparent;
+            width: 100px;
+        }
+        .iui-list
+        {
+            font-size: 0.75em;
+        }
+        .tab-content
+        {
+            padding: 30% 10px;
+            text-align: center;
+        }
+        .combo-tab-header
+        {
+            border: 0;
+            background: transparent;
+        }
+    </style>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span style="color:#c60d0d">IntegralUI</span> Studio <span style="font-size:0.75em; font-style:italic">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content" ng-app="appModule">
+        <div class="feature" ng-controller="appCtrl">
+	        <h2 class="feature-title">TabStrip / Switch Between Tabs using Combo Box</h2>
+	        <div class="feature-content">
+                <div class="panel">
+                    <iui-tabstrip name="{{tabName}}" class="directive" tabs="tabs">
+                        <iui-tab ng-repeat="tab in tabs" name="{{tab.name}}">
+                            <iui-tab-header>
+                                <div ng-if="tab.id == 999">
+                                    <iui-combobox name="{{comboName}}" items="data" max-dropdown-items="3" selected-item-changed="onSelChanged(e)" dropdown-width="100"></iui-combobox>
+                                </div>
+                                <div ng-if="tab.id != 999">
+                                    {{tab.text}}
+                                </div>
+                            </iui-tab-header>
+                            <div class="tab-content">
+                                {{tab.name}} Content
+                            </div>
+                        </iui-tab>
+                    </iui-tabstrip>
+                </div>
+                <br style="clear:both;"/>
+                <div class="feature-help">
+                    <p><span class="initial-space"></span>This sample shows how to place a ComboBox inside the first tab. By selecting a different option from the combo box, a different set of tabs in displakyed in the TabStrip. This allows you to switch between tabs during run-time.</p>
+                    <p><span class="initial-space"></span>In the demo above, the combo box has three options. The first options displays three tabs, second options displays two tabs and the last options will display four tabs.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

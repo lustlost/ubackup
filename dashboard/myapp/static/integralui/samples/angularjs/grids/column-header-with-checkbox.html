@@ -1,0 +1,183 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>Grids - CheckBox in Column Header</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/integralui.css" />
+    <link rel="stylesheet" href="../../../css/integralui.checkbox.css" />
+    <link rel="stylesheet" href="../../../css/integralui.treegrid.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-flat-blue.css" />
+    <script type="text/javascript" src="../../../external/angular.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.lists.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.checkbox.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.treegrid.min.js"></script>
+    <script type="text/javascript">
+ 		angular
+			.module("appModule", ["integralui"])
+			.controller("appCtrl", ["$scope", "IntegralUITreeGridService", "$timeout", function($scope, $gridService, $timeout){
+				$scope.gridName = "gridSample";
+
+				$scope.columns = [
+					{ 
+						editorType: 'checkbox', 
+						headerAlignment: 'center', 
+						contentAlignment: 'center', 
+						width: 30, 
+						fixedWidth: true, 
+						headerTemplate: "'column-check.html'", 
+						onColumnCheck: function(e){
+							var list = $gridService.getFlatList($scope.gridName, true);
+							for (var i = 0; i < list.length; i++)
+								list[i].cells[0].value = e.checked;
+						}
+					},
+					{ 
+						headerText: "Header 2", 
+						width: 350,
+						footerTemplate: "'footer-count.html'",
+						counter: {
+							checkCount: 0,
+							totalCount: 0
+						},
+						onCount: function(){
+							var list = $gridService.getFlatList($scope.gridName, true);
+							
+							$scope.columns[1].counter.totalCount = list.length;
+							$scope.columns[1].counter.checkCount = 0;
+
+							for (var i = 0; i < list.length; i++){
+								if (list[i].cells[0].value)
+									$scope.columns[1].counter.checkCount++;
+							}
+						}
+					},
+					{ headerText: "Header 3", width: 270 },
+				];
+
+				$scope.rows = [];
+
+				var createCell = function(i, j){
+					var cell = {
+						text: "Item" + i + j
+					}
+
+					return cell;
+				}
+
+				var getCells = function(i){
+					var cellList = [];
+
+					for (var j = 1; j <= $scope.columns.length; j++)
+						cellList.push(createCell(i, j));
+
+					return cellList;
+				}
+
+				var createRow = function(i){
+					var row = {
+						id: i,
+						text: "Item" + i,
+						cells: getCells(i)
+					}
+
+					return row;
+				}
+
+				var initRows = function(){
+					for (var i = 1; i <= 25; i++)
+						$scope.rows.push(createRow(i));
+				}
+
+				initRows();
+
+				// Update data in the footer
+				var initTimer = $timeout(function(){
+					$scope.columns[1].onCount();
+					$timeout.cancel(initTimer);
+				}, 100);
+			}]);
+    </script>
+    <style type="text/css">
+		.control-panel
+		{
+			margin-left: 35px;
+			width: 250px;
+		}
+		.feature-content
+		{
+			width: 700px;
+		}
+        .directive
+        {
+        	border: thin solid #dadada;
+        	width: 700px;
+        	height: 350px;
+        }
+        .column-footer
+        {
+        	margin: 0;
+        	padding: 0;
+        	white-space: nowrap;
+        }
+        .column-footer p
+        {
+        	display: inline-block;
+        	margin: 0;
+        	padding: 0;
+        }
+	    .inline-button
+	    {
+	    	background: #2455b0;
+	    	border: thin solid black;
+	    	color: white;
+        	display: inline-block;
+        	margin: 0 25px 0 3px;
+        	width: 60px;
+	    }
+	    .inline-button:hover
+	    {
+			background-color: #153268;
+	    }
+    </style>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span style="color:#c60d0d">IntegralUI</span> Studio <span style="font-size:0.75em; font-style:italic">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content" ng-app="appModule">
+        <div class="feature" ng-controller="appCtrl">
+			<script type="text/ng-template" id="column-check.html">
+                <iui-checkbox name="{{checkName}}" checked-changed="columns[0].onColumnCheck(e)"></iui-checkbox>
+			</script>
+			<script type="text/ng-template" id="footer-count.html">
+				<div class="column-footer">
+					<button class="inline-button" ng-click="columns[1].onCount()">Count</button>
+                    <p>Checked Rows: {{columns[1].counter.checkCount}} / {{columns[1].counter.totalCount}}</p>
+				</div>
+			</script>
+	        <h2 class="feature-title">Grids / CheckBox in Column Header</h2>
+	        <div class="feature-content">
+                <iui-treegrid name="{{gridName}}" class="directive" columns="columns" rows="rows" expanding-column-index="1" allow-focus="false"></iui-treegrid>
+                <br style="clear:both;"/>
+                <div class="feature-help">
+                    <p><span class="initial-space"></span>In this sample, first column header contains a checkbox, and the footer of second column use a custom template to show the number of checked rows. When checkbox in column header is clicked, it will change the value of all checkboxes in column cells. In addition, the footer of second column displays how many rows are checked.</p> 
+                    <p><span class="initial-space"></span>The template is created in code, using custom CSS styles and HTML elements, and then applied to the column by using the following field:
+                        <ul class="feature-points">
+                            <li><span style="color:#c60d0d">headerTemplate</span> - holds a reference to a custom template used to replace the default header with custom HTML elements</li>
+                            <li><span style="color:#c60d0d">footerTemplate</span> - holds a reference to a custom template used to replace the default footer with custom HTML elements</li>
+                        </ul>
+                    </p>
+                    <p><span class="initial-space"></span>There is no limit on what kind of template that you can create. Any combination of HTML elements is acceptable, along with custom events.</p>
+                    <p style="margin:10px 0 30px 0;color:#c60d0d;font-weight:bold">This offline sample may not work using <u>Chrome browser</u>. You can try using any other browser: FireFox, IE, Opera, Safari. This happens due to restrictions of Chrome when loading templates locally. The <a href="http://www.lidorsystems.com/products/web/studio/samples/treegrid/column-header-with-checkbox.aspx">online version of this sample</a> works without problems.</p>
+               </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

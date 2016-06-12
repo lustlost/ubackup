@@ -1,0 +1,250 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>Grids - Add/Remove</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/integralui.css" />
+    <link rel="stylesheet" href="../../../css/integralui.treegrid.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-flat-blue.css" />
+    <script type="text/javascript" src="../../../external/angular.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.lists.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.treegrid.min.js"></script>
+    <script type="text/javascript">
+ 		angular
+			.module("appModule", ["integralui"])
+			.controller("appCtrl", ["$scope", "IntegralUITreeGridService", "$timeout", function($scope, $gridService, $timeout){
+				$scope.sampleColumns = [];
+				$scope.sampleRows = [];
+				
+				$scope.insertPos = 0;
+				$scope.removePos = 0;
+				$scope.gridName = "gridSample";
+				
+				$scope.disableButtons = true;
+				
+				var columnCount = 0;
+				var rowCount = 0;
+				
+				// Columns
+				var getSelectedColumn = function(){
+					return $gridService.selectedColumn($scope.gridName);
+				}
+				
+				var createNewColumn = function(){
+					columnCount++;
+					var column = {
+						headerText: "Header" + columnCount,
+						footerText: "Footer" + columnCount
+					}
+					
+					return column;
+				}
+				
+				$scope.addColumn = function(){
+					$gridService.addColumn($scope.gridName, createNewColumn());
+				}
+				
+				$scope.removeColumn = function(){
+					$gridService.removeColumn($scope.gridName, getSelectedColumn());
+				}
+				
+				$scope.clearColumns = function(){
+					$gridService.clearColumns($scope.gridName);
+					$scope.disableButtons = true;
+					columnCount = 0;
+				}
+				
+				// Rows
+				var getCurrentSelection = function(){
+					return $gridService.selectedRow($scope.gridName);
+				}
+				
+				var createNewRow = function(){
+					rowCount++;
+					var row = {
+						text: "Item" + rowCount,
+						cells: []		
+					}
+					
+					for (var j = 1; j <= $scope.sampleColumns.length; j++)
+						row.cells.push({ text: "Item" + rowCount + j });
+
+					return row;
+				}
+				
+				$scope.addRoot = function(){
+					$gridService.addRow($scope.gridName, createNewRow());
+				}
+				
+				$scope.addChild = function(){
+					$gridService.addRow($scope.gridName, createNewRow(), getCurrentSelection());
+				}
+				
+				$scope.insertRowAfter = function(){
+					$gridService.insertRowAfter($scope.gridName, createNewRow(), getCurrentSelection());
+				}
+				
+				$scope.insertRowAt = function(){
+					$gridService.insertRowAt($scope.gridName, createNewRow(), $scope.insertPos);
+				}
+				
+				$scope.insertRowBefore = function(){
+					$gridService.insertRowBefore($scope.gridName, createNewRow(), getCurrentSelection());
+				}
+				
+				$scope.removeRow = function(){
+					$gridService.removeRow($scope.gridName, getCurrentSelection());
+				}
+				
+				$scope.removeRowAt = function(){
+					$gridService.removeRowAt($scope.gridName,  $scope.removePos);
+				}
+				
+				$scope.clearRows = function(){
+					$gridService.clearRows($scope.gridName);
+					$scope.disableButtons = true;
+					rowCount = 0;
+				}
+				
+				$scope.onSelectionChanged = function(){
+					$scope.disableButtons = getCurrentSelection() ? false : true;
+					$scope.$apply();
+				}
+					
+				$scope.$watch("insertPos", function(newValue, oldValue){
+					if (isNaN(newValue))
+						$scope.insertPos = oldValue;
+				});
+					
+				$scope.$watch("removePos", function(newValue, oldValue){
+					if (isNaN(newValue))
+						$scope.removePos = oldValue;
+				});
+
+
+				// Code which updates current selection after item is removed
+				var rowIndex = -1;
+				var parent = null;
+
+				$scope.onRowRemoving = function(e){
+					rowIndex = -1;
+
+					parent = $gridService.getRowParent($scope.gridName, e.obj);
+					var list = $gridService.getList($scope.gridName, parent);
+					if (list && list.length > 0)
+						rowIndex = list.indexOf(e.obj);
+				}
+
+				$scope.onRowRemoved = function(e){
+					var updateTimer = $timeout(function(){
+						var selRow = null;
+						var list = $gridService.getList($scope.gridName, parent);
+
+						if (list && list.length > 0){
+							if (rowIndex == list.length)
+								rowIndex = list.length - 1;
+
+							if (rowIndex >= 0 && rowIndex < list.length){
+								if (rowIndex < list.length)
+									selRow = list[rowIndex];
+								else
+									selRow = list[list.length-1];
+							}
+						}
+						else if (parent)
+							selRow = parent;
+
+						$gridService.selectedRow($scope.gridName, selRow);
+
+						$timeout.cancel(updateTimer);
+					}, 1);
+				}
+		}]);
+    </script>
+    <style type="text/css">
+		button
+		{
+			margin: 5px 0;
+			width: 165px;
+			height: 25px;
+		}
+		.control-panel
+		{
+			width: 170px;
+		}
+		.feature-content
+		{
+			width: 850px;
+		}
+		.inline-block
+		{
+			display: inline-block;
+			margin: 3px 0;
+		}
+		.inline-button
+		{
+			width: 125px;
+			margin-right: 3px
+		}
+		.directive
+		{
+			width: 600px;
+		}
+    </style>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span style="color:#c60d0d">IntegralUI</span> Studio <span style="font-size:0.75em; font-style:italic">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content" ng-app="appModule">
+        <div class="feature" ng-controller="appCtrl">
+	        <h2 class="feature-title">Grids / Add - Remove</h2>
+	        <div class="feature-content">
+                <iui-treegrid name="{{gridName}}" class="directive" columns="sampleColumns" rows="sampleRows" selection-changed="onSelectionChanged()" row-removing="onRowRemoving(e)" row-removed="onRowRemoved(e)"></iui-treegrid>
+                <div class="control-panel" align="center">
+					<button ng-click="addColumn()">Add Column</button><br />
+					<button ng-click="removeColumn()">Remove Column</button><br />
+					<button ng-click="clearColumns()">Clear Columns</button>
+					<hr></hr>
+					<button ng-click="addRoot()">Add Root Row</button><br />
+					<button ng-click="addChild()" ng-disabled="disableButtons">Add Child Row</button><br />
+					<button ng-click="insertRowAfter()" ng-disabled="disableButtons">Insert Row After</button><br />
+					<button ng-click="insertRowBefore()" ng-disabled="disableButtons">Insert Row Before</button><br />
+					<div class="inline-block">
+					   <button class="inline-button" ng-click="insertRowAt()">Insert Row At</button><input ng-model="insertPos" type="number" min="0" max="100" style="width:35px" />
+					</div>
+					<button ng-click="removeRow()" ng-disabled="disableButtons">Remove Row</button><br />
+					<div class="inline-block">
+						<button class="inline-button" ng-click="removeRowAt()">Remove Row At</button><input ng-model="removePos" type="number" min="0" max="100" style="width:35px" /><br />
+					</div>
+					<button ng-click="clearRows()">Clear Rows</button>
+                </div>
+                <br style="clear:both;"/>
+                <div class="feature-help">
+                    <p>In this sample you can create and/or modify data into the tree grid using several different methods:
+                        <ul class="feature-points">
+                            <li><span style="color:#c60d0d">addColumn</span> - adds a new column</li>
+                            <li><span style="color:#c60d0d">removeColumn</span> - removes a column (in this sample the selected column)</li>
+                            <li><span style="color:#c60d0d">clearColumns</span> - removes all columns</li><br/>
+                            <li><span style="color:#c60d0d">addRow</span> - adds a new row</li>
+                            <li><span style="color:#c60d0d">insertRowAfter</span> - adds a new row after specified row (in this sample the selected row)</li>
+                            <li><span style="color:#c60d0d">insertRowAt</span> - adds a new row at specified position</li>
+                            <li><span style="color:#c60d0d">insertRowBefore</span> - adds a new row before specified row (in this sample the selected row)</li>
+                            <li><span style="color:#c60d0d">removeRow</span> - removes a row (in this sample the selected row)</li>
+                            <li><span style="color:#c60d0d">removeRowAt</span> - removes a row at specified position</li>
+                            <li><span style="color:#c60d0d">clearRows</span> - removes all rows</li>
+                        </ul>
+                    </p>
+                    <p>You can also insert a column at specific position using other methods, in similar way as its done for rows, but to simplify this sample they are excluded from it.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

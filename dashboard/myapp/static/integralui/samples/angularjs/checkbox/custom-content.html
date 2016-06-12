@@ -1,0 +1,103 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>CheckBox - Custom Content</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/integralui.checkbox.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-blue.css" />
+    <script type="text/javascript" src="../../../external/angular.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.checkbox.min.js"></script>
+    <script type="text/javascript">
+ 		angular
+			.module("appModule", ["integralui"])
+			.controller("appCtrl", function($scope){
+                $scope.ctrlName = "ctrlSample";
+                $scope.isThreeState = true;
+
+                $scope.ctrlState = 'checked';
+                $scope.ctrlState2 = 'indeterminate';
+                $scope.ctrlState3 = 'unchecked';
+		});
+    </script>
+    <style type="text/css">
+    .panel
+    {
+        background: white;
+        border: thin solid #cecece;
+        padding: 10px;
+        width: 700px;
+        height: 175px;
+    }
+    .iui-checkbox-box
+    {
+        position: absolute;
+        border: 0;
+        display: inline-block;
+        top: 35%;
+        width: 16px;
+        height: 16px;
+    }
+    .iui-checkbox-checked
+    {
+        background-image: url("../../../resources/checkbox/checkbox-checked.png");
+    }
+    .iui-checkbox-unchecked
+    {
+        background-image: url("../../../resources/checkbox/checkbox-unchecked.png");
+    }
+    .iui-checkbox-indeterminate
+    {
+        background-image: url("../../../resources/checkbox/checkbox-indeterminate.png");
+    }
+    .check-content
+    {
+        padding: 0 0 0 20px;
+        margin: 5px 0;
+        width: 675px;
+    }
+    .more-info
+    {
+        background-position: -16px -80px;
+    }
+    .more-info:hover
+    {
+        background-position: 0 -80px;
+    }
+    </style>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span style="color:#c60d0d">IntegralUI</span> Studio <span style="font-size:0.75em; font-style:italic">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content" ng-app="appModule">
+        <div class="feature" ng-controller="appCtrl">
+	        <h2 class="feature-title">CheckBox / Custom Content</h2>
+	        <div class="feature-content">
+                <div class="panel">
+                    <iui-checkbox name="{{ctrlName}}" class="directive" three-state="isThreeState" check-state="ctrlState">
+                        <p class="check-content">Curabitur pretium tincidunt lacus. <a href="">Nulla gravida</a> orci a odio. Nullam varius, turpis et commodo pharetra, est eros bibendum elit, nec luctus magna felis sollicitudin mauris <span class="icons more-info"></span>.</p>
+                    </iui-checkbox>
+                    <iui-checkbox name="{{ctrlName}}" class="directive" three-state="isThreeState" check-state="ctrlState2">
+                        <p class="check-content">Pellentesque <a href="">malesuada</a> nulla a mi. Duis sapien sem, aliquet nec, commodo eget, consequat quis, neque <span class="icons more-info"></span>.</p>
+                    </iui-checkbox>
+                    <iui-checkbox name="{{ctrlName}}" class="directive" three-state="isThreeState" check-state="ctrlState3">
+                        <p class="check-content">Fusce convallis, mauris imperdiet gravida bibendum, nisl turpis suscipit <a href="">mauris</a>, sed placerat ipsum urna sed risus. In convallis tellus a mauris <span class="icons more-info"></span>.</p>
+                    </iui-checkbox>
+                </div>
+                <br style="clear:both;"/>
+                <div class="feature-help">
+                    <p><span class="initial-space"></span>A presentation on how to replace the check box title with custom content. Instead of showing a plain text, check box now contains a paragraph with some text, hyperlink and a question icon.</p>
+                    <p><span class="initial-space"></span>The box is also replaced using custom images, and it is vertically aligned by modifying the control CSS styles.</p>
+                    <p><span class="initial-space"></span>The check box state still changes when click is made over its content (not just the box). This is optional and it is determined by the value of <span style="color:#c60d0d">autoCheck</span> attribute, which by default is set to true.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

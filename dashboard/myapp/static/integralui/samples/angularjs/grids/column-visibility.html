@@ -1,0 +1,211 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>Grids - Column Visibility</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/integralui.css" />
+    <link rel="stylesheet" href="../../../css/integralui.treegrid.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-flat-blue.css" />
+    <script type="text/javascript" src="../../../external/angular.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.lists.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.treegrid.min.js"></script>
+    <script type="text/javascript">
+ 		angular
+			.module("appModule", ["integralui"])
+			.controller("appCtrl", ["$scope", "IntegralUITreeGridService", "$timeout", function($scope, $gridService, $timeout){
+				$scope.gridName = "gridSample";
+				$scope.btnText = "Hide All Columns";
+				$scope.columnVisibility = true;
+				$scope.isSelectedColumnVisible = true;
+
+				var supressCallback = false;
+
+				$scope.columns = [
+					{ name: 'Column1', headerText: 'Header1', footerText: 'Footer1', width: 200 },
+					{ name: 'Column2', headerText: 'Header2', footerText: 'Footer2', width: 120 },
+					{ name: 'Column3', headerText: 'Header3', footerText: 'Footer3', width: 90, visible: false },
+					{ name: 'Column4', headerText: 'Header4', footerText: 'Footer4', width: 150 },
+					{ name: 'Column5', headerText: 'Header5', footerText: 'Footer5', width: 120, visible: false }
+				];
+
+				$scope.rows = [
+					{ 
+						id: 1,
+						text: "Item1",
+						cells: [{ text: "Item11" }, { text: "Item12" }, { text: "Item13" }, { text: "Item14" }, { text: "Item15" }],
+						rows: [
+							{ id: 11, pid: 1, text: "Item11", cells: [{ text: "Item111" }, { text: "Item112" }, { text: "Item113" }, { text: "Item114" }, { text: "Item115" }] },
+							{ 
+								id: 12,
+								pid: 1,
+								text: "Item12",
+								cells: [{ text: "Item121" }, { text: "Item122" }, { text: "Item123" }, { text: "Item124" }, { text: "Item125" }],
+								rows: [
+									{ id: 121, pid: 12, text: "Item121", cells: [{ text: "Item1211" }, { text: "Item1212" }, { text: "Item1213" }, { text: "Item1214" }, { text: "Item1215" }] },
+									{ 
+										id: 122,
+										pid: 12,
+										text: "Item122", 
+										cells: [{ text: "Item1221" }, { text: "Item1222" }, { text: "Item1223" }, { text: "Item1224" }, { text: "Item1225" }],
+										expanded: false,
+										rows: [
+											{ id: 1221, pid: 122, text: "Item1221", cells: [{ text: "Item12211" }, { text: "Item12212" }, { text: "Item12213" }, { text: "Item12214" }, { text: "Item12215" }] },
+											{ id: 1222, pid: 122, text: "Item1222", cells: [{ text: "Item12221" }, { text: "Item12222" }, { text: "Item12223" }, { text: "Item12224" }, { text: "Item12225" }] }
+										]
+									},
+									{ id: 123, pid: 12, text: "Item123", cells: [{ text: "Item1231" }, { text: "Item1232" }, { text: "Item1233" }, { text: "Item1234" }, { text: "Item1235" }] }
+								]
+							},
+							{ id: 13, pid: 1, text: "Item13", cells: [{ text: "Item131" }, { text: "Item132" }, { text: "Item133" }, { text: "Item134" }, { text: "Item135" }] },
+							{
+								id: 14,
+								pid: 1,
+								text: "Item14",
+								cells: [{ text: "Item141" }, { text: "Item142" }, { text: "Item143" }, { text: "Item144" }, { text: "Item145" }],
+								rows: [
+									{ id: 141, pid: 14, text: "Item141", cells: [{ text: "Item1411" }, { text: "Item1412" }, { text: "Item1413" }, { text: "Item1414" }, { text: "Item1415" }] },
+									{ id: 142, pid: 14, text: "Item142", cells: [{ text: "Item1421" }, { text: "Item1422" }, { text: "Item1423" }, { text: "Item1424" }, { text: "Item1425" }] }
+								]
+							}
+						]
+					},
+					{
+						id: 2,
+						text: "Item2",
+						cells: [{ text: "Item21" }, { text: "Item22" }, { text: "Item23" }, { text: "Item24" }, { text: "Item25" }],
+						expanded: false,
+						rows: [
+							{ id: 21, pid: 2, text: "Item21", cells: [{ text: "Item211" }, { text: "Item212" }, { text: "Item213" }, { text: "Item214" }, { text: "Item215" }] },
+							{ id: 22, pid: 2, text: "Item22", cells: [{ text: "Item221" }, { text: "Item222" }, { text: "Item223" }, { text: "Item224" }, { text: "Item225" }] },
+							{
+								id: 23,
+								pid: 2,
+								text: "Item23", 
+								cells: [{ text: "Item231" }, { text: "Item232" }, { text: "Item233" }, { text: "Item234" }, { text: "Item235" }],
+								expanded: false,
+								rows: [
+									{ id: 231, pid: 23, text: "Item231", cells: [{ text: "Item2311" }, { text: "Item2312" }, { text: "Item2313" }, { text: "Item2314" }, { text: "Item2315" }] },
+									{ id: 232, pid: 23, text: "Item232", cells: [{ text: "Item2321" }, { text: "Item2322" }, { text: "Item2323" }, { text: "Item2324" }, { text: "Item2325" }] }
+								]
+							}
+						]
+					},
+					{ id: 3, text: "Item3", cells: [{ text: "Item31" }, { text: "Item32" }, { text: "Item33" }, { text: "Item34" }, { text: "Item35" }] }
+				];
+
+				var initTimer = $timeout(function(){
+					$scope.selColumn = $scope.columns[0];
+
+					$timeout.cancel(initTimer);
+				}, 1);
+
+				$scope.onAfterSelect = function(e){
+					if (supressCallback)
+						return;
+
+					if (e.object && e.object.type == 'column'){
+						$scope.selColumn = $gridService.selectedColumn($scope.gridName);
+						$scope.$apply();
+					}
+				}
+
+				$scope.$watch("selColumn", function(newValue, oldValue){
+					if (newValue != oldValue){
+						$scope.isSelectedColumnVisible = $scope.selColumn.visible != false;
+
+						supressCallback = true;
+						var selTimer = $timeout(function(){
+							$gridService.selectedColumn($scope.gridName, newValue);
+							supressCallback = false;
+
+							$gridService.updateView($scope.gridName);
+
+							$timeout.cancel(selTimer);
+						}, 1);
+					}
+				});
+
+				$scope.hideAllColumns = function(){
+					$scope.columnVisibility = !$scope.columnVisibility;
+					$scope.btnText = $scope.columnVisibility ? "Hide All Columns" : "Show All Columns";
+
+					for (var j = 0; j < $scope.columns.length; j++)
+						$scope.columns[j].visible = $scope.columnVisibility;
+
+					$scope.isSelectedColumnVisible = $scope.selColumn.visible != false;
+					
+					$gridService.updateLayout($scope.gridName);
+				}
+
+				$scope.toggleVisibility = function(){
+					$scope.selColumn.visible = $scope.selColumn.visible != false ? false : true;
+					$scope.isSelectedColumnVisible = $scope.selColumn.visible != false;
+
+					$gridService.updateLayout($scope.gridName);
+				}
+			}]);
+    </script>
+    <style type="text/css">
+		.control-panel
+		{
+			margin-left: 35px;
+			width: 250px;
+		}
+		.feature-content
+		{
+			width: 900px;
+		}
+        .directive
+        {
+        	border: thin solid #dadada;
+        	width: 600px;
+        	height: 350px;
+        }
+        select
+        {
+        	margin: 5px 0 15px 0;
+        	width: 100px;
+        }
+        button
+        {
+        	width: 100%;
+        	padding: 5px;
+        }
+    </style>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span style="color:#c60d0d">IntegralUI</span> Studio <span style="font-size:0.75em; font-style:italic">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content" ng-app="appModule">
+        <div class="feature" ng-controller="appCtrl">
+	        <h2 class="feature-title">Grids / Column Visibility</h2>
+	        <div class="feature-content">
+                <iui-treegrid name="{{gridName}}" class="directive" columns="columns" rows="rows" after-select="onAfterSelect(e)" grid-lines="gridLines" ></iui-treegrid>
+                <div class="control-panel">
+                	<label>Selected Column: </label>
+                	<select ng-model="selColumn" ng-options="column.name for column in columns"></select>
+                    <label><input type="checkbox" ng-click="toggleVisibility()" ng-model="isSelectedColumnVisible" value="false"/> Is Column Visible</label><br /><br /><br />
+					<button ng-click="hideAllColumns()" ng-model="btnText">{{btnText}}</button>
+                </div>
+                <br style="clear:both;"/>
+                <div class="feature-help">
+                    <p><span class="initial-space"></span>This sample shows how to show/hide columns in the TreeGrid. On right panel you can find controls with which you can set whether a column is shown or hidden. By default all columns are visible. In case of our example, initially two from five columns are hidden.</p>
+                    <p><span class="initial-space"></span>Each column object has a field which allows you to determine whether it is shown or hidden.</p>
+                        <ul class="feature-points">
+                            <li><span style="color:#c60d0d">visible</span> - when true, column is visible, otherwise it is hidden.</li>
+                        </ul>
+                    </p>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

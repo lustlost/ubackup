@@ -1,0 +1,376 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>TreeView - Item Templates</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/integralui.css" />
+    <link rel="stylesheet" href="../../../css/integralui.treeview.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-flat-blue.css" />
+    <script type="text/javascript" src="../../../external/angular.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.lists.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.treeview.min.js"></script>
+    <script type="text/javascript">
+ 		angular
+			.module("appModule", ["integralui"])
+			.controller("appCtrl", ["$scope", "IntegralUITreeViewService", "$timeout", function($scope, $treeService, $timeout){
+				$scope.treeName = "treeSample";
+				$scope.data = [];
+
+				$scope.customItemTemplate = { url: "'item-template.html'" };
+
+				var changeExpandBox = function(item){
+					if (item && item.templateObj)
+						item.templateObj.expandBox = item.expanded != false ? 'item-expand-box item-expand-box-close' : 'item-expand-box item-expand-box-open';
+				}
+
+				var expandBoxClick = function(obj){
+					if (obj){
+						var item = $treeService.findItemById($scope.treeName, obj.itemId);
+						if (item){
+							$treeService.toggle($scope.treeName, item);
+						}
+					}
+				}
+
+				$scope.onAfterCollapse = function(e){
+					if (e.item)
+						changeExpandBox(e.item);
+				}
+
+				$scope.onAfterExpand = function(e){
+					if (e.item)
+						changeExpandBox(e.item);
+				}
+
+				var trashClick = function(obj){
+					if (obj){
+						var item = $treeService.findItemById($scope.treeName, obj.itemId);
+						if (item){
+							$treeService.removeItem($scope.treeName, item);
+							updateExpandBoxAppearance();
+							updateItemSubText();
+						}
+					}
+				}
+
+				var editClick = function(obj){
+					if (obj){
+						obj.edit = true;
+						obj.editText = obj.text;
+					}
+				}
+
+				var editorKeyDown = function(e, obj){
+					switch (e.keyCode){
+						case 13: // ENTER
+							obj.text = obj.editText;
+							obj.edit = false;
+							break;
+							
+						case 27: // ESCAPE
+							obj.edit = false;
+							break;
+					}
+				}
+
+				var editorLostFocus = function(obj){
+					if (obj)
+						obj.edit = false;
+				}
+
+				var objEvents = {
+					expandBoxClick: function(obj){ return expandBoxClick(obj) },
+					editClick: function(obj){ return editClick(obj) },
+					editorKeyDown: function(e, obj){ return editorKeyDown(e, obj) },
+					editorLostFocus: function(obj){ return editorLostFocus(obj) },
+					trashClick: function(obj){ return trashClick(obj) }
+				}
+		
+				var isThereVisibleChildren = function(){
+					var found = false;
+
+					var list = $treeService.getFlatList($scope.treeName, true);
+					if (list){
+						for (var i = 0; i < list.length; i++){
+							if (list[i].items && list[i].items.length > 0){
+		                		found = true;
+		                		break;
+		                	}
+						}
+					}
+
+					return found;
+				}
+
+				var updateExpandBoxAppearance = function(){
+					var isThereChildren = isThereVisibleChildren();
+					var list = $treeService.getFlatList($scope.treeName, true);
+					if (list){
+						for (var i = 0; i < list.length; i++){
+							if (list[i].items && list[i].items.length > 0)
+								changeExpandBox(list[i]);
+							else
+								list[i].templateObj.expandBox = isThereChildren ? 'item-expand-box' : '';
+						}
+					}
+				}
+
+				var updateItemSubText = function(){
+					var list = $treeService.getFlatList($scope.treeName, true);
+					if (list){
+						for (var i = 0; i < list.length; i++){
+							var currentItem = list[i];
+							var numFolders = 0;
+							var numFiles = 0;
+
+							if (currentItem.items && currentItem.items.length > 0){
+								for (var k = 0; k < currentItem.items.length; k++){
+									var childItem = currentItem.items[k];
+									if (childItem.items && childItem.items.length > 0)
+										numFolders++;
+									else
+										numFiles++;
+								}
+
+								var itemSubText = "( ";
+								if (numFolders > 0 && numFiles > 0){
+									itemSubText += numFolders + " folder";
+									if (numFolders > 1)
+										itemSubText += "s";
+									itemSubText += " and " + numFiles + " file";
+									if (numFiles > 1)
+										itemSubText += "s";
+								}
+								else if (numFolders > 0){
+									itemSubText += numFolders + " folder";
+									if (numFolders > 1)
+										itemSubText += "s";
+								}
+								else if (numFiles > 0){
+									itemSubText += numFiles + " file";
+									if (numFiles > 1)
+										itemSubText += "s";
+								}
+
+								itemSubText += " )";
+
+								list[i].templateObj.subText = itemSubText;
+							}
+							else
+								list[i].templateObj.subText = '';
+						}
+					}
+				}
+
+				$scope.customItems = [
+					{ 
+						id: 1,
+						templateObj: { itemId: 1, text: "Favorites", events: objEvents },
+						items: [
+							{ id: 11, pid: 1, templateObj: { itemId: 11, text: "Desktop", events: objEvents	} },
+							{ id: 12, pid: 1, templateObj: { itemId: 12, text: "Downloads", events: objEvents }	}
+						]
+					},
+					{ 
+						id: 2,
+						templateObj: { itemId: 2, text: "Libraries", events: objEvents },
+						items: [
+							{ 
+								id: 21, 
+								pid: 2, 
+								templateObj: { itemId: 21, text: "Documents", events: objEvents }, expanded: false,
+								items: [
+									{ id: 211, pid: 21, templateObj: { itemId: 211, text: "My Documents", events: objEvents } },
+									{ id: 212, pid: 21, templateObj: { itemId: 212, text: "Public Documents", events: objEvents	} }
+								]
+							},
+							{ id: 22, pid: 2, templateObj: { itemId: 22, text: "Music", events: objEvents } },
+							{ id: 23, pid: 2, templateObj: { itemId: 23, text: "Pictures", events: objEvents } },
+							{ id: 24, pid: 2, templateObj: { itemId: 24, text: "Videos", events: objEvents } }
+						]
+					},
+					{ 
+						id: 3,
+						templateObj: { itemId: 3, text: "Computer", events: objEvents },
+						expanded: false,
+						items: [
+							{ id: 31, pid: 3, templateObj: { itemId: 31, text: "Local Disk (C:)", events: objEvents } },
+							{ id: 32, pid: 3, templateObj: { itemId: 32, text: "Storage (D:)", events: objEvents } }
+						]
+					},
+					{ id: 4, templateObj: { itemId: 4, text: "Network", events: objEvents } },
+					{ id: 5, templateObj: { itemId: 5, text: "Recycle Bin", events: objEvents } }
+				];
+
+				var initTimer = $timeout(function(){
+					$treeService.loadData($scope.treeName, $scope.customItems);
+
+					$timeout.cancel(initTimer);
+				}, 1);
+
+				$scope.onUpdateComplete = function(){
+					updateExpandBoxAppearance();
+					updateItemSubText();
+				}
+
+				$scope.showButtonsOnHover = false;
+				$scope.toggleButtons = function(){
+					$scope.showButtonsOnHover = !$scope.showButtonsOnHover;
+
+					var list = $treeService.getFlatList($scope.treeName, true);
+					if (list){
+						for (var i = 0; i < list.length; i++){
+							list[i].templateObj.showButtonsOnHover = $scope.showButtonsOnHover;
+							list[i].templateObj.showButtons = !$scope.showButtonsOnHover;
+						}
+					}
+				}
+
+
+			}]);
+    </script>
+    <style type="text/css">
+		.control-panel
+		{
+			margin-left: 35px;
+			width: 250px;
+		}
+		.feature-content
+		{
+			width: 700px;
+		}
+		.directive
+		{
+		}
+		.custom-item
+		{
+			padding: 5px;
+			position: relative;
+		}
+		.item-subtext
+		{
+			color: #ababab;
+			font-style: italic;
+			font-size: 0.875em;
+		}
+		.item-button
+		{
+		    background-image: url(../../../resources/icons.png);
+		    background-repeat: no-repeat;
+			display: inline-block;
+		    overflow: hidden;
+		    padding: 0;
+		    margin: 3px 4px 0 4px;
+		    width: 16px;
+		    height: 16px;
+		    float: right;
+		    opacity: 0.6;
+		}
+		.item-button:hover
+		{
+		    opacity: 1;
+		}
+		.item-button-trash
+		{
+		    background-position: -80px -96px;
+		}
+		.item-button-edit
+		{
+		    background-position: -128px -81px;
+		}
+		.iui-treeview-item
+		{
+			border-bottom: thin solid #e5e5e5;
+			overflow: hidden;
+		}
+		.item-expand-box
+		{
+			background: url(../../../resources/icons-x24.png) no-repeat 0 0;
+			display: inline-block;
+			width: 24px;
+			height: 24px;
+			margin-right: 2px;
+			vertical-align: top;
+		}
+		.item-expand-box-open
+		{
+			background-position: -120px -144px;
+		}
+		.item-expand-box-close
+		{
+			background-position: -144px -144px;
+		}
+		.item-text
+		{
+			border: thin solid transparent;
+		}
+		.item-editor
+		{
+			border: thin solid gray;
+			padding: 3px;
+		}
+		.iui-treeview-item-hovered
+		{
+			background: #efefef;
+		}
+		.iui-treeview-item-selected
+		{
+			background-color: #dedede;
+			color: #008000;
+		}
+    </style>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span style="color:#c60d0d">IntegralUI</span> Studio <span style="font-size:0.75em; font-style:italic">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content" ng-app="appModule">
+        <div class="feature" ng-controller="appCtrl">
+			<script type="text/ng-template" id="'item-template.html'">
+				<div class="custom-item" ng-mouseenter="obj.showButtons = true" ng-mouseleave="obj.showButtons = !obj.showButtonsOnHover">
+					<div iui-class="{{obj.expandBox}}" ng-click="obj.events.expandBoxClick(obj)"></div>
+					<div style="display:inline-block;vertical-align:middle">
+						<span class="item-text" ng-show="!obj.edit">{{obj.text}}</span>
+						<input class="item-editor" ng-show="obj.edit" ng-model="obj.editText" ng-keydown="obj.events.editorKeyDown($event, obj)" iui-focus="{active:obj.edit}" onFocus="this.setSelectionRange(0, this.value.length)" ng-blur="obj.events.editorLostFocus(obj)" />
+						<span class="item-subtext" ng-show="!obj.edit">{{obj.subText}}</span>
+					</div>
+					<div style="display:inline-block;position:absolute;right:0;top:7px;padding-left:5px;" ng-show="obj.showButtons != false">
+						<span class="item-button item-button-trash" ng-click="obj.events.trashClick(obj)"></span>
+						<span class="item-button item-button-edit" ng-click="obj.events.editClick(obj)"></span>
+					</div>
+				</div>
+			</script>
+	        <h2 class="feature-title">TreeView / Item Templates</h2>
+	        <div class="feature-content">
+                <iui-treeview name="{{treeName}}" class="directive" items="data" template-settings="customItemTemplate" allow-focus="false" after-collapse="onAfterCollapse(e)" after-expand="onAfterExpand(e)" update-complete="onUpdateComplete()"></iui-treeview>
+                <div style="float:left;margin-left:50px;width: 100px; font-size:0.8em; white-space:nowrap;">
+					<label><input type="checkbox" ng-click="toggleButtons()" ng-model="showButtonsOnHover" /> Show Buttons On Hover</label><br />
+                </div>
+                <br style="clear:both;"/>
+                <div class="feature-help">
+                    <p><span class="initial-space"></span>By default each item is repesented by an icon and a label. This sample shows how to create a template with custom HTML elements as a replacement for default item layout.</p>
+                    <p><span class="initial-space"></span>Each item contains an editable label with subtext that changes when child items count and type change. On right side a set of buttons is displayed with different function: edit and remove. Also the expand box is changed using a different images for open/close states.</p>
+                    <p><span class="initial-space"></span>The template is created locally and accessible from template cache, using custom CSS styles and HTML elements, and then applied to the TreeView by using the following property:
+                        <ul class="feature-points">
+                            <li><span style="color:#c60d0d">templateSettings</span> - an object that holds the settings for the custom template, such as the template url</li>
+                        </ul>
+                    </p>
+                    <p><span class="initial-space"></span>In order to apply the template to the item, item object must contain a field named:
+                        <ul class="feature-points">
+                            <li><span style="color:#c60d0d">templateObj</span> - an object that holds all custom settings for the specified item</li>
+                        </ul>
+                    </p>
+                    <p><span class="initial-space"></span>When using templates, each item occupies the whole width of the TreeView, and there is no horizontal scroll bar.</p>
+                    <p style="padding-bottom:30px"><span class="initial-space"></span>For more information check out the source code of this sample.</p>
+               </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

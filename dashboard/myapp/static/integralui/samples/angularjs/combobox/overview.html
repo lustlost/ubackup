@@ -1,0 +1,168 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>ComboBox - Overview</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/integralui.css" />
+    <link rel="stylesheet" href="../../../css/integralui.lists.css" />
+    <link rel="stylesheet" href="../../../css/integralui.combobox.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-flat-blue.css" />
+    <script type="text/javascript" src="../../../external/angular.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.lists.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.combobox.min.js"></script>
+    <script type="text/javascript">
+ 		angular
+			.module("appModule", ["integralui"])
+			.controller("appCtrl", ["$scope", "IntegralUIComboBoxService", function($scope, $ctrlService){
+				$scope.ctrlName = "ctrlSample";
+
+                $scope.data = [
+                    { 
+                        id: 1,
+                        text: "Books",
+                        icon: "icons-medium library"
+                    },
+                    { id: 2, text: "Computers" },
+                    {
+                        id: 3,
+                        checkState: 'checked',
+                        text: "Electronics"
+                    },
+                    { 
+                        id: 4,
+                        text: "Music", 
+                        expanded: false,
+                        icon: "icons-medium album"
+                    },
+                    { 
+                        id: 5,
+                        checkState: 'indeterminate',
+                        text: "Software",
+                        icon: "icons-medium software"
+                    },
+                    { 
+                        id: 6,
+                        checkState: 'checked',
+                        text: "Sports",
+                        expanded: false,
+                        icon: "icons-medium sports"
+                    },
+                    { 
+                        id: 7, 
+                        checkState: 'checked',
+                        text: "Video Games"
+                    },
+                    { 
+                        id: 8, 
+                        text: "Watches", 
+                        icon: "icons-medium clock"
+                    }
+                ];
+
+                $scope.comboOptions = {
+                    dropDownHeight: 100,
+                    dropDownWidth: 200,
+                    enabled: true,
+                    integralHeight: true,
+                    itemIcon: "icons-medium empty",
+                    maxDropDownItems: 5,
+                    rtl: false,
+                    showIcons: true
+                }
+		}]);
+    </script>
+    <style type="text/css">
+        .feature-content
+        {
+            width: 850px;
+        }
+        .panel
+        {
+            padding-top: 20px;
+            height: 250px;
+        }
+        .control-panel
+        {
+            padding-left: 20px;
+            width: 250px;
+        }
+        .iui-combobox
+        {
+            float: left;
+            width: 200px;
+        }
+        .iui-list
+        {
+            font-size: 0.75em;
+        }
+        .icons-medium
+        {
+            margin: 0 1px;
+        }
+        .iui-combobox-content
+        {
+            padding: 0 5px;
+        }
+        .input-numeric
+        {
+            margin: 7px 0;
+            width: 50px;
+        }
+        .separator-line
+        {
+            background: gray;
+            border: 0;
+            height: 1px;
+        }
+    </style>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span style="color:#c60d0d">IntegralUI</span> Studio <span style="font-size:0.75em; font-style:italic">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content" ng-app="appModule">
+        <div class="feature" ng-controller="appCtrl">
+	        <h2 class="feature-title">ComboBox - Overview</h2>
+	        <div class="feature-content">
+                <div class="panel">
+                    <iui-combobox name="{{ctrlName}}" items="data" options="comboOptions"></iui-combobox>
+                </div>
+                <div class="control-panel">
+                    <label>ComboBox Properties: </label><br /><br />
+                    <label><input type="checkbox" ng-model="comboOptions.enabled" /> Enabled</label><br />
+                    <label><input type="checkbox" ng-model="comboOptions.integralHeight" /> Integral Height</label><br />
+                    <label><input type="checkbox" ng-model="comboOptions.rtl" /> RTL</label><br />
+                    <label><input type="checkbox" ng-model="comboOptions.showIcons" /> Show Icons</label><br />
+                    <hr class="separator-line" />
+                    <label>DropDown Height: <input class="input-numeric" type="number" ng-model="comboOptions.dropDownHeight"/></label><br />
+                    <label>DropDown Width: <input class="input-numeric" type="number" ng-model="comboOptions.dropDownWidth"/></label><br />
+                    <label>DropDown Items: <input class="input-numeric" type="number" ng-model="comboOptions.maxDropDownItems"/></label><br />
+                </div>
+                <br style="clear:both;"/>
+                <div class="feature-help">
+                    <p><span class="initial-space"></span>IntegralUI ComboBox is a native AngularJS directive which acts as a dropdown list component. Using options in right panel, you can check out some of the built-in properties of the ComboBox directive:</p>
+                     <ul class="feature-points">
+                        <li><span style="color:#c60d0d">enabled</span> - determines whether the ComboBox is enabled or disabled</li>
+                        <li><span style="color:#c60d0d">integralHeight</span> - when true, the height of the dropdown list is based on items number shown in whole</li>
+                        <li><span style="color:#c60d0d">rtl</span> - changes the ComboBox layout to left-to-right or right-to-left </li>
+                        <li><span style="color:#c60d0d">showIcons</span> - determines whether items are displayed with their icon</li>
+                        <li><span style="color:#c60d0d">dropDownWidtht</span> - specifies the width of the dropdown list, which can be larger or equal to ComboBox width</li>
+                        <li><span style="color:#c60d0d">dropDownHeight</span> - specifies the height of the dropdown list</li>
+                        <li><span style="color:#c60d0d">maxDropDownItems</span> - determines how many items are visible in dropdownlist</li>
+                    </ul>
+                    <p style="margin:40px 0 5px 0"><span class="initial-space"></span>Other features:</p>
+                    <ul class="feature-list">
+                        <li><a href="events.html">Events</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

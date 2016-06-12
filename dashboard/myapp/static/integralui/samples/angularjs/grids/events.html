@@ -1,0 +1,459 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Grids - Events</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/integralui.css" />
+    <link rel="stylesheet" href="../../../css/integralui.treegrid.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-flat-blue.css" />
+    <script type="text/javascript" src="../../../external/angular.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.lists.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.treegrid.min.js"></script>
+    <script type="text/javascript">
+ 		angular
+			.module("appModule", ["integralui"])
+			.controller("appCtrl", ["$scope", "IntegralUITreeGridService", "$timeout", function($scope, $gridService, $timeout){
+				$scope.gridName = "gridSample";
+				$scope.sampleRows = [];
+				$scope.defaultIcon = "icons-medium empty-doc";
+
+				$scope.sampleColumns = [
+					{ id: 1, headerText: "Customer/Order ID", headerAlignment: "center", width: 180 },
+					{ id: 2, headerText: "Ordered", headerAlignment: "center", contentAlignment: "center", width: 90 },
+					{ id: 3, headerText: "Shipped", headerAlignment: "center", contentAlignment: "center", width: 90 },
+					{ id: 4, headerText: "Ship Via", headerAlignment: "center", width: 125 },
+					{ id: 5, headerText: "Freight", headerAlignment: "center", contentAlignment: "right", width: 80 },
+					{ id: 6, headerText: "Address", headerAlignment: "center", width: 200 },
+					{ id: 7, headerText: "City", headerAlignment: "center" },
+					{ id: 8, headerText: "Country", headerAlignment: "center" }
+
+				];
+
+				$scope.flatData = [
+					{ 
+						id: 1,
+						icon: "icons-medium people",
+						text: "Piccolo und mehr",
+						cells: [{ cid: 1, text: "Piccolo und mehr" }, { cid: 6, text: "Geislweg 14" }, { cid: 7, text: "Salzburg" }, { cid: 8, text: "Austria" }]
+					},
+					{ 
+						id: 11,
+						pid: 1,
+						text: "Order #10259",
+						cells: [{ cid: 1, text: "10259" }, { cid: 2, text: "9/13/2012" }, { cid: 3, text: "9/27/2012" }, { cid: 4, text: "Federal Shipping" }, { cid: 5, text: "360.63" }]
+					},
+					{ 
+						id: 12,
+						pid: 1,
+						text: "Order #11094",
+						cells: [{ cid: 1, text: "11094" }, { cid: 2, text: "1/20/2013" }, { cid: 3, text: "2/5/2013" }, { cid: 4, text: "Federal Shipping" }, { cid: 5, text: "200.14" }]
+					},
+					{ 
+						id: 2,
+						icon: "icons-medium people",
+						text: "Frankenversand",
+						cells: [{ cid: 1, text: "Frankenversand" }, { cid: 6, text: "Berliner Platz 43" }, { cid: 7, text: "München" }, { cid: 8, text: "Germany" }]
+					},
+					{ 
+						id: 21,
+						pid: 2,
+						text: "Order #11536",
+						cells: [{ cid: 1, text: "11536" }, { cid: 2, text: "12/9/2013" }, { cid: 3, text: "1/7/2014" }, { cid: 4, text: "Speedy Express" }, { cid: 5, text: "85.53" } ]
+					},
+					{ 
+						id: 22,
+						pid: 2,
+						text: "Order #14472",
+						cells: [{ cid: 1, text: "14472" }, { cid: 2, text: "11/14/2014" }, { cid: 3, text: "11/25/2014" }, { cid: 4, text: "Speedy Express" }, { cid: 5, text: "112.30" } ]
+					},
+					{ 
+						id: 3,
+						icon: "icons-medium people",
+						text: "Laughing Bacchus Wine Cellars",
+						cells: [{ cid: 1, text: "Laughing Bacchus Wine Cellars" }, { cid: 6, text: "1900 Oak St." }, { cid: 7, text: "Vancouver" }, { cid: 8, text: "Canada" }]
+					},
+					{ 
+						id: 31,
+						pid: 3,
+						text: "Order #11495",
+						cells: [{ cid: 1, text: "11495" }, { cid: 2, text: "8/7/2013" }, { cid: 3, text: "9/20/2013" }, { cid: 4, text: "United Package" }, { cid: 5, text: "49.28" } ]
+					}
+				];
+				
+				$scope.eventLog = [];
+				
+				$scope.onAfterCollapse = function(e){
+					$scope.eventLog.unshift({ name: "afterCollapse", info: " event was fired for row: " + e.row.text }); 
+				}
+				
+				$scope.onAfterExpand = function(e){
+					$scope.eventLog.unshift({ name: "afterExpand", info: " event was fired for row: " + e.row.text }); 
+				}
+				
+				$scope.onAfterLabelEdit = function(e){
+					$scope.eventLog.unshift({ name: "afterLabelEdit", info: " event was fired for cell: " + e.cell.text }); 
+				}
+				
+				$scope.onAfterSelect = function(e){
+					var eventText = "";
+					if (e.object){
+						if (e.object.headerText)
+							eventText = e.object.headerText;
+						else
+							eventText = e.object.text;
+					}
+
+					$scope.eventLog.unshift({ name: "afterSelect", info: " event was fired for object: " + eventText }); 
+				}
+				
+				$scope.onBeforeCollapse = function(e){
+					$scope.eventLog.unshift({ name: "beforeCollapse", info: " event was fired for row: " + e.row.text }); 
+				}
+				
+				$scope.onBeforeExpand = function(e){
+					$scope.eventLog.unshift({ name: "beforExpand", info: " event was fired for row: " + e.row.text }); 
+				}
+				
+				$scope.onBeforeLabelEdit = function(e){
+					$scope.eventLog.unshift({ name: "beforeLabelEdit", info: " event was fired for cell: " + e.cell.text }); 
+				}
+				
+				$scope.onBeforeSelect = function(e){
+					var eventText = "";
+					if (e.object){
+						if (e.object.headerText)
+							eventText = e.object.headerText;
+						else
+							eventText = e.object.text;
+					}
+
+					$scope.eventLog.unshift({ name: "beforeSelect", info: " event was fired for object: " + eventText }); 
+				}
+				
+				$scope.onCellClick = function(e){
+					var cellText = "TreeGrid";
+					if (e.cell)
+						cellText = e.cell.text;
+					
+					$scope.eventLog.unshift({ name: "cellClick", info: " event was fired when " + cellText + " was clicked" }); 
+					$scope.$apply();
+				}
+				
+				$scope.onColumnClick = function(e){
+					var columnText = "TreeGrid";
+					if (e.column)
+						columnText = e.column.headerText;
+					
+					$scope.eventLog.unshift({ name: "columnClick", info: " event was fired when " + columnText + " was clicked" }); 
+					$scope.$apply();
+				}
+				
+				$scope.onColumnDblClick = function(e){
+					var columnText = "TreeGrid";
+					if (e.column)
+						columnText = e.column.headerText;
+					
+					$scope.eventLog.unshift({ name: "columnDblclick", info: " event was fired when " + columnText + " was double-clicked" }); 
+					$scope.$apply();
+				}
+				
+				$scope.onColumnHover = function(e){
+					$scope.eventLog.unshift({ name: "columnHover", info: " event was fired when the mouse cursor hovers over " + e.column.headerText + " space" }); 
+					$scope.$apply();
+				}
+				
+				$scope.onColumnRightClick = function(e){
+					var columnText = "TreeGrid";
+					if (e.column)
+						columnText = e.column.headerText;
+					
+					$scope.eventLog.unshift({ name: "columnRightclick", info: " event was fired when " + columnText + " was clicked using right mouse button" }); 
+					$scope.$apply();
+				}
+				
+				$scope.onColumnSizeChanged = function(e){
+					$scope.eventLog.unshift({ name: "columnSizechanged", info: " event was fired when width of " + e.column.headerText + " has changed, width set to: " + e.column.width + " pixels" }); 
+				}
+				
+				$scope.onDragEnter = function(e){
+					$scope.eventLog.unshift({ name: "dragEnter", info: " event was fired when row is dragged into TreeGrid space" }); 
+				}
+				
+				$scope.onDragLeave = function(e){
+					$scope.eventLog.unshift({ name: "dragLeave", info: " event was fired when dragged row leaves TreeGrid space" }); 
+				}
+				
+				$scope.onDragOver = function(e){
+					var dragText = "TreeGrid";
+					if (e.targetRow)
+						dragText = e.targetRow.text;
+
+					$scope.eventLog.unshift({ name: "dragOver", info: " event was fired when row is dragged over " + dragText + " space" }); 
+				}
+				
+				$scope.onDragDrop = function(e){
+					var dropText = "TreeGrid";
+					if (e.targetRow)
+						dropText = e.targetRow.text;
+
+					$scope.eventLog.unshift({ name: "dragDrop", info: " event was fired when drag-drop operation is completed over " + dropText + " space" }); 
+				}
+
+				$scope.onKeyDown = function(e){
+					$scope.eventLog.unshift({ name: "keydown", info: " event was fired when key with code " +  e.event.keyCode + " is pressed down" });
+					$scope.$apply(); 
+				}
+				
+				$scope.onKeyPress = function(e){
+					$scope.eventLog.unshift({ name: "keypress", info: " event was fired when key with code " +  e.event.keyCode + " is pressed" }); 
+					$scope.$apply(); 
+				}
+				
+				$scope.onKeyUp = function(e){
+					$scope.eventLog.unshift({ name: "keyup", info: " event was fired when key with code " +  e.event.keyCode + " is released" }); 
+					$scope.$apply(); 
+				}
+				
+				$scope.onRowClick = function(e){
+					var text = "TreeGrid";
+					if (e.row)
+						text = e.row.text;
+					
+					$scope.eventLog.unshift({ name: "rowClick", info: " event was fired when " + text + " was clicked" }); 
+					$scope.$apply();
+				}
+				
+				$scope.onRowDblClick = function(e){
+					var text = "TreeGrid";
+					if (e.row)
+						text = e.row.text;
+					
+					$scope.eventLog.unshift({ name: "rowDblclick", info: " event was fired when " + text + " was double-clicked" }); 
+					$scope.$apply();
+				}
+				
+				$scope.onRowHover = function(e){
+					$scope.eventLog.unshift({ name: "rowHover", info: " event was fired when the mouse cursor hovers over " + e.row.text + " space" }); 
+					$scope.$apply();
+				}
+				
+				$scope.onRowRightClick = function(e){
+					var text = "TreeGrid";
+					if (e.row)
+						text = e.row.text;
+					
+					$scope.eventLog.unshift({ name: "rowRightclick", info: " event was fired when " + text + " was clicked using right mouse button" }); 
+					$scope.$apply();
+				}
+				
+				$scope.onSelectionChanged = function(e){
+					$scope.eventLog.unshift({ name: "selectionChanged", info: " event was fired when selection changes" }); 
+					$scope.$apply();
+				}
+				
+				$scope.onScrollPosChanged = function(e){
+					$scope.eventLog.unshift({ name: "scrollposChanged", info: " event was fired. Current scroll position is: { x: " + e.scrollPos.x + ", y: " + e.scrollPos.y + " }" }); 
+					$scope.$apply();
+				}
+				
+			    $scope.gridEvents = {
+					afterCollapse: function(e){
+						return $scope.onAfterCollapse(e);
+					},
+					afterExpand: function(e){
+						return $scope.onAfterExpand(e);
+					},
+					afterLabelEdit: function(e){
+						return $scope.onAfterLabelEdit(e);
+					},
+					afterSelect: function(e){
+						return $scope.onAfterSelect(e);
+					},
+					beforeCollapse: function(e){
+						return $scope.onBeforeCollapse(e);
+					},
+					beforeExpand: function(e){
+						return $scope.onBeforeExpand(e);
+					},
+					beforeLabelEdit: function(e){
+						return $scope.onBeforeLabelEdit(e);
+					},
+					beforeSelect: function(e){
+						return $scope.onBeforeSelect(e);
+					},
+					cellClick: function(e){
+						return $scope.onCellClick(e);
+					},
+					columnClick: function(e){
+						return $scope.onColumnClick(e);
+					},
+					columnDblClick: function(e){
+						return $scope.onColumnDblClick(e);
+					},
+					columnHover: function(e){
+						return $scope.onColumnHover(e);
+					},
+					columnRightClick: function(e){
+						return $scope.onColumnRightClick(e);
+					},
+					columnSizechanged: function(e){
+						return $scope.onColumnSizeChanged(e);
+					},
+					dragEnter: function(e){
+						return $scope.onDragEnter(e);
+					},
+					dragLeave: function(e){
+						return $scope.onDragLeave(e);
+					},
+					dragOver: function(e){
+						return $scope.onDragOver(e);
+					},
+					dragDrop: function(e){
+						return $scope.onDragDrop(e);
+					},
+					keyDown: function(e){
+						return $scope.onKeyDown(e);
+					},
+					keyPress: function(e){
+						return $scope.onKeyPress(e);
+					},
+					keyUp: function(e){
+						return $scope.onKeyUp(e);
+					},
+					rowClick: function(e){
+						return $scope.onRowClick(e);
+					},
+					rowDblClick: function(e){
+						return $scope.onRowDblClick(e);
+					},
+					rowHover: function(e){
+						return $scope.onRowHover(e);
+					},
+					rowRightClick: function(e){
+						return $scope.onRowRightClick(e);
+					},
+					selectionChanged: function(e){
+						return $scope.onSelectionChanged(e);
+					},
+					scrollPosChanged: function(e){
+						return $scope.onScrollPosChanged(e);
+					}
+			    }
+
+				$scope.clearEventLog = function(){
+					$scope.eventLog.length = 0;
+				}
+
+				var loadTimer = $timeout(function(){
+					$gridService.loadData($scope.gridName, $scope.flatData, null, null, true);
+					$timeout.cancel(loadTimer);
+				}, 1);
+			}]);
+    </script>
+    <style type="text/css">
+		.iui-drop-marker
+		{
+			font-size: 0.75em;
+		}
+    	.control-panel
+    	{
+    		margin: 20px 0;
+    		width: 800px;
+    	}
+		.event-block
+		{
+			background: white;
+			border: thin solid gray;
+			border-radius:3px;
+			width: 800px;
+			height: 200px;
+		}
+		.event-log
+		{
+			list-style-type: none;
+			margin: 2px 0 0 0;
+			padding: 0;
+			height: 170px;
+			overflow: auto;
+		}
+		.event-log li
+		{
+			padding-left: 15px;
+		}
+		.event-log li > span
+		{
+			color: #c60d0d;
+		}
+        .directive
+        {
+        	width: 800px;
+        	height: 300px;
+        }
+   </style>
+</head>
+<body oncontextmenu="return false;">
+	<div class="header">
+        <div class="header-content">
+		    <h1><span style="color:#c60d0d">IntegralUI</span> Studio <span style="font-size:0.75em; font-style:italic">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content" ng-app="appModule">
+        <div class="feature" ng-controller="appCtrl">
+	        <h2 class="feature-title">Grids / Events</h2>
+	        <div class="feature-content" style="width:750px">
+                <iui-treegrid name="{{gridName}}" class="directive" columns="sampleColumns" rows="sampleRows" row-icon="defaultIcon" allow-drag="true" allow-drop="true" label-edit="true" events="gridEvents"  show-footer="false"></iui-treegrid><br />
+                <div class="control-panel">
+                    <div class="event-block">
+						<button type="button" ng-click="clearEventLog()" style="float:right;margin:3px 12px; width:50px">Clear</button>
+						<p style="margin:0 10px; padding: 3px; border-bottom: thin solid #c5c5c5">Event log:</p>
+                        <ul class="event-log">
+							<li ng-repeat="ev in eventLog"><span>{{ev.name}}</span>{{ev.info}}</li>
+						</ul>
+                    </div>
+                </div>
+                <br style="clear:both;"/>
+                <div class="feature-help">
+                    <p><span class="initial-space"></span>This sample presents most of events that are fired from TreeGrid directive. Depending on action, a specific event is fired, which you can handle by simple creating an event handler. Here is list of events that are demonstrated:</p>
+                     <ul class="feature-points">
+                        <li><span style="color:#c60d0d">afterCollapse</span> - Occurs after a row is collapsed</li>
+                        <li><span style="color:#c60d0d">afterEdit</span> - occurs after editing process ends</li>
+                        <li><span style="color:#c60d0d">afterExpand</span> - Occurs after a row is expanded</li>
+                        <li><span style="color:#c60d0d">afterSelect</span> - Occurs after column or row is selected</li>
+                        <li><span style="color:#c60d0d">beforeCollapse</span> - Occurs before a row is collapsed</li>
+                        <li><span style="color:#c60d0d">beforeEdit</span> - occurs before editing process starts</li>
+                        <li><span style="color:#c60d0d">beforeExpand</span> - Occurs before a row is expanded</li>
+                        <li><span style="color:#c60d0d">beforeSelect</span> - Occurs before column or row is selected</li>
+                        <li><span style="color:#c60d0d">cellClick</span> - Occurs when cell is clicked</li>
+                        <li><span style="color:#c60d0d">cellvalueChanging</span> - Occurs before cell value field changes its value</li>
+                        <li><span style="color:#c60d0d">cellvalueChanged</span> - Occurs after cell value field changes its value</li>
+                        <li><span style="color:#c60d0d">columnClick</span> - Occurs when column header is clicked</li>
+                        <li><span style="color:#c60d0d">columnDblclick</span> - Occurs when column header is double-clicked</li>
+                        <li><span style="color:#c60d0d">columnHover</span> - Occurs when the mouse cursor hovers over a column header space</li>
+                        <li><span style="color:#c60d0d">columnRightclick</span> - Occurs when column header is clicked using right mouse button</li>
+                        <li><span style="color:#c60d0d">columnSizechanged</span> - Occurs when column width has changed</li>
+                        <li><span style="color:#c60d0d">dragEnter</span> - Occurs when row is dragged into TreeGrid space</li>
+                        <li><span style="color:#c60d0d">dragLeave</span> - Occurs when dragged row leaves TreeGrid space</li>
+                        <li><span style="color:#c60d0d">dragOver</span> - Occurs when row is dragged over TreeGrid space</li>
+                        <li><span style="color:#c60d0d">dragDrop</span> - Occurs when drag-drop operation is completed</li>
+                        <li><span style="color:#c60d0d">keyDown</span> - Occurs when key is pressed down for the first time</li>
+                        <li><span style="color:#c60d0d">keyPress</span> - Occurs when key is pressed</li>
+                        <li><span style="color:#c60d0d">keyUp</span> - Occurs when key is released</li>
+                        <li><span style="color:#c60d0d">rowClick</span> - Occurs when row is clicked</li>
+                        <li><span style="color:#c60d0d">rowDblclick</span> - Occurs when row is double-clicked</li>
+                        <li><span style="color:#c60d0d">rowHover</span> - Occurs when the mouse cursor hovers over a row space</li>
+                        <li><span style="color:#c60d0d">rowRightclick</span> - Occurs when row is clicked using right mouse button</li>
+                        <li><span style="color:#c60d0d">scrollposChanged</span> - Occurs when scroll position has changed</li>
+                        <li><span style="color:#c60d0d">selectionChanged</span> - Occurs when selection changes</li>
+                    </ul>
+                    <p><span class="initial-space"></span>Depending on some conditions, when handling some of above events you can prevent the default action to proceed, by canceling the operation.</p>
+                    <p><span class="initial-space"></span>In this sample event log will not register add/remove events, because these kind of operations are not demonstrated here.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

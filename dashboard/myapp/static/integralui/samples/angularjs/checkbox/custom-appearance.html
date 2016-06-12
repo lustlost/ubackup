@@ -1,0 +1,191 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>CheckBox - Custom Appearance</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/integralui.checkbox.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-blue.css" />
+    <script type="text/javascript" src="../../../external/angular.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.checkbox.min.js"></script>
+    <script type="text/javascript">
+ 		angular
+			.module("appModule", ["integralui"])
+			.controller("appCtrl", ["$scope", "IntegralUICheckBoxService", function($scope, $ctrlService){
+                $scope.ctrlName = "ctrlSample";
+                $scope.ctrlTheme = "0";
+                $scope.ctrlStyle = null;
+                $scope.ctrlText = "CheckBox";
+                $scope.isThreeState = true;
+
+                var generalClassName = 'checkbox';
+                var generalTitle = "CheckBox";
+
+                $scope.$watch("ctrlTheme", function(newValue, oldValue){
+                    if (newValue != oldValue){
+                        if (newValue > 0){
+                            $scope.isThreeState = newValue >= 3 ? false : true;
+
+                            $scope.ctrlStyle = {
+                                box: {
+                                    general: generalClassName,
+                                    checked: generalClassName + '-checked-' + newValue,
+                                    indeterminate: generalClassName + '-indeterminate-' + newValue,
+                                    unchecked: generalClassName + '-unchecked-' + newValue
+                                }
+                            }
+
+                            switch (newValue){
+                                case '3':
+                                    $scope.ctrlStyle.box.general = generalClassName + '-medium';
+                                    break;
+                                case '5':
+                                    $scope.ctrlStyle.box.general = generalClassName + '-large';
+                                    break;
+                                default:
+                                    $scope.ctrlStyle.box.general = generalClassName;
+                                    break;
+                            }
+
+                            $ctrlService.updateLayout($scope.ctrlName);
+
+                            $scope.ctrlText = generalTitle + newValue;
+                        }
+                        else {
+                            $scope.ctrlStyle = null;
+                            $scope.ctrlText = generalTitle;
+                        }
+                    }
+                });
+		}]);
+    </script>
+    <style type="text/css">
+    input
+    {
+        margin: 7px 0;
+    }
+    .directive
+    {
+    	width: 100px;
+    	height: 25px;
+    }
+    .panel
+    {
+        height: 250px;
+    }
+    .control-panel
+    {
+        padding-left: 20px;
+        width: 250px;
+    }
+    .checkbox
+    {
+        border: 0;
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+    }
+    .checkbox-medium
+    {
+        border: 0;
+        display: inline-block;
+        width: 32px;
+        height: 14px;
+    }
+    .checkbox-large
+    {
+        border: 0;
+        display: inline-block;
+        width: 38px;
+        height: 14px;
+    }
+    .checkbox-checked-1
+    {
+        background-image: url("../../../resources/checkbox/checkbox-checked-1.png");
+    }
+    .checkbox-unchecked-1
+    {
+        background-image: url("../../../resources/checkbox/checkbox-unchecked-1.png");
+    }
+    .checkbox-indeterminate-1
+    {
+        background-image: url("../../../resources/checkbox/checkbox-indeterminate-1.png");
+    }
+    .checkbox-checked-2
+    {
+        background-image: url("../../../resources/checkbox/checkbox-checked-2.png");
+    }
+    .checkbox-unchecked-2
+    {
+        background-image: url("../../../resources/checkbox/checkbox-unchecked-2.png");
+    }
+    .checkbox-indeterminate-2
+    {
+        background-image: url("../../../resources/checkbox/checkbox-indeterminate-2.png");
+    }
+    .checkbox-checked-3
+    {
+        background-image: url("../../../resources/checkbox/checkbox-checked-3.png");
+    }
+    .checkbox-unchecked-3
+    {
+        background-image: url("../../../resources/checkbox/checkbox-unchecked-3.png");
+    }
+    .checkbox-checked-4
+    {
+        background-image: url("../../../resources/checkbox/checkbox-checked-4.png");
+    }
+    .checkbox-unchecked-4
+    {
+        background-image: url("../../../resources/checkbox/checkbox-unchecked-4.png");
+    }
+    .checkbox-checked-5
+    {
+        background-image: url("../../../resources/checkbox/checkbox-checked-5.png");
+    }
+    .checkbox-unchecked-5
+    {
+        background-image: url("../../../resources/checkbox/checkbox-unchecked-5.png");
+    }
+    .checkbox-indeterminate-5
+    {
+        background-image: url("../../../resources/checkbox/checkbox-indeterminate-5.png");
+    }
+    </style>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span style="color:#c60d0d">IntegralUI</span> Studio <span style="font-size:0.75em; font-style:italic">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content" ng-app="appModule">
+        <div class="feature" ng-controller="appCtrl">
+	        <h2 class="feature-title">CheckBox - Custom Appearance</h2>
+	        <div class="feature-content">
+                <div class="panel">
+                    <iui-checkbox name="{{ctrlName}}" class="directive" control-style="ctrlStyle" auto-check="true" three-state="isThreeState" checked="true">{{ctrlText}}</iui-checkbox>
+                </div>
+                <div class="control-panel">
+                    <label>Choose a different appearance: </label><br /><br />
+                    <label><input type="radio" ng-model="ctrlTheme" value="0" /> Default</label><br />
+                    <label><input type="radio" ng-model="ctrlTheme" value="1" /> Option 1</label><br />
+                    <label><input type="radio" ng-model="ctrlTheme" value="2" /> Option 2</label><br />
+                    <label><input type="radio" ng-model="ctrlTheme" value="3" /> Option 3</label><br />
+                    <label><input type="radio" ng-model="ctrlTheme" value="4" /> Option 4</label><br />
+                    <label><input type="radio" ng-model="ctrlTheme" value="5" /> Option 5</label><br />
+                </div>
+                <br style="clear:both;"/>
+                <div class="feature-help">
+                    <p><span class="initial-space"></span>This example shows how to customize the appearance of CheckBox directive.</p>
+                    <p><span class="initial-space"></span>By using the <span style="color:#c60d0d">controlStyle</span> attribute you can change every control part: general appearance, its check box and title. In case of our example we are changing the appearance of check box by replacing the default appearance with custom images.</p>
+                    <p><span class="initial-space"></span>By choosing a different option from panel on right side, you can see how the box of CheckBox control changes. You can apply a different image for each state: checked, indeterminate and unchecked.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

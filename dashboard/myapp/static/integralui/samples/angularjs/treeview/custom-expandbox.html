@@ -1,0 +1,140 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>TreeView - Custom ExpandBox</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/integralui.css" />
+    <link rel="stylesheet" href="../../../css/integralui.treeview.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-flat-blue.css" />
+    <script type="text/javascript" src="../../../external/angular.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.lists.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.treeview.min.js"></script>
+    <script type="text/javascript">
+ 		angular
+			.module("appModule", ["integralui"])
+			.controller("appCtrl", function($scope){
+				$scope.treeName = "treeSample";
+
+				var lockedStyle = {
+					expandBox: {
+						general: 'locked-item'
+					}
+				}
+
+				$scope.items = [
+					{ 
+						id: 1,
+						text: "Favorites",
+						icon: "computer-icons favorites",
+						items: [
+							{ id: 11, pid: 1, text: "Desktop" },
+							{ id: 12, pid: 1, text: "Downloads", icon: "computer-icons downloads" }
+						]
+					},
+					{ 
+						id: 2,
+						text: "Libraries",
+						icon: "computer-icons folder",
+						items: [
+							{ 
+								id: 21, 
+								pid: 2, 
+								text: "Documents", 
+								expanded: false,
+								locked: true,
+								style: lockedStyle,
+								icon: "computer-icons documents",
+								items: [
+									{ id: 211, pid: 21, text: "My Documents" },
+									{ id: 212, pid: 21, text: "Public Documents" }
+								]
+							},
+							{ id: 22, pid: 2, text: "Music", icon: "computer-icons music" },
+							{ id: 23, pid: 2, text: "Pictures", icon: "computer-icons pictures" },
+							{ id: 24, pid: 2, text: "Videos", icon: "computer-icons videos" }
+						]
+					},
+					{ 
+						id: 3,
+						text: "Computer",
+						icon: "computer-icons pc",
+						expanded: false,
+						items: [
+							{ id: 31, pid: 3, text: "Local Disk (C:)", icon: "computer-icons disk" },
+							{ id: 32, pid: 3, text: "Storage (D:)", icon: "computer-icons disk" }
+						]
+					},
+					{ id: 4, text: "Network", icon: "computer-icons network" },
+					{ id: 5, text: "Recycle Bin", icon: "computer-icons recycle" }
+				];
+
+				$scope.onBeforeExpand = function(e){
+					if (e.item && e.item.locked == true)
+						return false;
+				}
+			});
+    </script>
+    <style type="text/css">
+    	.directive
+    	{
+    		border-radius: 0;
+    	}
+    	.iui-treeview-item
+    	{
+    		margin: 1px 0;
+    		padding: 1px 3px;
+    	}
+    	.iui-treeview-item-content
+    	{
+    		margin: 0 2px;
+    	}
+		.iui-treeview-expand-box
+		{
+			background: url(../../../resources/icons-x24.png) no-repeat 0 0;
+			display: inline-block;
+			width: 24px;
+			height: 24px;
+			vertical-align: middle;
+		}
+		.iui-treeview-expand-box-open
+		{
+			background-position: -120px -144px;
+		}
+		.iui-treeview-expand-box-close
+		{
+			background-position: -144px -144px;
+		}
+		.locked-item
+		{
+			background-position: -168px -144px;
+		}
+    </style>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span style="color:#c60d0d">IntegralUI</span> Studio <span style="font-size:0.75em; font-style:italic">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content" ng-app="appModule">
+        <div class="feature" ng-controller="appCtrl">
+	        <h2 class="feature-title">TreeView / Custom ExpandBox</h2>
+	        <div class="feature-content">
+	            <div style="display:inline-block">
+	                <iui-treeview name="{{treeName}}" class="directive" items="items" before-expand="onBeforeExpand(e)"></iui-treeview>
+                    <br style="clear:both;"/>
+                </div>
+                <div class="feature-help" style="margin:0">
+                    <p><span class="initial-space"></span>In above demo, expand boxes are represented by open/close folder icon, and additionally locked items display the locked folder icon.</p>
+                    <p><span class="initial-space"></span>Default CSS classes responsible for expand box appearance are modified and instead of default arrow icons, a set of custom icons are used. Furthermore, one item is marked as locked, that is it cannot become expanded, by handling the beforeExpand event and canceling the expand process. Additionaly, the expand box is changed to a locked folder icon, to make visual reprsentation of the locked state.</p>
+                    <p style="padding-bottom:30px"><span class="initial-space"></span>For more information check out the source code of this sample.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

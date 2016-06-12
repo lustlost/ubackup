@@ -1,0 +1,159 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>TreeView - Export to JSON</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/integralui.css" />
+    <link rel="stylesheet" href="../../../css/integralui.treeview.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-flat-blue.css" />
+    <script type="text/javascript" src="../../../external/angular.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.lists.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.treeview.min.js"></script>
+    <script type="text/javascript">
+ 		angular
+			.module("appModule", ["integralui"])
+			.controller("appCtrl", ["$scope", "$timeout", "IntegralUITreeViewService", function($scope, $timeout, $treeService){
+				$scope.treeName = "treeSample";
+				$scope.items = [];
+				$scope.exportType = 'flat';
+				$scope.itemIcon = "icons-medium empty-doc";
+
+				$scope.dataSource = [
+					{ 
+						directoryID: 1,
+						name: "Favorites",
+						directoryIcon: "icons-medium favorites",
+						children: [
+							{ directoryID: 11, parentID: 1, name: "Desktop" },
+							{ directoryID: 12, parentID: 1, name: "Downloads", directoryIcon: "icons-medium downloads" }
+						]
+					},
+					{ 
+						directoryID: 2,
+						name: "Libraries",
+						directoryIcon: "icons-medium folder",
+						children: [
+							{ 
+								directoryID: 21, 
+								parentID: 2, 
+								name: "Documents", 
+								directoryIcon: "icons-medium documents",
+								isExpanded: false,
+								children: [
+									{ directoryID: 211, parentID: 21, name: "My Documents" },
+									{ directoryID: 212, parentID: 21, name: "Public Documents" }
+								]
+							},
+							{ directoryID: 22, parentID: 2, name: "Music", directoryIcon: "icons-medium music-note" },
+							{ directoryID: 23, parentID: 2, name: "Pictures" },
+							{ directoryID: 24, parentID: 2, name: "Videos", directoryIcon: "icons-medium videos" }
+						]
+					},
+					{ 
+						directoryID: 3,
+						name: "Computer",
+						directoryIcon: "icons-medium pc",
+						isExpanded: false,
+						children: [
+							{ directoryID: 31, parentID: 3, name: "Local Disk (C:)" },
+							{ directoryID: 32, parentID: 3, name: "Storage (D:)" }
+						]
+					},
+					{ directoryID: 4, name: "Network", directoryIcon: "icons-medium network" },
+					{ directoryID: 5, name: "Recycle Bin", directoryIcon: "icons-medium recycle" }
+				];
+
+				$scope.dataFields = {
+					expanded: 'isExpanded',
+					icon: 'directoryIcon',
+					id: 'directoryID',
+					items: 'children',
+					pid: 'parentID',
+					text: 'name'
+				}
+
+
+				var initTimer = $timeout(function(){
+					$treeService.loadData($scope.treeName, $scope.dataSource, null, $scope.dataFields, false);
+					$treeService.selectedItem($scope.treeName, $scope.dataSource[1].children[0]);
+
+					$timeout.cancel(initTimer);
+				}, 1);
+				
+				$scope.$watch("exportType", function(newValue, oldValue){
+					if (newValue != oldValue){
+
+					}
+				});
+
+				var itemFields = [ 'directoryID', 'parentID', 'name' ];
+
+				$scope.export = function(){
+					var output = $treeService.exportToJSON($scope.treeName, itemFields, $scope.exportType == 'flat', 3);
+
+					console.clear();
+					console.log(output);
+				}
+
+			}]);
+    </script>
+    <style type="text/css">
+		.control-panel
+		{
+			margin-left: 35px;
+			width: 250px;
+		}
+		.feature-content
+		{
+			width: 900px;
+		}
+        .directive
+        {
+        	border: thin solid #dadada;
+        	width: 600px;
+        	height: 350px;
+        }
+    </style>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span class="product-name">IntegralUI</span> Studio <span class="product-platform">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content" ng-app="appModule">
+        <div class="feature" ng-controller="appCtrl">
+	        <h2 class="feature-title">TreeView / Export to JSON</h2>
+	        <div class="feature-content">
+                <iui-treeview name="{{treeName}}" class="directive" items="items" item-icon="itemIcon"></iui-treeview>
+                <div class="control-panel">
+					<label>Choose Data Structure Type:</label><br /><br />
+					<label><input type="radio" ng-model="exportType" value="flat" />Flat List</label>
+					<label><input type="radio" ng-model="exportType" value="tree" />Tree Hierarchy</label>
+					<br /><br /><br />
+					<button ng-click="export()">Export to JSON</button>
+                </div>
+                <div class="control-panel">
+                </div>
+                <br style="clear:both;"/>
+                <div class="feature-help">
+                    <p><span class="initial-space"></span>This example presents how to export the data of TreeView to a JSON formatted string. You can export the data either as a flat list or a tree hierarchy, using only fields that you want to have exported.</p>
+                    <p><span class="initial-space"></span>In our example, although each item has multiple fields set, only small subset of these fields will be exported. That is only their 'id', 'pid' and text' fields will be exported. You can filter which fields you want to include in the final output in your code. The final result is shown in console window.</p>
+                    <p style="padding:0 50px"><strong style="margin-right:15px">Note</strong> As it is shown in the console window, the exported data holds the custom names used as a replacement for default field names of item objects. For more information about binding an arbitrary data source to the TreeView, check out the <a href="data-binding.html">Data Binding</a> sample.</p>
+                    <p><span class="initial-space"></span>To export data, the following method is used:</p>
+                        <ul class="feature-points">
+                            <li><span style="color:#c60d0d">exportToJSON(name, fields, flat, spacing)</span> - exports the content of TreeView to a JSON formatted string</li>
+                        </ul>
+                    </p>
+                    <p><span class="initial-space"></span>For more information check out the source code of this sample.</p>
+                    <p><span class="initial-space"></span>You can use exported data to populate the TreeView on demand from local or remote data source, by simply providing it as parameter to the loadData method.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

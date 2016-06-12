@@ -1,0 +1,112 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>SlideBar - Animation</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/integralui.slidebar.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-flat-blue.css" />
+    <script type="text/javascript" src="../../../external/angular.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.slidebar.min.js"></script>
+    <script type="text/javascript">
+ 		angular
+			.module("appModule", ["integralui"])
+			.controller("appCtrl", ["$scope", "IntegralUISlideBarService", "$timeout", function($scope, $ctrlService, $timeout){
+                $scope.ctrlName = "ctrlSample";
+                $scope.slides = [
+                    { id: 1, name: 'Slide1', text: 'Slide 1' },
+                    { id: 2, name: 'Slide2', text: 'Slide 2' },
+                    { id: 3, name: 'Slide3', text: 'Slide 3' },
+                    { id: 4, name: 'Slide4', text: 'Slide 4' },
+                    { id: 5, name: 'Slide5', text: 'Slide 5' }
+                ];
+                
+                $scope.disableButton = true;
+                $scope.isAnimationAllowed = true;
+
+                $scope.speedLevels = [ 'veryfast', 'fast', 'normal', 'slow', 'veryslow' ];
+                $scope.selSpeed = 'normal';
+
+                $scope.toggleAnimation = function(){
+                    $scope.isAnimationAllowed = !$scope.isAnimationAllowed;
+                }
+
+                $scope.start = function(){
+                    $ctrlService.startAnimation($scope.ctrlName);
+                    $scope.disableButton = true;
+                }
+
+                $scope.stop = function(){
+                    $ctrlService.stopAnimation($scope.ctrlName);
+                    $scope.disableButton = false;
+                }
+               
+		}]);
+    </script>
+    <style type="text/css">
+        .directive
+        {
+            height: 300px;
+        }
+        button
+        {
+            margin: 5px 0;
+            width: 140px;
+        }
+        label
+        {
+            display: inline-block;
+            margin: 5px 0;
+        }
+        .slide-content
+        {
+            padding: 30% 10px;
+            font-size: 2em;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span style="color:#c60d0d">IntegralUI</span> Studio <span style="font-size:0.75em; font-style:italic">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content" ng-app="appModule">
+        <div class="feature" ng-controller="appCtrl">
+	        <h2 class="feature-title">SlideBar / Animation</h2>
+	        <div class="feature-content">
+                <iui-slidebar name="{{ctrlName}}" class="directive" slides="slides" allow-animation="isAnimationAllowed" animation-speed="{{selSpeed}}">
+                    <iui-slide ng-repeat="slide in slides" name="{{slide.name}}">
+                        <div class="slide-content">
+                            {{slide.name}}
+                        </div>
+                    </iui-slide>
+                </iui-slidebar>
+                <div class="control-panel" align="center" style="width:150px">
+                    <label><input type="checkbox" ng-click="toggleAnimation()" checked="checked" /> Allow Animation</label><br />
+                    <label>Speed: <select  ng-model="selSpeed" ng-options="speed as speed for speed in speedLevels"></select></label><br />
+                    <button ng-click="start()" ng-disabled="!isAnimationAllowed || disableButton == true">Start</button><br />
+                    <button ng-click="stop()" ng-disabled="!isAnimationAllowed || disableButton == false">Stop</button>
+                </div>
+                <br style="clear:both;"/>
+                <div class="feature-help">
+                    <p><span class="initial-space"></span>This sample shows how to start/stop animation of slides in SlideBar directive. By clicking on check box on the right, you can change the built-in properties:</p>
+                     <ul class="feature-points">
+                        <li><span style="color:#c60d0d">allowAnimation</span> - determines whether changing of slides is animated</li>
+                        <li><span style="color:#c60d0d">animationSpeed</span> - determines the transition speed between slides</li>
+                   </ul>
+                    <p><span class="initial-space"></span>Animations is controlled by two methods:</p>
+                     <ul class="feature-points">
+                        <li><span style="color:#c60d0d">startAnimation</span> - starts slide animation</li>
+                        <li><span style="color:#c60d0d">stopAnimation</span> - stops slide animation</li>
+                   </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

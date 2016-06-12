@@ -1,0 +1,186 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>TreeView - Add/Remove</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/integralui.css" />
+    <link rel="stylesheet" href="../../../css/integralui.treeview.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-flat-blue.css" />
+    <script type="text/javascript" src="../../../external/angular.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.lists.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.treeview.min.js"></script>
+    <script type="text/javascript">
+ 		angular
+			.module("appModule", ["integralui"])
+			.controller("appCtrl", ["$scope", "$timeout", "IntegralUITreeViewService", function($scope, $timeout, $treeService){
+				$scope.data = [];
+				$scope.insertPos = 0;
+				$scope.removePos = 0;
+				$scope.treeName = "treeSample";
+				
+				$scope.disableButtons = true;
+				
+				var itemCount = 0;
+				
+				var getCurrentSelection = function(){
+					return $treeService.selectedItem($scope.treeName);
+				}
+				
+				var createNewItem = function(){
+					itemCount++;
+					return { text: "Item" + itemCount };
+				}
+				
+				$scope.addRoot = function(){
+					$treeService.addItem($scope.treeName, createNewItem());
+				}
+				
+				$scope.addChild = function(){
+					$treeService.addItem($scope.treeName, createNewItem(), getCurrentSelection());
+				}
+				
+				$scope.insertAfter = function(){
+					$treeService.insertItemAfter($scope.treeName, createNewItem(), getCurrentSelection());
+				}
+				
+				$scope.insertAt = function(){
+					$treeService.insertItemAt($scope.treeName, createNewItem(), $scope.insertPos, getCurrentSelection());
+				}
+				
+				$scope.insertBefore = function(){
+					$treeService.insertItemBefore($scope.treeName, createNewItem(), getCurrentSelection());
+				}
+				
+				$scope.remove = function(){
+					$treeService.removeItem($scope.treeName, getCurrentSelection());
+				}
+				
+				$scope.removeAt = function(){
+					$treeService.removeItemAt($scope.treeName,  $scope.removePos, getCurrentSelection());
+				}
+				
+				$scope.clear = function(){
+					$treeService.clearItems($scope.treeName);
+					$scope.disableButtons = true;
+					itemCount = 0;
+				}
+				
+				$scope.onSelectionChanged = function(){
+					$scope.disableButtons = getCurrentSelection() ? false : true;
+					$scope.$apply();
+				}
+					
+				$scope.$watch("insertPos", function(newValue, oldValue){
+					if (isNaN(newValue))
+						$scope.insertPos = oldValue;
+				});
+					
+				$scope.$watch("removePos", function(newValue, oldValue){
+					if (isNaN(newValue))
+						$scope.removePos = oldValue;
+				});
+
+
+				// Code which updates current selection after item is removed
+				var itemIndex = -1;
+				var parent = null;
+
+				$scope.onItemRemoving = function(e){
+					itemIndex = -1;
+
+					parent = $treeService.getItemParent($scope.treeName, e.obj);
+					var list = $treeService.getList($scope.treeName, parent);
+					if (list && list.length > 0)
+						itemIndex = list.indexOf(e.obj);
+				}
+
+				$scope.onItemRemoved = function(e){
+					var updateTimer = $timeout(function(){
+						var list = $treeService.getList($scope.treeName, parent);
+						if (list && list.length > 0){
+							if (itemIndex == list.length)
+								itemIndex = list.length - 1;
+
+							if (itemIndex >= 0 && itemIndex < list.length){
+								if (itemIndex < list.length)
+									$treeService.selectedItem($scope.treeName, list[itemIndex]);
+								else
+									$treeService.selectedItem($scope.treeName, list[list.length-1]);
+							}
+						}
+						else if (parent)
+							$treeService.selectedItem($scope.treeName, parent);
+						else
+							$treeService.selectedItem($scope.treeName, null);
+
+						$timeout.cancel(updateTimer);
+					}, 1);
+				}
+		}]);
+    </script>
+    <style type="text/css">
+		button
+		{
+			margin: 5px 0;
+			width: 125px;
+		}
+		.inline-block
+		{
+			display: inline-block;
+			margin: 3px 0;
+		}
+		.inline-button
+		{
+			width: 85px;
+			margin-right: 3px
+		}
+    </style>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span style="color:#c60d0d">IntegralUI</span> Studio <span style="font-size:0.75em; font-style:italic">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content" ng-app="appModule">
+        <div class="feature" ng-controller="appCtrl">
+	        <h2 class="feature-title">TreeView / Add - Remove</h2>
+	        <div class="feature-content">
+                <iui-treeview name="{{treeName}}" class="directive" items="data" selection-changed="onSelectionChanged()" item-removing="onItemRemoving(e)" item-removed="onItemRemoved(e)"></iui-treeview>
+                <div class="control-panel" align="center" style="width:150px">
+					<button ng-click="addRoot()">Add Root</button><br />
+					<button ng-click="addChild()" ng-disabled="disableButtons">Add Child</button><br />
+					<button ng-click="insertAfter()" ng-disabled="disableButtons">Insert After</button><br />
+					<button ng-click="insertBefore()" ng-disabled="disableButtons">Insert Before</button><br />
+					<div class="inline-block">
+					   <button class="inline-button" ng-click="insertAt()">Insert At</button><input ng-model="insertPos" type="number" min="0" max="100" style="width:35px" />
+					</div>
+					<button ng-click="remove()" ng-disabled="disableButtons">Remove</button><br />
+					<div class="inline-block">
+						<button class="inline-button" ng-click="removeAt()">Remove At</button><input ng-model="removePos" type="number" min="0" max="100" style="width:35px" /><br />
+					</div>
+					<button ng-click="clear()">Clear</button>
+                </div>
+                <br style="clear:both;"/>
+                <div class="feature-help">
+                    <p>In this sample you can create and/or modify a tree hierarchy using several different methods:
+                        <ul class="feature-points">
+                            <li><span style="color:#c60d0d">addItem</span> - adds a new item</li>
+                            <li><span style="color:#c60d0d">insertItemAfter</span> - adds a new item after specified item (in this sample the selected item)</li>
+                            <li><span style="color:#c60d0d">insertItemAt</span> - adds a new item at specified position</li>
+                            <li><span style="color:#c60d0d">insertItemBefore</span> - adds a new item before specified item (in this sample the selected item)</li>
+                            <li><span style="color:#c60d0d">removeItem</span> - removes a item (in this sample the selected item)</li>
+                            <li><span style="color:#c60d0d">removeItemAt</span> - removes a item at specified position from parent collection</li>
+                            <li><span style="color:#c60d0d">clearItems</span> - removes all items</li>
+                        </ul>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

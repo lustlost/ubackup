@@ -1,0 +1,79 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>Accordion - Icons</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/jquery.integralui.accordion.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-blue.css" />
+    <script type="text/javascript" src="../../../external/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="../../../external/jquery.ui.core.min.js"></script>
+    <script type="text/javascript" src="../../../external/jquery.ui.widget.min.js"></script>
+    <script type="text/javascript" src="../../../js/jquery.integralui.widget.min.js"></script>
+    <script type="text/javascript" src="../../../js/jquery.integralui.accordion.min.js"></script>
+    <script type="text/javascript">
+        var $bar = null;
+        $(document).ready(function() {
+            $bar = $('#accordion').accordion({
+                selectedIndex: 1
+                });
+        });
+         
+        function toggleIcons(elem){
+            $bar.accordion("option", "showIcons", elem.checked);
+        }
+    </script>
+    <style type="text/css">
+        .icons
+        {
+	        margin: 2px;
+        }
+    </style>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span style="color:#c60d0d">IntegralUI</span> Studio <span style="font-size:0.75em; font-style:italic">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content">
+        <div class="feature">
+	        <h2 class="feature-title">Accordion / Icons</h2>
+	        <div class="feature-content">
+                <div id="accordion" class="widget">
+                    <h3><span class="icons empty" data-element="icon"></span><span>Art</span></h3>
+                    <div></div>
+                    <h3><span class="icons health" data-element="icon"></span><span>Health</span></h3>
+                    <div></div>
+                    <h3><span class="icons empty" data-element="icon"></span><span>Literature</span></h3>
+                    <div></div>
+                    <h3><span class="icons science" data-element="icon"></span><span>Science</span></h3>
+                    <div></div>
+                </div>
+                <div class="control-panel">
+                    <form name="frm">
+                        <label><input type="checkbox" name="checkIcons" checked="checked" onclick="toggleIcons(this)" /> Show Icons</label><br />
+                    </form>
+                </div>
+                <br style="clear:both;"/>
+                <div class="feature-help">
+                    <p><span class="initial-space"></span>In this sample you can show/hide icons for groups in Accordion widget. By clicking on check box on the right, you can change the built-in properties:</p>
+                     <ul class="feature-points">
+                        <li><span style="color:#c60d0d">showIcons</span> - determines whether an icon is shown before group title</li>
+                    </ul>
+                    <p><span class="initial-space"></span>There are two ways to apply an icon to a group:
+                        <ul class="feature-points">
+                            <li>By using HTML to set the <span style="color:#c60d0d">data-element</span> attribute to <span style="color:#c60d0d">icon</span>, or</li>
+                            <li>By using JavaScript to set the <span style="color:#c60d0d">icon</span> variable of group to some HTML code. You can use &lt;img&gt;, &lt;span&gt; or any other tag to add an image. Usually a &lt;span&gt; tag is used with image painted as background. For example:<br /><br />
+                                group.icon = "&lt;span class='icons heart' data-element='icon'&gt;&lt;/span&gt;";
+                            </li>
+                        </ul>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

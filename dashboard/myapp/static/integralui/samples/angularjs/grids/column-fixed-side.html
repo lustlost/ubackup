@@ -1,0 +1,247 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>Grids - Columns Fixed on Side</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/integralui.css" />
+    <link rel="stylesheet" href="../../../css/integralui.treegrid.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-flat-blue.css" />
+    <script type="text/javascript" src="../../../external/angular.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.lists.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.treegrid.min.js"></script>
+    <script type="text/javascript">
+ 		angular
+			.module("appModule", ["integralui"])
+			.controller("appCtrl", ["$scope", "IntegralUITreeGridService", "$timeout", function($scope, $gridService, $timeout){
+				$scope.gridName = "gridSample";
+				$scope.fixedSide = 'none';
+
+				var supressCallback = false;
+
+				$scope.columns = [
+					{ name: 'Column1', headerText: 'Header1', footerText: 'Footer1', width: 200 },
+					{ name: 'Column2', headerText: 'Header2', footerText: 'Footer2', width: 90, fixed: 'left' },
+					{ name: 'Column3', headerText: 'Header3', footerText: 'Footer3', width: 120 },
+					{ name: 'Column4', headerText: 'Header4', footerText: 'Footer4', width: 100, fixed: 'right' },
+					{ name: 'Column5', headerText: 'Header5', footerText: 'Footer5', width: 120 }
+				];
+
+				$scope.rows = [
+					{ 
+						id: 1,
+						text: "Item1",
+						cells: [{ text: "Item11" }, { text: "Item12" }, { text: "Item13" }, { text: "Item14" }, { text: "Item15" }],
+						rows: [
+							{ id: 11, pid: 1, text: "Item11", cells: [{ text: "Item111" }, { text: "Item112" }, { text: "Item113" }, { text: "Item114" }, { text: "Item115" }] },
+							{ 
+								id: 12,
+								pid: 1,
+								text: "Item12",
+								cells: [{ text: "Item121" }, { text: "Item122" }, { text: "Item123" }, { text: "Item124" }, { text: "Item125" }],
+								rows: [
+									{ id: 121, pid: 12, text: "Item121", cells: [{ text: "Item1211" }, { text: "Item1212" }, { text: "Item1213" }, { text: "Item1214" }, { text: "Item1215" }] },
+									{ 
+										id: 122,
+										pid: 12,
+										text: "Item122", 
+										cells: [{ text: "Item1221" }, { text: "Item1222" }, { text: "Item1223" }, { text: "Item1224" }, { text: "Item1225" }],
+										expanded: false,
+										rows: [
+											{ id: 1221, pid: 122, text: "Item1221", cells: [{ text: "Item12211" }, { text: "Item12212" }, { text: "Item12213" }, { text: "Item12214" }, { text: "Item12215" }] },
+											{ id: 1222, pid: 122, text: "Item1222", cells: [{ text: "Item12221" }, { text: "Item12222" }, { text: "Item12223" }, { text: "Item12224" }, { text: "Item12225" }] }
+										]
+									},
+									{ id: 123, pid: 12, text: "Item123", cells: [{ text: "Item1231" }, { text: "Item1232" }, { text: "Item1233" }, { text: "Item1234" }, { text: "Item1235" }] }
+								]
+							},
+							{ id: 13, pid: 1, text: "Item13", cells: [{ text: "Item131" }, { text: "Item132" }, { text: "Item133" }, { text: "Item134" }, { text: "Item135" }] },
+							{
+								id: 14,
+								pid: 1,
+								text: "Item14",
+								cells: [{ text: "Item141" }, { text: "Item142" }, { text: "Item143" }, { text: "Item144" }, { text: "Item145" }],
+								rows: [
+									{ id: 141, pid: 14, text: "Item141", cells: [{ text: "Item1411" }, { text: "Item1412" }, { text: "Item1413" }, { text: "Item1414" }, { text: "Item1415" }] },
+									{ id: 142, pid: 14, text: "Item142", cells: [{ text: "Item1421" }, { text: "Item1422" }, { text: "Item1423" }, { text: "Item1424" }, { text: "Item1425" }] }
+								]
+							}
+						]
+					},
+					{
+						id: 2,
+						text: "Item2",
+						cells: [{ text: "Item21" }, { text: "Item22" }, { text: "Item23" }, { text: "Item24" }, { text: "Item25" }],
+						expanded: false,
+						rows: [
+							{ id: 21, pid: 2, text: "Item21", cells: [{ text: "Item211" }, { text: "Item212" }, { text: "Item213" }, { text: "Item214" }, { text: "Item215" }] },
+							{ id: 22, pid: 2, text: "Item22", cells: [{ text: "Item221" }, { text: "Item222" }, { text: "Item223" }, { text: "Item224" }, { text: "Item225" }] },
+							{
+								id: 23,
+								pid: 2,
+								text: "Item23", 
+								cells: [{ text: "Item231" }, { text: "Item232" }, { text: "Item233" }, { text: "Item234" }, { text: "Item235" }],
+								expanded: false,
+								rows: [
+									{ id: 231, pid: 23, text: "Item231", cells: [{ text: "Item2311" }, { text: "Item2312" }, { text: "Item2313" }, { text: "Item2314" }, { text: "Item2315" }] },
+									{ id: 232, pid: 23, text: "Item232", cells: [{ text: "Item2321" }, { text: "Item2322" }, { text: "Item2323" }, { text: "Item2324" }, { text: "Item2325" }] }
+								]
+							}
+						]
+					},
+					{ id: 3, text: "Item3", cells: [{ text: "Item31" }, { text: "Item32" }, { text: "Item33" }, { text: "Item34" }, { text: "Item35" }] }
+				];
+
+				var initTimer = $timeout(function(){
+					$scope.selColumn = $scope.columns[0];
+
+					$timeout.cancel(initTimer);
+				}, 1);
+
+				$scope.onAfterSelect = function(e){
+					if (supressCallback)
+						return;
+
+					if (e.object && e.object.type == 'column'){
+						$scope.selColumn = $gridService.selectedColumn($scope.gridName);
+						$scope.$apply();
+					}
+				}
+
+				$scope.$watch("selColumn", function(newValue, oldValue){
+					if (newValue != oldValue){
+						var selTimer = $timeout(function(){
+							supressCallback = true;
+
+							if (newValue)
+								$scope.fixedSide = newValue.fixed != undefined ? newValue.fixed : 'none';
+
+							$gridService.selectedColumn($scope.gridName, newValue);
+							supressCallback = false;
+
+							$timeout.cancel(selTimer);
+						}, 1);
+					}
+				});
+
+				$scope.$watch("fixedSide", function(newValue, oldValue){
+					if (supressCallback)
+						return;
+
+					if (newValue != oldValue && $scope.selColumn.fixed != newValue){
+						$scope.selColumn.fixed = newValue;
+						$gridService.updateLayout($scope.gridName);
+					}
+				});
+			}]);
+    </script>
+    <style type="text/css">
+		.control-panel
+		{
+			margin-left: 35px;
+			width: 250px;
+		}
+		.feature-content
+		{
+			width: 900px;
+		}
+        .directive
+        {
+        	border: thin solid #dadada;
+        	width: 600px;
+        	height: 350px;
+        }
+        select
+        {
+        	margin: 5px 0 15px 0;
+        	width: 100px;
+        }
+        button
+        {
+        	width: 100%;
+        	padding: 5px;
+        }
+        .fixedVal
+        {
+        	margin: 0 5px;
+        }
+		.iui-treegrid-column-header-left, .iui-treegrid-column-footer-left
+		{
+			border-right: 1px solid #808080;
+		}
+		.iui-treegrid-column-header-right, .iui-treegrid-column-footer-right
+		{
+			border-left: 1px solid #808080;
+		}
+		.iui-treegrid-rows-left
+		{
+			border-right: 1px solid #808080;
+		}
+		.iui-treegrid-rows-right
+		{
+			border-left: 1px solid #808080;
+		}
+        .iui-treegrid-column-header-left td, .iui-treegrid-column-header-right td
+        {
+        	background: #969696;
+        	color: white;
+        	border: thin solid #808080;
+        }
+        .iui-treegrid-column-footer-left td, .iui-treegrid-column-footer-right td
+        {
+        	background: #dedede;
+        }
+        .iui-treegrid-block-left tr, .iui-treegrid-block-right tr
+        {
+        	background: #f2f2f2;
+        }
+		.iui-treegrid tr.iui-treegrid-row-selected
+		{
+			background-color: #428bca;
+			color: white;
+		}
+		.iui-treegrid tr.iui-treegrid-row-hovered
+		{
+			background-color: #a6c9e6;
+		}
+   </style>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span style="color:#c60d0d">IntegralUI</span> Studio <span style="font-size:0.75em; font-style:italic">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content" ng-app="appModule">
+        <div class="feature" ng-controller="appCtrl">
+	        <h2 class="feature-title">Grids / Columns Fixed on Side</h2>
+	        <div class="feature-content">
+                <iui-treegrid name="{{gridName}}" class="directive" columns="columns" rows="rows" after-select="onAfterSelect(e)" grid-lines="gridLines" show-footer="false"></iui-treegrid>
+                <div class="control-panel">
+                	<label>Selected Column: </label>
+                	<select ng-model="selColumn" ng-options="column.name for column in columns"></select>
+					<p class="alignBlock">FIxed on Side: </p>
+					<label class="fixedVal"><input type="radio" ng-model="fixedSide" value="none" />None</label>
+					<label class="fixedVal"><input type="radio" ng-model="fixedSide" value="left" />Left</label>
+					<label class="fixedVal"><input type="radio" ng-model="fixedSide" value="right" />Right</label><br />
+                </div>
+                <br style="clear:both;"/>
+                <div class="feature-help">
+                    <p><span class="initial-space"></span>This example shows how to fix columns on left or right side in TreeGrid directive. On right panel you can find controls with which you can determine whether the column is fixed and on which side. By default column is not fixed.</p>
+                    <p><span class="initial-space"></span>Each column object has a field which allows you to set the side at which column will be fixed.</p>
+                        <ul class="feature-points">
+                            <li><span style="color:#0000ff">fixed</span> - Determines the side at which column will be fixed. This field accepts one of the following values: <span style="color:#c60d0d">'none'</span>, <span style="color:#c60d0d">'left'</span> or <span style="color:#c60d0d">'right'</span>.</li>
+                        </ul>
+                    </p>
+                    <p><span class="initial-space"></span>When column is fixed on left or right side, it is still resizable.</p>
+                    <p><span class="initial-space"></span>Column reordering is also avaliable withing the same group of columns base don their fixed value. However, you can't drag-drop a column fixed on left side and drop it over column which is not fixed or it is fixed on right side.</p>
+                    <p><span class="initial-space"></span>You can customize the appearance of fixed columns by using corresponding CSS styles. You can find more information in code of this sample.</p>
+               </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,270 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>TreeView - Overview</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/integralui.css" />
+    <link rel="stylesheet" href="../../../css/integralui.checkbox.css" />
+    <link rel="stylesheet" href="../../../css/integralui.treeview.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-flat-blue.css" />
+    <script type="text/javascript" src="../../../external/angular.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.lists.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.checkbox.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.treeview.min.js"></script>
+    <script type="text/javascript">
+ 		angular
+			.module("appModule", ["integralui"])
+			.controller("appCtrl", ["$scope", "$timeout", "IntegralUITreeViewService", function($scope, $timeout, $treeService){
+				$scope.treeName = "treeSample";
+
+				$scope.checkBoxSettings = {
+					autoCheck: true,
+					threeState: true
+				}
+
+				$scope.data = [
+					{ 
+						id: 1,
+						text: "Books",
+						icon: "icons-medium library",
+						items: [
+							{ id: 11, pid: 1, text: "Art"  },
+							{ 
+								id: 12,
+								pid: 1,
+								text: "Business",
+								icon: "icons-medium people",
+								items: [
+									{ id: 121, pid: 12, text: "Economics" },
+									{ 
+										id: 122,
+										pid: 12,
+										checkState: 'checked',
+										text: "Investing", 
+										expanded: false,
+										icon: "icons-medium economics",
+										items: [
+											{ id: 1221, pid: 122, text: "Bonds" },
+											{ id: 1222, pid: 122, text: "Options" },
+											{ id: 1223, pid: 122, text: "Stocks" }
+										]
+									},
+									{ id: 123, pid: 12, text: "Management" },
+									{ id: 124, pid: 12, text: "Small Business" }
+								]
+							},
+							{ id: 13, pid: 1, text: "Health", icon: "icons-medium heart", checkState: 'checked' },
+							{ id: 14, pid: 1, text: "Literature" },
+							{ 
+								id: 15,
+								pid: 1,
+								text: "Science",
+								expanded: false,
+								items: [
+									{ id: 151, pid: 15, text: "Astronomy" },
+									{ id: 152, pid: 15, text: "Mathematics" },
+									{ id: 153, pid: 15, text: "Evolution" },
+									{ id: 154, pid: 15, text: "Nature" }
+								]
+							}
+						]
+					},
+					{ id: 2, text: "Computers" },
+					{
+						id: 3,
+						checkState: 'checked',
+						text: "Electronics",
+						items: [
+							{ id: 31, pid: 3, text: "Camera", icon: "icons-medium camera" },
+							{ id: 32, pid: 3, text: "Cell Phones" },
+							{ id: 33, pid: 3, text: "Video Game Consoles" }
+						]
+					},
+					{ 
+						id: 4,
+						text: "Music", 
+						expanded: false,
+						icon: "icons-medium album",
+						items: [
+							{ id: 41, pid: 4, text: "Blues" },
+							{ id: 42, pid: 4, text: "Classic Rock" },
+							{ id: 43, pid: 4, text: "Pop" },
+							{ id: 44, pid: 4, text: "Jazz" }
+						]
+					},
+					{ 
+						id: 5,
+						text: "Software",
+						icon: "icons-medium software",
+						items: [
+							{ id: 51, pid: 5, text: "Games", checkState: 'checked' },
+							{ id: 52, pid: 5, text: "Operating Systems" },
+							{ id: 53, pid: 5, text: "Network & Servers" },
+							{ id: 54, pid: 5, text: "Security" }
+						]
+					},
+					{ 
+						id: 6,
+						text: "Sports",
+						expanded: false,
+						icon: "icons-medium sports",
+						items: [
+							{ id: 61, pid: 6, text: "Baseball" },
+							{ id: 62, pid: 6, text: "Martial Arts", checkState: 'checked' },
+							{ id: 63, pid: 6, text: "Running" },
+							{ 
+								id: 64,
+								pid: 6,
+								text: "Tennis",
+								expanded: false,
+								items: [
+									{ id: 641, pid: 64, text: "Accessories" },
+									{ id: 642, pid: 64, text: "Balls" },
+									{ id: 643, pid: 64, text: "Racquets" }
+								]
+							}
+						]
+					},
+					{ id: 7, text: "Video Games" },
+					{ id: 8, text: "Watches", icon: "icons-medium clock" }
+				];
+			}]);
+    </script>
+    <style type="text/css">
+	    .directive
+	    {
+	    	height: 460px;
+	    }
+        .feature-content
+        {
+	        width: 800px;
+        }
+		.feature-list li a
+		{
+        	padding: 3px 5px;
+			text-decoration: none;
+		}
+		.feature-list
+		{
+			color: black;
+			line-height: 1.2em;
+			list-style-type: none;
+			margin: 0;
+			padding: 5px 0;
+			width: 350px;
+		}
+		.feature-list li
+		{
+			display: inline;
+			float: left;
+			padding: 3px 0;
+			width: 50%;
+		}
+       .feature-list li a:hover
+        {
+        	background: #9F0B0B;
+        	border: thin solid #3E0404;
+        	color: white;
+        	padding: 3px 5px;
+        	text-decoration: none;
+        }
+        .control-panel
+        {
+	        width: 250px;
+        }
+		.iui-treeview-item
+		{
+			margin: 3px 0;
+		}
+	    .iui-checkbox-box
+	    {
+	        border: 0;
+	        width: 16px;
+	        height: 16px;
+	    }
+	    .iui-checkbox-checked
+	    {
+	        background-image: url("../../../resources/checkbox/checkbox-checked.png");
+	    }
+	    .iui-checkbox-unchecked
+	    {
+	        background-image: url("../../../resources/checkbox/checkbox-unchecked.png");
+	    }
+	    .iui-checkbox-indeterminate
+	    {
+	        background-image: url("../../../resources/checkbox/checkbox-indeterminate.png");
+	    }
+		.iui-treeview-expand-box-open:hover
+		{
+			background: url(../../../resources/expandbox/expand-blue.png) no-repeat 0 0;
+		}
+		.iui-treeview-expand-box-close:hover
+		{
+			background: url(../../../resources/expandbox/collapse-blue.png) no-repeat 0 0;
+		}
+    </style>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span class="product-name">IntegralUI</span> Studio <span class="product-platform">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content" ng-app="appModule">
+        <div class="feature" ng-controller="appCtrl">
+	        <h2 class="feature-title">TreeView / Overview</h2>
+	        <div class="feature-content">
+                <iui-treeview name="{{treeName}}" class="directive" items="data" show-check-boxes="true" checkbox-settings="checkBoxSettings" ></iui-treeview>
+                <div class="control-panel">
+                    <h3>New Samples:</h3>
+                    <ul class="feature-list">
+                        <li><a href="animated-expandbox.html">Animated ExpandBox</a></li>
+                        <li><a href="custom-expandbox.html">Custom ExpandBox</a></li>
+                        <li><a href="item-templates.html">Item Templates</a></li>
+                        <li><a href="move-items.html">Move Items</a></li>
+                        <li><a href="toolbox.html">Toolbox</a></li>
+                    </ul>
+	                <br style="clear:both;"/><br/>
+                    <h3>Sample List:</h3>
+                    <ul class="feature-list">
+                        <li><a href="add-remove.html">Add/Remove</a></li>
+                        <li><a href="check-box.html">Check Boxes</a></li>
+                        <li><a href="context-menu.html">Context Menu</a></li>
+                        <li><a href="data-binding.html">Data Binding</a></li>
+                        <li><a href="drag-drop.html">Drag-Drop</a></li>
+                        <li><a href="drag-drop-to-tree-grid.html">Drag-Drop to TreeGrid</a></li>
+                        <li><a href="dynamically-add-items.html">Dynamically Add Items</a></li>
+                        <li><a href="even-odd-items.html">Even/Odd Items</a></li>
+                        <li><a href="events.html">Events</a></li>
+                        <li><a href="expand-on-hover.html">Expand on Hover</a></li>
+                        <li><a href="export-json.html">Export to JSON</a></li>
+                        <li><a href="fast-load.html">Fast Load</a></li>
+                        <li><a href="filter.html">Filter</a></li>
+                        <li><a href="highlight-items.html">Highlight Items</a></li>
+                        <li><a href="icons.html">Icons</a></li>
+                        <li><a href="label-edit.html">Label Edit</a></li>
+                        <li><a href="multi-select.html">Multiple Selection</a></li>
+                        <li><a href="loading-animations.html">Loading Animations</a></li>
+                        <li><a href="load-icon.html">Loading Icon</a></li>
+                        <li><a href="rtl.html">Right to Left</a></li>
+                        <li><a href="selection-events.html">Selection Events</a></li>
+                        <li><a href="sorting.html">Sorting</a></li>
+                        <li><a href="status-icons.html">Status Icons</a></li>
+                    </ul>
+                </div>
+                <br style="clear:both;"/>
+                <div class="feature-help">
+                    <p><span class="initial-space"></span>IntegralUI TreeView is a high performance native AngularJS directive which allows you to create and modify hierarchical structures on the fly. You can quickly load data locally, remotely, or on demand. It has multiple methods optimized to quickly update the tree structure and current view.</p>
+                    <p><span class="initial-space"></span>TreeView appearance is fully customizable, including icons and images that represent custom state of each item. There are multiple styles available, which allows you to customize the appearance of each control part, dynamically from code.</p>
+                    <p><span class="initial-space"></span>Drag Drop is also included and allows you to move items within the same TreeView, to other TreeViews or other controls like TreeGrid. During these operations many events are triggered, like: DragEnter, DragLeave, DragOver, DropDrop, which you can override and add your own code.</p>
+                    <p><span class="initial-space"></span>Using links in right panel, you can check out different features of TreeView directive.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

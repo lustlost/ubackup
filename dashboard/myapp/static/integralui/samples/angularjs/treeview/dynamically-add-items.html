@@ -1,0 +1,194 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>TreeView - Dynamically Add Items</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/integralui.css" />
+    <link rel="stylesheet" href="../../../css/integralui.treeview.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-flat-blue.css" />
+    <script type="text/javascript" src="../../../external/angular.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.lists.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.treeview.min.js"></script>
+    <script type="text/javascript">
+ 		angular
+			.module("appModule", ["integralui"])
+			.controller("appCtrl", ["$scope", "IntegralUITreeViewService", "$timeout", function($scope, $treeService, $timeout){
+				$scope.treeName = "treeSample";
+
+				$scope.items = [
+					{ id: 1, text: "Item1" },
+					{ 
+						id: 2, 
+						text: "Item2",
+						items: [
+							{ id: 21, pid: 2, text: "Item21" }
+						]
+					},
+				];
+
+				// Code which updates current selection after item is removed
+				var itemIndex = -1;
+				var parent = null;
+
+				$scope.onItemRemoving = function(e){
+					itemIndex = -1;
+
+					parent = $treeService.getItemParent($scope.treeName, e.obj);
+					var list = $treeService.getList($scope.treeName, parent);
+					if (list && list.length > 0)
+						itemIndex = list.indexOf(e.obj);
+				}
+
+				$scope.onItemRemoved = function(e){
+					var updateTimer = $timeout(function(){
+						var list = $treeService.getList($scope.treeName, parent);
+						if (list && list.length > 0){
+							if (itemIndex == list.length)
+								itemIndex = list.length - 1;
+
+							if (itemIndex >= 0 && itemIndex < list.length){
+								if (itemIndex < list.length)
+									$treeService.selectedItem($scope.treeName, list[itemIndex]);
+								else
+									$treeService.selectedItem($scope.treeName, list[list.length-1]);
+							}
+						}
+						else if (parent)
+							$treeService.selectedItem($scope.treeName, parent);
+						else
+							$treeService.selectedItem($scope.treeName, null);
+
+						$timeout.cancel(updateTimer);
+					}, 1);
+				}
+
+				var itemCount = 3;
+				var newItem = null;
+
+				$scope.onAddItem = function(){
+					itemCount++;
+
+					newItem = { 
+						id: itemCount, 
+						text: ""
+					}
+
+					$treeService.insertItemAt($scope.treeName, newItem, 0, $treeService.selectedItem($scope.treeName));
+
+					var delayTimer = $timeout(function(){
+						$treeService.openEditor($scope.treeName, newItem);
+
+						$timeout.cancel(delayTimer);
+					}, 50);
+				}
+
+				$scope.onRemoveItem = function(){
+					var selItem = $treeService.selectedItem($scope.treeName);
+					$treeService.removeItem($scope.treeName, selItem);
+				}
+
+				var isItemEmpty = function(item){
+					return item.text == '';
+				}
+
+				$scope.onLostFocus = function(e){
+					if (e.edit && newItem && isItemEmpty(newItem))
+						$treeService.removeItem($scope.treeName, newItem);
+				}
+
+				$scope.onAfterLabelEdit = function(e){
+					if (e.item && e.item.text != '')
+						$treeService.selectedItem($scope.treeName, e.item);
+				}
+
+                $scope.onItemClick = function(e){
+                    if (!e.item)
+                        $treeService.clearSelection($scope.treeName);
+                }
+			}]);
+    </script>
+    <style type="text/css">
+	    .iui-treeview-item
+	    {
+	    	margin: 2px 0;
+	    }
+	    .top-panel
+	    {
+	    	background: #2455b0;
+	    	padding: 3px;
+	    	margin-bottom: 1px;
+	    	width: 400px;
+	    }
+	    button
+	    {
+	    	background: transparent;
+	    	border: thin solid transparent;
+	    	color: white;
+	    	padding: 5px 10px;
+	    	display: inline-block;
+			vertical-align: middle;
+	    }
+	    button:hover
+	    {
+			background-color: #153268;
+	    	border: thin solid #0F244A;
+	    }
+	    .icon-add
+	    {
+	    	background: url("../../../resources/icons-x24.png") no-repeat -48px -120px;
+	    	display: inline-block;
+	    	width: 24px;
+	    	height: 24px;
+			vertical-align: middle;
+	    }
+	    .icon-remove
+	    {
+	    	background: url("../../../resources/icons-x24.png") no-repeat -72px -120px;
+	    	display: inline-block;
+	    	width: 24px;
+	    	height: 24px;
+			vertical-align: middle;
+	    }
+    </style>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span class="product-name">IntegralUI</span> Studio <span class="product-platform">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content" ng-app="appModule">
+        <div class="feature" ng-controller="appCtrl">
+	        <h2 class="feature-title">TreeView / Dynamically Add Items</h2>
+	        <div class="feature-content">
+	        	<div class="top-panel">
+	        		<button ng-click="onAddItem()"><span class="icon-add"></span>Add New Item</button>
+	        		<button ng-click="onRemoveItem()"><span class="icon-remove"></span>Remove Item</button>
+	        	</div>
+                <iui-treeview name="{{treeName}}" class="directive" items="items" item-removing="onItemRemoving(e)" item-removed="onItemRemoved(e)" label-edit="true" lost-focus="onLostFocus(e)" after-label-edit="onAfterLabelEdit(e)" item-click="onItemClick(e)"></iui-treeview>
+                <br style="clear:both;"/>
+                <div class="feature-help">
+                    <p><span class="initial-space"></span>This sample shows how to add new items dynamically by using an <span style="color:#c60d0d">'Add New Item'</span> button which when clicked, will create a new item with input focus set to a textbox. This allows you to quickly add a new item when required, with content set on run-time.</p>
+                    <p><span class="initial-space"></span>When label editor appears, you can enter the value of the editing item. To confirm the changes, press the ENTER key. This will close the editor.</p>
+                    <p><span class="initial-space"></span>If the item is empty (meaning its text value is empty string), the item will be automatically removed, when label editor losses its focus.</p>
+                    <p><span class="initial-space"></span>In this example, the following methods and events are used:</p>
+                        <ul class="feature-points">
+                            <li><span style="color:#c60d0d">insertItemAt</span> - inserts a new item at specified position</li>
+                            <li><span style="color:#c60d0d">openEditor</span> - opens the editor for specified item</li>
+                            <li><span style="color:#c60d0d">removeItem</span> - removes a specified item</li>
+                            <li><span style="color:#c60d0d">lostFocus</span> - occurs when editor loses the input focus</li>
+                            <li><span style="color:#c60d0d">afterLabelEdit</span> - occurs when after label editing is completed</li>
+                        </ul>
+                    </p>
+                    <p><span class="initial-space"></span>For more information check out the source code of this sample.</p>
+                    <br />
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

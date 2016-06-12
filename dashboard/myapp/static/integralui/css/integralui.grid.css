@@ -1,0 +1,310 @@
+.iui-grid
+{
+	border-radius: 3px;
+	padding: 0px;
+	cursor: default;
+	overflow: hidden;
+	position: relative;
+	
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+.iui-grid div /*Compatibility with Bootstrap */
+{
+	-webkit-box-sizing: content-box; /* Safari/Chrome, other WebKit */
+	-moz-box-sizing: content-box;    /* Firefox, other Gecko */
+	box-sizing: content-box; 
+}
+.iui-grid-rtl
+{
+	direction: rtl;
+}
+.iui-grid-block
+{
+	background: white;
+	margin: 0;
+	overflow: hidden;
+	padding: 0;
+	position: relative;
+}
+.iui-grid-block-top
+{
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 9;
+}
+.iui-grid-block-middle
+{
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+.iui-grid-block-left
+{
+	left: 0;
+	position: absolute;
+	top: 0;
+	z-index: 7;
+}
+.iui-grid-block-right
+{
+	position: absolute;
+	right: 0;
+	top: 0;
+	z-index: 6;
+}
+.iui-grid-block-bottom
+{
+	bottom: 0;
+	left: 0;
+	position: absolute;
+	z-index: 8;
+}
+.iui-grid-block-shift-left
+{
+	/*margin-left: 16px !important;*/
+	padding-left: 15px;
+}
+.iui-grid-block-shift-right
+{
+	margin-right: 16px;
+}
+.iui-grid-row-block
+{
+	padding: 0 0 0 15px;
+}
+.iui-grid-row-block-rtl
+{
+	padding: 0 15px 0 0;
+}
+.iui-grid-column-header, .iui-grid-column-footer
+{
+	background-color: #ededed;
+	border: thin solid #d5d5d5;
+	margin: 0;
+	padding: 0;
+	position: relative;
+	white-space: nowrap;
+	z-index: 1;
+}
+.iui-grid-column-header-cell, .iui-grid-column-footer-cell, .iui-grid-row-cell-content
+{
+	margin: 0;
+	padding: 0 1px;
+	vertical-align: middle;
+	overflow: hidden;
+	text-align: left;
+	/*text-overflow: ellipsis;*/
+}
+.iui-grid-column-header-cell-content, .iui-grid-column-footer-cell-content, .iui-grid-row-cell-label
+{
+	display: inline-block;
+	padding: 0 3px;
+	vertical-align: middle;
+	cursor: default;
+}
+.iui-grid-row
+{
+	margin: 0;
+	padding: 0;
+	white-space: nowrap;
+	z-index: 0;
+}
+.iui-grid-row-cell
+{
+	border-left: thin solid transparent;
+	border-right: thin solid transparent;
+	border-bottom: thin solid transparent;
+	padding: 0;
+	/*position: relative;*/
+}
+.iui-grid-cell-empty
+{
+	border: thin solid transparent !important;
+}
+.iui-grid-lines-none
+{
+	border-right: thin solid transparent;
+	border-bottom: thin solid transparent;
+}
+.iui-grid-expand-box
+{
+	/*background: url(../resources/empty.png) no-repeat 0 0;*/
+	display: inline-block;
+	width: 16px;
+	height: 16px;
+	margin-left: 2px;
+	vertical-align: middle;
+}
+.iui-grid-expand-box-load
+{
+	background: url(../resources/load.gif) no-repeat 0 0;
+}
+.iui-grid-expand-box-open
+{
+	background: url(../resources/expand.png) no-repeat 0 0;
+}
+.iui-grid-expand-box-open-disabled
+{
+	background: url(../resources/expand-disabled.png) no-repeat 0 0;
+}
+.iui-grid-expand-box-close
+{
+	background: url(../resources/collapse.png) no-repeat 0 0;
+}
+.iui-grid-expand-box-close-disabled
+{
+	background: url(../resources/collapse-disabled.png) no-repeat 0 0;
+}
+.iui-grid-expand-box-open-rtl
+{
+	background: url(../resources/expand-rtl.png) no-repeat 0 0;
+}
+.iui-grid-expand-box-open-rtl-disabled
+{
+	background: url(../resources/expand-rtl-disabled.png) no-repeat 0 0;
+}
+.iui-grid-expand-box-close-rtl
+{
+	background: url(../resources/collapse-rtl.png) no-repeat 0 0;
+}
+.iui-grid-expand-box-close-rtl-disabled
+{
+	background: url(../resources/collapse-rtl-disabled.png) no-repeat 0 0;
+}
+.iui-grid-column-reorder-mark
+{
+	position: absolute;
+	pointer-events: none;
+}
+.iui-grid-column-reorder-mark span
+{
+    background-repeat: no-repeat;
+	display: inline-block;
+	width: 16px;
+	height: 16px;
+	vertical-align: middle;
+}
+.iui-grid-column-reorder-mark-left
+{
+    background-image: url(../resources/move-left.png);
+}
+.iui-grid-column-reorder-mark-right
+{
+    background-image: url(../resources/move-right.png);
+}
+.iui-grid-column-reorder-tooltip
+{
+	background: -webkit-linear-gradient(white, #F1EFEC);
+	background:    -moz-linear-gradient(white, #F1EFEC);
+	background:     -ms-linear-gradient(white, #F1EFEC);
+	background:      -o-linear-gradient(white, #F1EFEC);
+    background :         linear-gradient(white, #F1EFEC);
+
+    background-color: #F1EFEC;
+	border: thin solid black;
+	border-radius: 3px;
+	font-size: 16px;
+	margin:0;
+	padding:0;
+	position: absolute;
+	box-shadow: 0 0 3px #888888;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	max-width: 200px;
+	z-index: 999;
+}
+.iui-grid-column-reorder-tooltip span
+{
+	display: inline-block;
+	padding: 3px;
+	margin: 0 2px 0 0;
+	vertical-align: middle;
+}
+.iui-grid-column-header-left, .iui-grid-column-footer-left
+{
+	border-right: 1px solid #ababab;
+}
+.iui-grid-column-header-right, .iui-grid-column-footer-right
+{
+	border-left: 1px solid #ababab;
+}
+.iui-grid-rows-left
+{
+	border-right: 1px solid #ababab;
+}
+.iui-grid-rows-right
+{
+	border-left: 1px solid #ababab;
+}
+/* Pagination Styles */
+.iui-grid-grouping-panel
+{
+	background-color: #f0f0f0;
+	border-bottom: thin solid #d5d5d5;
+	margin: 0;
+	padding: 3px;
+	position: absolute;
+	top: 0;
+	white-space: nowrap;
+}
+.iui-grid-grouping-panel-item
+{
+	background-color: #dedede;
+	display: inline-block;
+	border: thin solid #bebebe;
+	border-radius: 3px;
+	margin: 2px 3px;
+    /*overflow: hidden;*/
+	padding: 2px 5px;
+	position: relative;
+}
+.iui-grid-grouping-panel-item-label
+{
+    display: inline-block;
+    overflow: hidden;
+    padding: 0;
+    margin: 0 0 2px 0;
+    vertical-align: middle;
+}
+.iui-grid-grouping-panel-item-button
+{
+    background-image: url(../resources/icons.png);
+    background-position: -64px -96px;
+    background-repeat: no-repeat;
+    display: inline-block;
+    overflow: hidden;
+    padding: 0 !important;
+    margin: 0 0 2px 7px;
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+}
+.iui-grid-grouping-marker::before
+{
+	content: "";
+	border: 6px solid #dedede;
+	border-color: transparent transparent transparent #ababab;
+	position: absolute;
+	top: 25%;
+	right: -12px;
+	width: 0;
+	height: 0;
+}
+.iui-grid-grouping-marker::after
+{
+	content: "";
+	border: 6px solid #dedede;
+	border-color: transparent transparent transparent #dedede;
+	position: absolute;
+	top: 25%;
+	right: -11px;
+	width: 0;
+	height: 0;
+}

@@ -1,0 +1,476 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>Grids - Sorting from Column Menu</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/integralui.css" />
+    <link rel="stylesheet" href="../../../css/integralui.treegrid.css" />
+    <link rel="stylesheet" href="../../../css/integralui.contextmenu.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-flat-blue.css" />
+    <script type="text/javascript" src="../../../external/angular.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.lists.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.treegrid.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.contextmenu.min.js"></script>
+    <script type="text/javascript">
+ 		angular
+			.module("appModule", ["integralui"])
+			.directive('customHeader', function() {
+			    return {
+			        restrict: 'E',
+			        templateUrl: 'column-menu.html',
+			        scope: {
+			            obj: '='
+			        }
+			    };
+			})
+			.controller("appCtrl", ["$scope", "IntegralUITreeGridService", "$timeout", function($scope, $gridService, $timeout){
+				$scope.gridName = "gridSample";
+				$scope.columns = [];
+				$scope.rows = [];
+
+                $scope.visibleColumns = 3;
+
+				var activeColumn = null;
+				var sortOrder = 'none';
+				var prevActiveObj = null;
+				var activeObj = null;
+
+				var getCheckIcon = function(column){
+					return column.visible != false ? 'icons-medium check-mark' : null;
+				}
+
+                var defaultMenuItems = [
+					{ icon: 'icons-medium sort-ascending', text: 'Sort Ascending', key: 'SORT_ASCENDING', enabled: $scope.visibleColumns > 0 },
+					{ icon: 'icons-medium sort-descending', text: 'Sort Descending', key: 'SORT_DESCENDING', enabled: $scope.visibleColumns > 0 }
+                ];
+
+                var visibilityMenuItems = [];
+
+                var updateMenu = function(){
+                    $scope.menu.items.length = 0;
+                    $scope.visibleColumns = 0;
+
+                    for (var i = 0; i < defaultMenuItems.length; i++)
+                        $scope.menu.items.push(defaultMenuItems[i]);
+
+                    visibilityMenuItems.length = 0;
+
+                    var menuItem = { type: "separator" };
+                    if ($scope.columns.length > 0){
+                        $scope.menu.items.push(menuItem);
+
+                        for (var j = 0; j < $scope.columns.length; j++){
+                            menuItem = { 
+                                icon: getCheckIcon($scope.columns[j]),
+                                text: $scope.columns[j].headerObj.text
+                            }
+
+                            if ($scope.columns[j].visible != false)
+                                $scope.visibleColumns++;
+
+                            visibilityMenuItems.push(menuItem);
+                            $scope.menu.items.push(menuItem);
+                        }
+                    }
+
+                    $scope.menu.items[1].enabled = $scope.visibleColumns > 0;
+                    $scope.menu.items[2].enabled = $scope.visibleColumns > 0;
+
+                    $scope.gridMenu.items.length = 0;
+                    for (var i = 0; i < visibilityMenuItems.length; i++)
+						$scope.gridMenu.items.push(visibilityMenuItems[i]);
+                }
+
+                var updateColumnVisibility = function(item){
+					var index = visibilityMenuItems.indexOf(item);
+					if (index >= 0 && index < $scope.columns.length){
+						$scope.columns[index].visible = $scope.columns[index].visible == undefined ? false : !$scope.columns[index].visible;
+						item.icon = getCheckIcon($scope.columns[index]);
+					}
+                }
+
+				$scope.gridMenu = {
+					itemIcon: 'icons-medium empty',
+                    items: [],
+					itemClick: function(e){
+						if (e.item){
+							$gridService.suspendLayout($scope.gridName);
+
+							updateColumnVisibility(e.item);
+
+                            updateMenu();
+
+							$gridService.resumeLayout($scope.gridName);
+						}
+					}
+				}
+
+				$scope.menu = {
+					activate: 'both',
+					itemIcon: 'icons-medium empty',
+                    items: [],
+					position: 'below',
+					itemClick: function(e){
+						if (e.item){
+							if (prevActiveObj && prevActiveObj != activeObj){
+								prevActiveObj.icon = 'empty';
+								$scope.$apply();
+							}
+
+							$gridService.suspendLayout($scope.gridName);
+
+							switch (e.item.key){
+								case 'SORT_ASCENDING':
+									if (activeColumn){
+										sortOrder = 'ascending';
+
+										$gridService.selectedColumn($scope.gridName, activeColumn);
+										$gridService.sort($scope.gridName, activeColumn, sortOrder);
+
+										activeObj.icon = 'sort-mark-up-white';
+									}
+									break;
+
+								case 'SORT_DESCENDING':
+									if (activeColumn){
+										sortOrder = 'descending';
+
+										$gridService.selectedColumn($scope.gridName, activeColumn);
+										$gridService.sort($scope.gridName, activeColumn, sortOrder);
+
+										activeObj.icon = 'sort-mark-down-white';
+									}
+									break;
+
+								default:
+									updateColumnVisibility(e.item);
+									break;
+							}
+
+                            updateMenu();
+
+							$gridService.resumeLayout($scope.gridName);
+						}
+					},
+					open: function(e){
+						prevActiveObj = activeObj;
+
+						activeColumn = $gridService.getHoverColumn($scope.gridName);
+						activeObj = activeColumn ? $scope.headers[$scope.columns.indexOf(activeColumn)] : null;
+					}
+				}
+
+				$scope.headers = [
+					{ text: "Title", menu: $scope.menu, icon: 'empty' },
+					{ text: "Year", menu: $scope.menu, icon: 'empty' },
+					{ text: "Ratings", menu: $scope.menu, icon: 'empty' }
+				];
+
+				$scope.columns = [
+					{ 
+						id: 2,
+						headerObj: $scope.headers[0],
+						headerContent: '<custom-header obj="headers[0]"></custom-header>',
+						width: 360
+					},
+					{ 
+						id: 3,
+						headerObj: $scope.headers[1],
+						headerContent: '<custom-header obj="headers[1]"></custom-header>',
+						contentAlignment: "center",
+						width: 150
+					},
+					{ 
+						id: 5,
+						headerObj: $scope.headers[2],
+						headerContent: '<custom-header obj="headers[2]"></custom-header>',
+						contentAlignment: "center",
+						width: 130
+					}
+				];
+
+				$scope.rows = [
+					{ 
+						id: 1,
+						text: "Inception",
+						cells: [{ cid: 2, text: "Inception" }, { cid: 3, text: "2010" }, { cid: 5, text: "8.8" }]
+					},
+					{ 
+						id: 2,
+						text: "Gravity",
+						cells: [{ cid: 2, text: "Gravity" }, { cid: 3, text: "2013" }, { cid: 5, text: "7.9" }]
+					},
+					{ 
+						id: 3,
+						text: "Django Unchained",
+						cells: [{ cid: 2, text: "Django Unchained" }, { cid: 3, text: "2012" }, { cid: 5, text: "8.5" }]
+					},
+					{ 
+						id: 4,
+						text: "Toy Story 3",
+						cells: [{ cid: 2, text: "Toy Story 3" }, { cid: 3, text: "2010" }, { cid: 5, text: "8.4" }]
+					},
+					{ 
+						id: 5,
+						text: "The Wolf of Wall Street",
+						cells: [{ cid: 2, text: "The Wolf of Wall Street" }, { cid: 3, text: "2013" }, { cid: 5, text: "8.2" }]
+					},
+					{ 
+						id: 6,
+						text: "The Town",
+						cells: [{ cid: 2, text: "The Town" }, { cid: 3, text: "2010" }, { cid: 5, text: "7.6" }]
+					},
+					{ 
+						id: 7,
+						text: "Nightcrawler",
+						cells: [{ cid: 2, text: "Nightcrawler" }, { cid: 3, text: "2014" }, { cid: 5, text: "7.9" }]
+					},
+					{ 
+						id: 8,
+						text: "Locke",
+						cells: [{ cid: 2, text: "Locke" }, { cid: 3, text: "2014" }, { cid: 5, text: "7.1" }]
+					},
+					{ 
+						id: 9,
+						text: "Prometheus",
+						cells: [{ cid: 2, text: "Prometheus" }, { cid: 3, text: "2012" }, { cid: 5, text: "7.0" }]
+					},
+					{ 
+						id: 10,
+						text: "The Social Network",
+						cells: [{ cid: 2, text: "The Social Network" }, { cid: 3, text: "2010" }, { cid: 5, text: "7.8" }]
+					},
+					{ 
+						id: 11,
+						text: "The Conjuring",
+						cells: [{ cid: 2, text: "The Conjuring" }, { cid: 3, text: "2013" }, { cid: 5, text: "7.5" }]
+					},
+					{ 
+						id: 12,
+						text: "Blue Jasmine",
+						cells: [{ cid: 2, text: "Blue Jasmine" }, { cid: 3, text: "2013" }, { cid: 5, text: "7.3" }]
+					},
+					{ 
+						id: 13,
+						text: "Black Swan",
+						cells: [{ cid: 2, text: "Black Swan" }, { cid: 3, text: "2010" }, { cid: 5, text: "8.0" }]
+					},
+					{ 
+						id: 14,
+						text: "Prisoners",
+						cells: [{ cid: 2, text: "Prisoners" }, { cid: 3, text: "2013" }, { cid: 5, text: "8.1" }]
+					},
+					{ 
+						id: 15,
+						text: "The Avengers",
+						cells: [{ cid: 2, text: "The Avengers" }, { cid: 3, text: "2012" }, { cid: 5, text: "8.2" }]
+					},
+					{ 
+						id: 16,
+						text: "Snowpiercer",
+						cells: [{ cid: 2, text: "Snowpiercer" }, { cid: 3, text: "2014" }, { cid: 5, text: "7.0" }]
+					},
+					{ 
+						id: 17,
+						text: "The Dark Knight Rises",
+						cells: [{ cid: 2, text: "The Dark Knight Rises" }, { cid: 3, text: "2012" }, { cid: 5, text: "8.5" }]
+					},
+					{ 
+						id: 18,
+						text: "American Hustle",
+						cells: [{ cid: 2, text: "American Hustle" }, { cid: 3, text: "2013" }, { cid: 5, text: "7.3" }]
+					},
+					{ 
+						id: 19,
+						text: "Dawn of the Planet of the Apes",
+						cells: [{ cid: 2, text: "Dawn of the Planet of the Apes" }, { cid: 3, text: "2014" }, { cid: 5, text: "7.7" }]
+					},
+					{ 
+						id: 20,
+						text: "Frozen",
+						cells: [{ cid: 2, text: "Frozen" }, { cid: 3, text: "2013" }, { cid: 5, text: "7.7" }]
+					},
+					{ 
+						id: 21,
+						text: "Edge of Tomorrow",
+						cells: [{ cid: 2, text: "Edge of Tomorrow" }, { cid: 3, text: "2014" }, { cid: 5, text: "7.9" }]
+					},
+					{ 
+						id: 22,
+						text: "Interstellar",
+						cells: [{ cid: 2, text: "Interstellar" }, { cid: 3, text: "2014" }, { cid: 5, text: "8.7" }]
+					},
+					{ 
+						id: 23,
+						text: "Rush",
+						cells: [{ cid: 2, text: "Rush" }, { cid: 3, text: "2013" }, { cid: 5, text: "8.2" }]
+					},
+					{ 
+						id: 24,
+						text: "Shutter Island",
+						cells: [{ cid: 2, text: "Shutter Island" }, { cid: 3, text: "2010" }, { cid: 5, text: "8.1" }]
+					},
+					{ 
+						id: 25,
+						text: "This Is the End",
+						cells: [{ cid: 2, text: "This Is the End" }, { cid: 3, text: "2013" }, { cid: 5, text: "6.7" }]
+					}
+				];
+
+                updateMenu();
+
+                $scope.onAfterSelect = function(e){
+                	if (e.object && activeObj){
+                		switch (sortOrder){
+                			case 'ascending':
+								activeObj.icon = 'sort-mark-up';
+                				if (activeColumn && activeColumn.selected != false)
+                					activeObj.icon += '-white';
+                				break;
+
+                			case 'descending':
+								activeObj.icon = 'sort-mark-down';
+                				if (activeColumn && activeColumn.selected != false)
+                					activeObj.icon += '-white';
+                				break;
+
+                			default:
+								activeObj.icon = 'empty';
+                				break;
+                		}
+
+                		$scope.$apply();
+                	}
+                }
+			}]);
+    </script>
+    <style type="text/css">
+		.control-panel
+		{
+			margin-left: 35px;
+			width: 250px;
+		}
+		.feature-content
+		{
+			width: 700px;
+		}
+        .directive
+        {
+        	border: thin solid #dadada;
+        	width: 700px;
+        	height: 350px;
+        }
+		.iui-contextmenu-block
+		{
+			border-radius: 0;
+			padding: 2px;
+		}
+		.iui-contextmenu-item
+		{
+			width: 140px;
+		}
+		.icons-medium
+		{
+			margin: 0 7px 0 1px;
+		}
+        .sort-ascending
+        {
+		    background-position: -216px -96px;
+        }
+        .sort-descending
+        {
+		    background-position: -216px -120px;
+        }
+		.check-mark
+		{
+		    background-position: -192px -120px;
+		}
+        .column-header
+        {
+        	margin: 0;
+        	padding: 0 3px;
+        }
+		.column-menu-button
+		{
+		    background-image: url(../../../resources/icons.png);
+		    background-repeat: no-repeat;
+		    border: thin solid #bebebe;
+		    display: inline-block;
+		    position: absolute;
+		    top: 5px;
+		    right: 3px;
+			margin: 0;
+			padding: 0;
+			width: 16px;
+			height: 16px;
+			cursor: default;
+		}
+        .column-menu-button:last-child
+        {
+		    background-position: -176px -80px;
+        }
+        .column-header:hover > .column-menu-button:last-child
+        {
+		    background-position: -192px -80px;
+ 		    border-color: white;
+        }
+        .sort-mark
+        {
+		    border-color: transparent;
+		    right: 24px;
+        }
+        .sort-mark-down
+        {
+		    background-position: -32px -80px;
+        }
+        .sort-mark-up
+        {
+		    background-position: -48px -80px;
+        }
+        .sort-mark-down-white
+        {
+		    background-position: -64px -80px;
+        }
+        .sort-mark-up-white
+        {
+		    background-position: -80px -80px;
+        }
+    </style>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span style="color:#c60d0d">IntegralUI</span> Studio <span style="font-size:0.75em; font-style:italic">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content" ng-app="appModule">
+        <div class="feature" ng-controller="appCtrl">
+			<script type="text/ng-template" id="column-menu.html">
+				<div class="column-header">
+					<span>{{obj.text}}</span>
+					<span iui-class="column-menu-button icons sort-mark {{obj.icon}}"></span>
+					<span class="column-menu-button" iui-contextmenu="obj.menu"></span>
+				</div>
+			</script>
+	        <h2 class="feature-title">Grids / Sorting from Column Menu</h2>
+	        <div class="feature-content">
+                <iui-treegrid name="{{gridName}}" class="directive" columns="columns" rows="rows" show-footer="false" allow-focus="false" iui-contextmenu="gridMenu" after-select="onAfterSelect(e)"></iui-treegrid>
+                <br style="clear:both;"/>
+                <div class="feature-help">
+                    <p><span class="initial-space"></span>This sample shows how to add a custom sorting menu to each column with options to sort rows in ascending or descending order. When menu button is clicked, a dropdown menu will appear with several options that allows you to sort rows and to show/hide a specific column.</p>
+                    <p><span class="initial-space"></span>To add a menu button to the column header, we are creating a template with custom header directive, using custom CSS styles and HTML elements. To apply the template to each column, the following field of column object is used:
+                        <ul class="feature-points">
+                            <li><span style="color:#c60d0d">headerContent</span> - holds a reference to a custom template used to replace the header text with custom HTML elements</li>
+                        </ul>
+                    </p>
+                    <p><span class="initial-space"></span>There is no limit on what kind of template that you can create. Any combination of HTML elements is acceptable, along with custom events.</p>
+               </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

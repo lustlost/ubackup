@@ -1,0 +1,81 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>TabStrip - Local Data Binding</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/jquery.integralui.tabstrip.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-blue.css" />
+    <script type="text/javascript" src="../../../external/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="../../../external/jquery.ui.core.min.js"></script>
+    <script type="text/javascript" src="../../../external/jquery.ui.widget.min.js"></script>
+    <script type="text/javascript" src="../../../js/jquery.integralui.widget.min.js"></script>
+    <script type="text/javascript" src="../../../js/jquery.integralui.tabstrip.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var localData = [
+            {
+                "id": "1",
+                "text": "Dairy"
+            }, {
+                "id": "2",
+                "text": "Fruits"
+            }, {
+                "id": "3",
+                "text": "Grains"
+            }, {
+                "id": "4",
+                "text": "Meat"
+            }, {
+                "id": "5",
+                "text": "Sweets"
+            }, {
+                "id": "6",
+                "text": "Vegetables"
+            }, {
+                "id": "7",
+                "text": "Water"
+            }]
+    
+            var $tab = $('#tabstrip').tabstrip({
+                tabStripPlacement: "left",
+                // Map tab data fields with fields from local data source
+                dataFields: {
+                    id : 'id',
+                    text : 'text',
+                    dataSource : localData
+                }
+            });
+        });
+    </script>
+    <style type="text/css">
+        .widget
+        {
+	        height: 300px;
+        }
+    </style>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span class="product-name">IntegralUI</span> Studio <span class="product-platform">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content">
+        <div class="feature">
+	        <h2 class="feature-title">TabStrip / Local Data Binding</h2>
+	        <div class="feature-content">
+                <div id="tabstrip" class="widget"></div>
+                <br style="clear:both;"/>
+                <div class="feature-help">
+                    <p><span class="initial-space"></span>In this sample we are using a local data to load the content of TabStrip. In order this to work, you need to match the data fields from local data source to the fields of tab variable. You can use any names for your data, as long as you match those names with tab variable fields, the TabStrip will be populated.</p>
+                    <p><span class="initial-space"></span>You can set tab text, icon, content of tab header, content of tab panel etc.</p>
+                    <p><span class="initial-space"></span>For more information check out the source code of this sample.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

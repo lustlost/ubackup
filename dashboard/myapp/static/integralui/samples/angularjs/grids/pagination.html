@@ -1,0 +1,242 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>Grids - Pagination</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/integralui.css" />
+    <link rel="stylesheet" href="../../../css/integralui.lists.css" />
+    <link rel="stylesheet" href="../../../css/integralui.treegrid.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-flat-green.css" />
+    <script type="text/javascript" src="../../../external/angular.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.lists.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.treegrid.min.js"></script>
+    <script type="text/javascript">
+ 		angular
+			.module("appModule", ["integralui"])
+			.controller("appCtrl", ["$scope", "IntegralUITreeGridService", function($scope, $gridService){
+				$scope.gridName = "gridSample";
+				$scope.sampleColumns = [];
+				$scope.sampleRows = [];
+				$scope.numColumns = 25;
+				$scope.numRows = 10000;
+				$scope.numLevels = 2;
+				
+				$scope.pageSize = [ 2, 10, 25, 50, 100, 250, 500, 1000, 2500, 5000 ];
+				$scope.selSize = 100;
+
+				var rowCount = 0;
+            
+				// Make sure each node has a random set of child rows
+				var getRandomNumber = function(level){
+					var nCount = 1 + Math.floor(Math.random() * 10);
+					
+					if (level === 0)
+					{
+						if ($scope.numLevels == 0)
+							nCount = $scope.numRows;
+						else
+						{
+							var derivative = 1;
+							for (var k = 1; k <= $scope.numLevels; k++)
+								derivative = (derivative * nCount) + 1;
+
+							nCount = $scope.numRows / derivative + 1;
+							if (nCount < 1000)
+								nCount = 1000;
+						}
+					}
+					
+					return nCount;
+				}
+				
+				var addColumns = function(){
+					for (var j = 0; j < $scope.numColumns; j++){
+						var column = {
+							headerText : 'Column ' + (j+1).toString(),
+							id: j,
+							width: 150
+						};
+							
+						$gridService.addColumn($scope.gridName, column);
+					}
+				}
+
+				// Recursive function for adding root and child rows to the TreeGrid
+				var addRows = function(parentRow, level){
+					if (level > $scope.numLevels)
+						return;
+						
+					var numChilds = getRandomNumber(level);    
+					for (var i = 0; i < numChilds; i++){
+						if (rowCount < $scope.numRows){
+							var row = {
+								text : 'Row ' + (rowCount+1).toString(),
+								id: rowCount,
+								expanded : false,
+								cells: []
+							};
+								
+							for (var j = 0; j < $scope.sampleColumns.length; j++){
+								row.cells.push({ text: "Item" + (rowCount+1).toString() + j });
+							}
+
+							$gridService.addRow($scope.gridName, row, parentRow);
+							rowCount++;
+						
+							addRows(row, level + 1);
+						}
+					}
+				};
+           
+				// Clear the content of TreeGrid
+				var clearList = function(){
+					$gridService.clearColumns($scope.gridName);
+					$gridService.clearRows($scope.gridName);
+					rowCount = 0;
+				}
+				
+				$scope.add = function(){
+					$gridService.beginLoad($scope.gridName, null, { type: 'linear', speed: 'veryfast', opacity: 0.15 });
+
+					$gridService.suspendLayout($scope.gridName);
+					
+					clearList();
+					
+					// Populate the TreeGrid with data
+					addColumns();
+					addRows(null, 0);
+					
+					$gridService.resumeLayout($scope.gridName);
+				}
+				
+				$scope.clear = function(){
+					$gridService.suspendLayout($scope.gridName);
+					
+					clearList();
+					
+					$gridService.resumeLayout($scope.gridName);
+				}
+				
+				$scope.expandAll = function(){
+					$gridService.expand($scope.gridName);
+				}
+				
+				
+				$scope.collapseAll = function(){
+					$gridService.collapse($scope.gridName);
+				}
+				
+				$scope.$watch("numColumns", function(newValue, oldValue){
+					if (isNaN(newValue))
+						$scope.numColumns = oldValue;
+				});
+				
+				$scope.$watch("numRows", function(newValue, oldValue){
+					if (isNaN(newValue))
+						$scope.numRows = oldValue;
+				});
+				
+				$scope.$watch("numLevels", function(newValue, oldValue){
+					if (isNaN(newValue))
+						$scope.numLevels = oldValue;
+				});
+
+				$scope.onLoadComplete = function(){
+					$gridService.endLoad($scope.gridName);
+				}
+			}]);
+    </script>
+    <style type="text/css">
+	    .content
+	    {
+	    	width: 1200px;
+	    }
+		.feature-content
+		{
+			width: 1200px;
+		}
+        .directive
+        {
+        	width: 800px;
+        	height: 400px;
+        }
+        .top-panel
+        {
+        	margin-bottom: 10px;
+        }
+        .page-size
+        {
+        	width: 75px;
+        	height: 25px;
+        }
+		.iui-load-block-progress
+		{
+			background: #009933;
+			height: 7px;
+		}
+		.iui-pagination-panel
+		{
+			text-align: center;
+		}
+    </style>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span class="product-name">IntegralUI</span> Studio <span class="product-platform">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content" ng-app="appModule">
+        <div class="feature" ng-controller="appCtrl">
+	        <h2 class="feature-title">Grids / Pagination</h2>
+	        <div class="feature-content">
+            	<div class="top-panel"><label>Rows per page: <select class="page-size" ng-model="selSize" ng-options="size as size for size in pageSize"></select></label></div>
+                <iui-treegrid name="{{gridName}}" class="directive" columns="sampleColumns" rows="sampleRows" paging="{ enabled: true, pageSize: selSize }" load-complete="onLoadComplete()"></iui-treegrid>
+                <div class="control-panel">
+					<table>
+						<tr>
+							<td>Max columns: </td>
+							<td class="align-left"><input type="number" ng-model="numColumns" min="1" max="100" style="width:75px" integer /></td>
+						</tr>
+						<tr>
+							<td>Max rows: </td>
+							<td class="align-left"><input type="number" ng-model="numRows" min="1" max="100000" style="width:75px" integer /></td>
+						</tr>
+						<tr>
+							<td>Levels: </td>
+							<td class="align-left"><input type="number" ng-model="numLevels" min="0" max="100" style="width:75px" integer /></td>
+						</tr>
+					</table>
+					<div align="center" style="margin-top:20px">
+						<button ng-click="add()" style="width:65px; margin-right:10px">Add</button>
+						<button ng-click="clear()" style="width:65px">Clear</button>
+					</div>
+					<div align="center" style="margin-top:20px">
+						<button ng-click="expandAll()" style="margin-bottom:5px;width:140px">Expand All</button>
+						<button ng-click="collapseAll()" style="width:140px">Collapse All</button><br /><br />
+	                </div>
+                </div>
+                <br style="clear:both;"/>
+                <div class="feature-help" style="width:1000px">
+                    <p><span class="initial-space"></span>This example shows how to divide the data set in multiple pages.</p>
+                    <p><span class="initial-space"></span>Using options above the grid, you can choose the size of the page. The page size determines the maximum number of root rows per page. If you have rows with children, child rows are excluded from this number.</p>
+                    <p><span class="initial-space"></span>Although there is no limit on how many rows you can add, for demonstration purposes we have limited the maximum number of rows to 100,000. Using controls in right panel, you can add maximum of 100 columns, 100,000 rows with maximum depth of 100 tree levels.</p>
+                    <p><span class="initial-space"></span>The pagination panel is fully customizable, even you can create your own pagination controls by using these built-in methods:
+                        <ul class="feature-points">
+                            <li><span style="color:#c60d0d">currentPage</span> - specifies the number of page currently visible in grid view</li>
+                            <li><span style="color:#c60d0d">firstPage</span> - the first page is shown in the grid view</li>
+                            <li><span style="color:#c60d0d">lastPage</span> - the last page is shown in the grid view</li>
+                            <li><span style="color:#c60d0d">nextPage</span> - moves to the next page</li>
+                            <li><span style="color:#c60d0d">prevPage</span> - moves to the previous page</li>
+                        </ul>
+                    </p><br/>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

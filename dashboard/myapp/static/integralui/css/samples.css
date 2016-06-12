@@ -1,0 +1,502 @@
+﻿html, body
+{
+    background-color: #f5f5f5;
+    color: #565656;
+	font-family: Calibri, Tahoma, Arial, Helvetica, sans-serif;
+    font-size: 1.2em;
+	font-weight: normal;
+    margin: 0px;
+    padding: 0px;
+
+
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+.header
+{
+    background-color: #ffffff;
+    margin: 0;
+    padding: 0;
+    position: relative;
+}
+.head-separator
+{
+    background-color: #c60d0d;
+	border: none;
+    height: 3px;
+}
+.header-content
+{
+    margin: 0 auto;
+    padding: 7px 20px;
+    width: 950px;
+}
+.content
+{
+    margin: 0 auto;
+    padding: 0 20px;
+    width: 950px;
+}
+h1, h2, h3
+{
+    margin: 0;
+	padding:0;
+}
+span.product-name
+{
+	color: #c60d0d;
+}
+span.product-platform
+{
+	font-size: 0.75em;
+	font-style: italic;
+}
+.feature-title
+{
+    font-size: 1.1em;
+	padding: 15px 0 25px 0;
+}
+.feature-content
+{
+	color: black;
+	font-size: 0.75em;
+	margin: 0 auto 0 0;
+	position: relative;
+	width: 700px;
+}
+.feature-help
+{
+	margin-top: 20px;
+}
+.feature-help p
+{
+	text-align:justify;
+}
+.feature-help span.initial-space
+{
+	display: inline-block;
+	width: 20px
+}
+.feature-points li
+{
+	margin: 5px 0;
+}
+.widget, .directive
+{
+	float: left;
+	height: 400px;
+	width: 400px;
+}
+.panel
+{
+    float: left;
+    height: 400px;
+    width: 400px;
+}
+.control-panel
+{
+	float: left;
+	margin-left: 20px;
+	width: 200px;
+}
+.control-panel table
+{
+	text-align:right;
+}
+.control-panel table td.align-left
+{
+	text-align:left;
+}
+.feature-list
+{
+	color: #c60d0d;
+	line-height: 1.5em;
+	list-style-type: square;
+	margin: 0 0 0 15px;
+	padding: 5px 0 5px 20px;
+}
+.feature-list li a
+{
+	color: #c60d0d;
+	text-decoration: none;
+}
+.feature-list li a:hover
+{
+	text-decoration: underline;
+}
+.feature-list li a:visited
+{
+	color: #cc6600;
+}
+#eventLog
+{
+    list-style:none;
+    margin:0;
+    padding:0 10px;
+    overflow:auto;
+    width: 330px;
+    height: 370px;
+}
+#eventLog li
+{
+    margin: 3px;
+    border-bottom: thin solid #f5f5f5;
+}
+.icons
+{
+    background-image: url(../resources/icons.png);
+    background-repeat: no-repeat;
+    display: inline-block;
+    overflow: hidden;
+    padding: 0 !important;
+    margin: 0 1px 0 0;
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+}
+.empty
+{
+    background-position: 0px 0px;
+}
+.document
+{
+    background-position: -64px -48px;
+}
+.health
+{
+    background-position: -128px -48px;
+}
+.business
+{
+    background-position: -192px -48px;
+}
+.science
+{
+    background-position: 0 -64px;
+}
+.books
+{
+    background-position: -16px -64px;
+}
+.music
+{
+    background-position: -32px -64px;
+}
+.time
+{
+    background-position: -48px -64px;
+}
+.app
+{
+    background-position: -80px -64px;
+}
+.chart
+{
+    background-position: -96px -64px;
+}
+.exclamation
+{
+    background-position: 0px -32px;
+}
+.question
+{
+    background-position: -16px -32px;
+}
+.check
+{
+    background-position: -32px -32px;
+}
+.up
+{
+    background-position: -64px -32px;
+}
+.down
+{
+    background-position: -80px -32px;
+}
+.home
+{
+    background-position: -192px -64px;
+}
+.icons-medium
+{
+    background-image: url(../resources/icons-x24.png);
+    background-repeat: no-repeat;
+    display: inline-block;
+    overflow: hidden;
+    padding: 0 !important;
+    margin: 0 1px 0 5px;
+    width: 24px;
+    height: 24px;
+    vertical-align: middle;
+}
+.solution
+{
+    background-position: 0 -24px;
+}
+.documents
+{
+    background-position: -24px -24px;
+}
+.references
+{
+    background-position: -48px -24px;
+}
+.notes
+{
+    background-position: -72px -24px;
+}
+.assembly
+{
+    background-position: -96px -24px;
+}
+.resources
+{
+    background-position: -120px -24px;
+}
+.properties
+{
+    background-position: -144px -24px;
+}
+.new
+{
+    background-position: -168px -24px;
+}
+.form
+{
+    background-position: 0 -48px;
+}
+.empty-doc
+{
+    background-position: -24px -48px;
+}
+.library
+{
+    background-position: 0 -72px;
+}
+.economics
+{
+    background-position: -24px -72px;
+}
+.software
+{
+    background-position: -48px -72px;
+}
+.clock
+{
+    background-position: -72px -72px;
+}
+.sports
+{
+    background-position: -96px -72px;
+}
+.people
+{
+    background-position: -120px -72px;
+}
+.star
+{
+    background-position: -144px -72px;
+}
+.heart
+{
+    background-position: -168px -72px;
+}
+.album
+{
+    background-position: -144px -48px;
+}
+.camera
+{
+    background-position: -168px -48px;
+}
+.folder
+{
+    background-position: -24px 0px;
+}
+.file
+{
+    background-position: -24px -48px;
+}
+.downloads
+{
+    background-position: -48px 0px;
+}
+.favorites
+{
+    background-position: -72px 0px;
+}
+.documents
+{
+    background-position: -96px 0px;
+}
+.pc
+{
+    background-position: -120px 0px;
+}
+.videos
+{
+    background-position: -144px 0px;
+}
+.music-note
+{
+    background-position: -168px 0px;
+}
+.network
+{
+    background-position: -48px -48px;
+}
+.recycle
+{
+    background-position: -72px -48px;
+}
+.picture
+{
+    background-position: -96px -48px;
+}
+.disk
+{
+    background-position: -120px -48px;
+}
+.speed
+{
+    background-position: -192px 0px;
+}
+.transfer
+{
+    background-position: -192px -24px;
+}
+.airplane
+{
+    background-position: -192px -48px;
+}
+.new-document
+{
+    background-position: 0 -96px;
+}
+.delete-document
+{
+    background-position: -24px -96px;
+}
+.copy
+{
+    background-position: -48px -96px;
+}
+.save
+{
+    background-position: -72px -96px;
+}
+.print
+{
+    background-position: -96px -96px;
+}
+.zoom
+{
+    background-position: -120px -96px;
+}
+.zoom-in
+{
+    background-position: -144px -96px;
+}
+.zoom-out
+{
+    background-position: -168px -96px;
+}
+.facebook
+{
+    background-position: -216px 0;
+}
+.twitter
+{
+    background-position: -216px -24px;
+}
+.google-plus
+{
+    background-position: -216px -48px;
+}
+.star-empty
+{
+    background-position: -216px -72px;
+}
+.event-block
+{
+    background: white;
+    border: thin solid gray;
+    border-radius:3px;
+    width: 350px;
+    height: 400px;
+}
+.event-log
+{
+    list-style-type: none;
+    margin: 2px 0 0 0;
+    padding: 0;
+    height: 370px;
+    overflow: auto;
+}
+.event-log li
+{
+    padding-left: 15px;
+}
+.event-name
+{
+    color: #aa0000;
+}
+.event-value
+{
+    color: #0000aa;
+}
+.code-block
+{
+    background: white;
+    border: thin solid #cecece;
+    margin: 0;
+    padding: 25px;
+}
+.code-obj-block
+{
+    background: white;
+    margin: 0 0 0 25px;
+    padding: 0;
+}
+.code-line
+{
+    margin: 3px 0;
+    padding: 0;
+}
+.code-func
+{
+    color:#008080;
+}
+.code-var
+{
+    color:#7c4023;
+}
+.code-string
+{
+    color:#008000;
+}
+.code-lang
+{
+    color:#00008b;
+}
+.code-tag
+{
+    color:#008b00;
+}
+.code-attr
+{
+    color:#8b0000;
+}
+.code-attr-val
+{
+    color:#00008b;
+}
+.code-field
+{
+    color:#c60d0d;
+}

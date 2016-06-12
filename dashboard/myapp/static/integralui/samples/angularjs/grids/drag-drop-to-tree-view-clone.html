@@ -1,0 +1,357 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>Grids - Drag Drop to TreeView - Copy</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/integralui.css" />
+    <link rel="stylesheet" href="../../../css/integralui.treeview.css" />
+    <link rel="stylesheet" href="../../../css/integralui.treegrid.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-flat-blue.css" />
+    <script type="text/javascript" src="../../../external/angular.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.lists.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.treeview.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.treegrid.min.js"></script>
+    <script type="text/javascript">
+ 		angular
+			.module("appModule", ["integralui"])
+			.controller("appCtrl", ["$scope", "$timeout", "IntegralUITreeViewService", "IntegralUITreeGridService", function($scope, $timeout, $treeService, $gridService){
+				$scope.treeName = "treeSample";
+				$scope.gridName = "gridSample";
+				$scope.itemIcon = "icons-medium empty-doc";
+
+				var parentObj = null;
+
+				$scope.treeData = [
+					{ 
+						id: 1,
+						text: "Item1",
+						icon: "icons-medium folder",
+						items: [
+							{ 
+								id: 11,
+								pid: 1,
+								text: "Item11",
+								icon: "icons-medium folder",
+								expanded: false,
+								items: [
+									{ id: 111, pid: 11, text: "Item111" },
+									{ id: 112, pid: 11, text: "Item112" }
+								]
+							},
+							{ id: 12, pid: 1, text: "Item12" }
+						]
+					},
+					{
+						id: 2,
+						text: "Item2",
+						icon: "icons-medium folder",
+						expanded: false,
+						items: [
+							{ id: 21, pid: 2, text: "Item21" }
+						]
+					},
+					{ 
+						id: 3,
+						text: "Item3",
+					}
+				];
+				
+
+				$scope.columns = [
+					{ headerText: "Header1", footerText: "Footer1", width: 150 },
+					{ headerText: "Header2", footerText: "Footer2", width: 120 },
+					{ headerText: "Header3", footerText: "Footer3" }
+				];
+
+				$scope.rows = [
+					{ 
+						id: 4,
+						text: "Item41",
+						icon: "icons-medium folder",
+						cells: [{ text: "Item41" }, { text: "Item42" }, { text: "Item43" }],
+						rows: [
+							{ 
+								id: 41,
+								pid: 4,
+								text: "Item411",
+								cells: [{ text: "Item411" }, { text: "Item412" }, { text: "Item413" }]
+							},
+							{ 
+								id: 42,
+								pid: 4,
+								text: "Item421",
+								icon: "icons-medium folder",
+								expanded: false,
+								cells: [{ text: "Item421" }, { text: "Item422" }, { text: "Item423" }],
+								rows: [
+									{ 
+										id: 421,
+										pid: 42,
+										text: "Item4211",
+										cells: [{ text: "Item4211" }, { text: "Item4212" }, { text: "Item4213" }]
+									}
+								]
+							}
+						]
+					},
+					{ 
+						id: 5,
+						text: "Item51",
+						icon: "icons-medium folder",
+						cells: [{ text: "Item51" }, { text: "Item52" }, { text: "Item53" }],
+						rows: [
+							{ 
+								id: 51,
+								pid: 5,
+								text: "Item511",
+								cells: [{ text: "Item511" }, { text: "Item512" }, { text: "Item513" }]
+							}
+						]
+					}
+				];
+			
+				var createId = function(){
+					function shortString() {
+						return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
+					}
+
+					return (shortString() + shortString() + '-' + shortString()).substring(0, 4);;
+				}
+
+				var createItemClone = function(item, parentId){
+					var cloneItem = {
+						id: createId(),
+						text: item.text,
+						icon: item.icon
+					}
+
+					if (item.pid != undefined)
+						cloneItem.pid = item.pid;
+
+					if (item.expanded != undefined)
+						cloneItem.expanded = item.expanded;
+
+
+					if (item.items && item.items.length > 0)
+						for (var i = 0; i < item.items.length; i++){
+							if (!cloneItem.items)
+								cloneItem.items = [];
+								
+							cloneItem.items.push(createItemClone(item.items[i], cloneItem.id));
+						}
+
+					return cloneItem;
+				}
+
+				var createItemCloneFromRow = function(row, parentId){
+					var cloneItem = {
+						id: createId(),
+						text: row.text,
+						icon: row.icon
+					}
+
+					if (row.pid != undefined)
+						cloneItem.pid = row.pid;
+
+					if (row.expanded != undefined)
+						cloneItem.expanded = row.expanded;
+
+					if (row.rows && row.rows.length > 0)
+						for (var i = 0; i < row.rows.length; i++){
+							if (!cloneItem.items)
+								cloneItem.items = [];
+								
+							cloneItem.items.push(createItemCloneFromRow(row.rows[i], cloneItem.id));
+						}
+
+					return cloneItem;
+				}
+
+				var convertItemToRow = function(item){
+					if (item){
+						if (!item.cells){
+							item.cells = [];
+
+							var cell = {
+								text: item.text
+							}
+
+							item.cells.push(cell);
+						}
+
+						if (item.items && item.items.length > 0)
+							for (var i = 0; i < item.items.length; i++){
+								if (!item.rows)
+									item.rows = [];
+
+								item.rows.push(convertItemToRow(item.items[i]));
+							}
+
+						return item;
+					}
+
+					return null;
+				}
+
+
+				$scope.treeDrop = function(e){
+					changeObjIcon(e.dragItem);
+					
+					if (e.dragItem && e.dragItem.type == 'row'){
+						var cloneItem = createItemCloneFromRow(e.dragItem);
+
+						if (cloneItem){
+							switch (e.dropPos){
+								case 1:
+									$treeService.insertItemBefore($scope.treeName, cloneItem, e.targetItem);
+									break;
+								case 2:
+									$treeService.insertItemAfter($scope.treeName, cloneItem, e.targetItem);
+									break;
+								default:
+									$treeService.addItem($scope.treeName, cloneItem, e.targetItem);
+									break;
+							}
+						}
+
+						$treeService.ensureVisible($scope.treeName, cloneItem);
+						$treeService.selectedItem($scope.treeName, cloneItem);
+
+						return false;
+					}
+				}
+
+				$scope.gridDrop = function(e){
+					changeObjIcon(e.dragRow);
+					
+					if (e.dragRow && e.dragRow.type == 'item'){
+						var cloneItem = createItemClone(e.dragRow);
+						var newRow = convertItemToRow(cloneItem);
+
+						if (newRow){
+							switch (e.dropPos){
+								case 1:
+									$gridService.insertRowBefore($scope.gridName, newRow, e.targetRow);
+									break;
+								case 2:
+									$gridService.insertRowAfter($scope.gridName, newRow, e.targetRow);
+									break;
+								default:
+									$gridService.addRow($scope.gridName, newRow, e.targetRow);
+									break;
+							}
+						}
+
+						$gridService.ensureVisible($scope.gridName, newRow);
+
+						var selTimer = $timeout(function(){
+							$gridService.selectedRow($scope.gridName, newRow);
+						}, 100);
+
+						return false;
+					}
+				}
+
+				var changeObjIcon = function(obj){
+					if (obj){
+						if ((obj.type == 'item' && obj.items && obj.items.length > 0) || (obj.type == 'row' && obj.rows && obj.rows.length > 0))
+							obj.icon = "icons-medium folder";
+						else
+							obj.icon = "icons-medium file";
+
+						// Update the icon for parent objects
+						var updateTimer = $timeout(function(){
+							var parent = getParent(obj);
+							changeObjIcon(parent);
+
+							$timeout.cancel(updateTimer);
+						}, 1);
+					}
+				}
+
+				// Get parent object of specified object (item or row)
+				var getParent = function(obj){
+					switch (obj.type){
+						case 'item':
+							return $treeService.getItemParent($scope.treeName, obj);
+
+						case 'row':
+							return $gridService.getRowParent($scope.gridName, obj);
+					}
+
+					return null;
+				}
+
+				$scope.objRemoving = function(e){
+					parentObj = getParent(e.obj);
+				}
+
+				$scope.objRemoved = function(e){
+					changeObjIcon(parentObj);
+				}
+			}]);
+    </script>
+    <style type="text/css">
+		.iui-drop-marker
+		{
+			font-size: 0.75em;
+		}
+		.iui-treegrid-column-header-cell, .iui-treegrid-column-footer-cell
+		{
+			padding: 0 2px;
+		}
+		.iui-treegrid-row-cell-content
+		{
+			padding: 2px 2px;
+		}
+		.feature-content
+		{
+			width: 750px;
+		}
+		.tree
+		{
+			float: left;
+			margin-right: 30px;
+			width: 300px;
+			height: 300px;
+		}
+		.grid
+		{
+			border: thin solid #cecece;
+			float: left;
+			width: 400px;
+			height: 300px;
+		}
+    </style>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span style="color:#c60d0d">IntegralUI</span> Studio <span style="font-size:0.75em; font-style:italic">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content" ng-app="appModule">
+        <div class="feature" ng-controller="appCtrl">
+	        <h2 class="feature-title">Grids / Drag Drop to TreeView - Copy</h2>
+	        <div class="feature-content">
+	            <div style="display:inline-block">
+					<iui-treeview name="{{treeName}}" class="tree" items="treeData" allow-drag="true" allow-drop="true" item-icon="itemIcon" drag-drop="treeDrop(e)" item-removing="objRemoving(e)" item-removed="objRemoved(e)" allow-focus="false"></iui-treeview>
+					<iui-treegrid name="{{gridName}}" class="grid" columns="columns" rows="rows" allow-drag="true" allow-drop="true" show-footer="false" row-icon="itemIcon" drag-drop="gridDrop(e)" row-removing="objRemoving(e)" row-removed="objRemoved(e)" allow-focus="false" label-edit="true"></iui-treegrid>
+                    <br style="clear:both;"/>
+                </div>
+                <div class="feature-help" style="margin:0">
+                    <p><span class="initial-space"></span>This sample demonstrates how to drag-drop items between TreeView and TreeGrid.</p>
+                    <p><span class="initial-space"></span>When item from TreeView is dragged over the TreeGrid space, a tooltip will appear stating targeting row and position at which dragged item will be dropped. In this process when item is dropped, a row is automatically created using the data from the tree item.</p>
+                    <p><span class="initial-space"></span>In similar way, when row from TreeGrid is dragged over TreeView space, a tooltip will appear stating the targeting item and the position at which row will be dropped. When row is dropped, an item is created using only the row text, and cells that belong to the row are not displayed.</p>
+                    <p><span class="initial-space"></span>In both cases, all data is sustained, only in case of dropping a tree item, because there are no cells for item objects, they are internally created by the built-in functionality of the TreeGrid.</p>
+                   <p><span class="initial-space"></span>In this example whenever an item or row is drag-dropped, the icon of their parent changes. Depending on whether there are child objects the icon is changed to folder icon, if there are no chidren icon changes to a file icon. This functionality is added in this sample code, by handling drag-drop and remove events for both components.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

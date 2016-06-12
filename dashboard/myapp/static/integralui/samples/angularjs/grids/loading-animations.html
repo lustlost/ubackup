@@ -1,0 +1,264 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>Grids - Loading Animation</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/integralui.css" />
+    <link rel="stylesheet" href="../../../css/integralui.treegrid.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-flat-blue.css" />
+    <script type="text/javascript" src="../../../external/angular.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.lists.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.treegrid.min.js"></script>
+    <script type="text/javascript">
+ 		angular
+			.module("appModule", ["integralui"])
+			.controller("appCtrl", ["$scope", "IntegralUITreeGridService", "$timeout", function($scope, $gridService, $timeout){
+				$scope.gridName = "gridSample";
+				$scope.columns = [];
+				$scope.rows = [];
+				
+				$scope.speedLevels = [ 'veryfast', 'fast', 'normal', 'slow', 'veryslow' ];
+				$scope.animationSpeed = $scope.speedLevels[2];
+				$scope.animationType = 'linear';
+
+				$scope.numColumns = 25;
+				$scope.numRows = 10000;
+				$scope.numLevels = 3;
+				
+				$scope.$watch("animationType", function(newValue, oldValue){
+					if (newValue != oldValue){
+						switch (newValue){
+							case 'linear':
+								$scope.panelType = 1;					
+								break;
+							case 'circular':
+								$scope.panelType = 2;					
+								break;
+							default:
+								$scope.panelType = 0;
+								break;					
+						}
+					}
+				});
+
+				var rowCount = 0;
+		    
+				// Make sure each node has a random set of child rows
+				var getRandomNumber = function(level){
+					var nCount = 1 + Math.floor(Math.random() * 10);
+					
+					if (level === 0)
+					{
+						if ($scope.numLevels == 0)
+							nCount = $scope.numRows;
+						else
+						{
+							var derivative = 1;
+							for (var k = 1; k <= $scope.numLevels; k++)
+								derivative = (derivative * nCount) + 1;
+
+							nCount = $scope.numRows / derivative + 1;
+							if (nCount < 1000)
+								nCount = 1000;
+						}
+					}
+					
+					return nCount;
+				}
+				
+				var addColumns = function(){
+					for (var j = 0; j < $scope.numColumns; j++){
+						var column = {
+							headerText : 'Header ' + (j+1).toString(),
+							footerText : 'Footer ' + (j+1).toString(),
+							id: j,
+							width: 150
+						};
+							
+						$gridService.addColumn($scope.gridName, column);
+					}
+				}
+
+				// Recursive function for adding root and child rows to the TreeGrid
+				var addRows = function(parentRow, level){
+					if (level > $scope.numLevels)
+						return;
+						
+					var numChilds = getRandomNumber(level);    
+					for (var i = 0; i < numChilds; i++){
+						if (rowCount < $scope.numRows){
+							var row = {
+								text : 'Row ' + (rowCount+1).toString(),
+								id: rowCount,
+								expanded : false,
+								cells: []
+							};
+								
+							for (var j = 0; j < $scope.columns.length; j++){
+								row.cells.push({ text: "Item" + (rowCount+1).toString() + j });
+							}
+
+							$gridService.addRow($scope.gridName, row, parentRow);
+							rowCount++;
+						
+							addRows(row, level + 1);
+						}
+					}
+				};
+		   
+				// Clear the content of TreeGrid
+				var clearList = function(){
+					$gridService.clearColumns($scope.gridName);
+					$gridService.clearRows($scope.gridName);
+					rowCount = 0;
+				}
+				
+				var loadCircular = function(){
+					var loadTimer = $timeout(function(){
+						$gridService.suspendLayout($scope.gridName);
+						
+						clearList();
+						
+						// Populate the TreeGrid with data
+						addColumns();
+						addRows(null, 0);
+						
+						$gridService.resumeLayout($scope.gridName);
+
+						$timeout.cancel(loadTimer);
+					}, 1000);
+				}
+
+				$scope.add = function(){
+					$gridService.beginLoad($scope.gridName, null, { type: $scope.animationType, speed: $scope.animationSpeed, opacity: 0.25 });
+
+					if ($scope.animationType == 'circular')
+						loadCircular();
+					else {
+						$gridService.suspendLayout($scope.gridName);
+						
+						clearList();
+						
+						// Populate the TreeGrid with data
+						addColumns();
+						addRows(null, 0);
+						
+						$gridService.resumeLayout($scope.gridName);
+					}
+				}
+				
+				$scope.clear = function(){
+					$gridService.suspendLayout($scope.gridName);
+					
+					clearList();
+					
+					$gridService.resumeLayout($scope.gridName);
+				}
+				
+				$scope.expandAll = function(){
+					$gridService.expand($scope.gridName);
+				}
+				
+				
+				$scope.collapseAll = function(){
+					$gridService.collapse($scope.gridName);
+				}
+				
+				$scope.$watch("numColumns", function(newValue, oldValue){
+					if (isNaN(newValue))
+						$scope.numColumns = oldValue;
+				});
+				
+				$scope.$watch("numRows", function(newValue, oldValue){
+					if (isNaN(newValue))
+						$scope.numRows = oldValue;
+				});
+				
+				$scope.$watch("numLevels", function(newValue, oldValue){
+					if (isNaN(newValue))
+						$scope.numLevels = oldValue;
+				});
+
+				$scope.onLoadComplete = function(){
+					$gridService.endLoad($scope.gridName);
+				}
+			}]);
+    </script>
+    <style type="text/css">
+		.control-panel
+		{
+			margin-left: 35px;
+			width: 250px;
+		}
+		.feature-content
+		{
+			width: 900px;
+		}
+        .directive
+        {
+        	border: thin solid #dadada;
+        	width: 600px;
+        	height: 350px;
+        }
+    </style>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span class="product-name">IntegralUI</span> Studio <span class="product-platform">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content" ng-app="appModule">
+        <div class="feature" ng-controller="appCtrl">
+	        <h2 class="feature-title">Grids / Loading Animation</h2>
+	        <div class="feature-content">
+	        	<div>{{counter}}</div>
+                <iui-treegrid name="{{gridName}}" class="directive" columns="columns" rows="rows" load-complete="onLoadComplete()"></iui-treegrid>
+                <div class="control-panel">
+                	<label>Animation Speed: </label>
+                	<select ng-model="animationSpeed" ng-options="speed as speed for speed in speedLevels"></select>
+					<p class="animation-type">Animation Type:</p>
+					<label class="animation-type-val"><input type="radio" ng-model="animationType" value="linear" />Linear</label>
+					<label class="animation-type-val"><input type="radio" ng-model="animationType" value="circular" />Circular</label>
+					<label class="animation-type-val"><input type="radio" ng-model="animationType" value="none" />None</label><br />
+					<div style="margin-top:20px" align="center">
+						<table>
+							<tr>
+								<td>Max columns: </td>
+								<td class="align-left"><input type="number" ng-model="numColumns" min="1" max="100" style="width:75px" integer /></td>
+							</tr>
+							<tr>
+								<td>Max rows: </td>
+								<td class="align-left"><input type="number" ng-model="numRows" min="1" max="100000" style="width:75px" integer /></td>
+							</tr>
+							<tr>
+								<td>Levels: </td>
+								<td class="align-left"><input type="number" ng-model="numLevels" min="0" max="100" style="width:75px" integer /></td>
+							</tr>
+						</table>
+						<div align="center" style="margin-top:20px">
+							<button ng-click="add()" style="width:65px; margin-right:10px">Add</button>
+							<button ng-click="clear()" style="width:65px">Clear</button>
+						</div>
+						<div align="center" style="margin-top:20px">
+							<button ng-click="expandAll()" style="margin-bottom:5px;width:140px">Expand All</button>
+							<button ng-click="collapseAll()" style="width:140px">Collapse All</button>
+		                </div>
+					</div>
+                </div>
+                <br style="clear:both;"/>
+                <div class="feature-help">
+                    <p><span class="initial-space"></span>When you want to load large data into the TreeGrid, it may take some time during which some notification that loading is in the process is required. This sample shows how to add a loading animation during this process.</p>
+                    <p>There are two types of loading animation presented above: circular and linear, with several different speed levels.</p>
+                    <p style="padding:10px 25px;"><strong>Note</strong>&nbsp;&nbsp;&nbsp;You can change the appearance of loader using CSS. Circular animation uses an image that rotates, and linear animation uses a progress bar. All of these are customizable using CSS styles.</p>
+                    <p>Using controls in right panel, you can add maximum of 100 columns, 100,000 rows with maximum depth of 100 tree levels.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

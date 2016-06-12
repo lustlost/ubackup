@@ -1,0 +1,274 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>TreeView - Filter</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/integralui.css" />
+    <link rel="stylesheet" href="../../../css/integralui.checkbox.css" />
+    <link rel="stylesheet" href="../../../css/integralui.treeview.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-flat-blue.css" />
+    <script type="text/javascript" src="../../../external/angular.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.lists.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.checkbox.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.treeview.min.js"></script>
+    <script type="text/javascript">
+ 		angular
+			.module("appModule", ["integralui"])
+			.controller("appCtrl", ["$scope", "$timeout", "IntegralUITreeViewService", function($scope, $timeout, $treeService){
+				$scope.treeName = "treeSample";
+				$scope.items = [];
+
+				$scope.filterOptions = [ '', 'equals', 'does not equal', 'begins with', 'does not begin with', 'ends with', 'does not end with', 'contains', 'does not contain' ];
+				$scope.filterValues = [ '', '', '' ];
+				$scope.selOptions = [
+					$scope.filterOptions[0],
+					$scope.filterOptions[0],
+					$scope.filterOptions[0]
+				];
+
+				$scope.combinations = [ 'Or', 'Or' ];
+
+				$scope.data = [
+					{ id: 1, text: "Dairy", expanded: false },
+					{ id: 11, pid: 1, text: "Milk" },
+					{ id: 12, pid: 1, text: "Butter" },
+					{ id: 13, pid: 1, text: "Cheese", checked: true },
+					{ id: 14, pid: 1, text: "Yogurt" },
+					{ id: 2, text: "Fruits", checked: true },
+					{ id: 21, pid: 2, text: "Berries", expanded:  false},
+					{ id: 211, pid: 21, text: "BlackBerries" },
+					{ id: 212, pid: 21, text: "CranBerries", checked: true },
+					{ id: 213, pid: 21, text: "StrawBerries" },
+					{ id: 22, pid: 2, text: "Pits", checked: true },
+					{ id: 23, pid: 2, text: "Core" },
+					{ id: 24, pid: 2, text: "Citrus Fruits", expanded: false },
+					{ id: 241, pid: 24, text: "Oranges" },
+					{ id: 242, pid: 24, text: "Lemons", checked: true },
+					{ id: 25, pid: 2, text: "Melons" },
+					{ id: 26, pid: 2, text: "Tropical Fruits" },
+					{ id: 261, pid: 26, text: "Avocados", checked: true },
+					{ id: 262, pid: 26, text: "Bananas", checked: true },
+					{ id: 263, pid: 26, text: "Dates" },
+					{ id: 3, text: "Grains" },
+					{ id: 4, text: "Meat", checked: true },
+					{ id: 41, pid: 4, text: "Beef" },
+					{ id: 42, pid: 4, text: "Lamb", expanded: false },
+					{ id: 421, pid: 42, text: "Lamb Breast" },
+					{ id: 422, pid: 42, text: "Lamb Leg", checked: true },
+					{ id: 423, pid: 42, text: "Lamb Ribs" },
+					{ id: 43, pid: 4, text: "Pork", checked: true },
+					{ id: 5, text: "Sweets" },
+					{ id: 6, text: "Vegetables", checked: true },
+					{ id: 7, text: "Water" }
+				]
+
+				var initTimer = $timeout(function(){
+					$treeService.loadData($scope.treeName, $scope.data);
+
+					$timeout.cancel(initTimer);
+				}, 1);
+				
+				var getOperation = function(option){
+					var index = $scope.filterOptions.indexOf(option);
+					switch (index){
+						case 1: //equals
+							return '=';
+
+						case 2: //does not equal
+							return '!=';
+
+						case 3: //begins with
+							return '->';
+
+						case 4: //does not begin with
+							return '->';
+
+						case 5: //ends with
+							return '<-';
+
+						case 6: //does not end with
+							return '<-';
+
+						case 7: //contains
+							return '[]';
+
+						case 8: //does not contain
+							return '[]';
+					}
+
+					return '';
+				}
+
+				var getFormula = function(conditions){
+					var formula = '';
+
+					var firstCombination = $scope.combinations[0];
+					var secondCombination = $scope.combinations[1];
+					if (conditions.length == 2 && $scope.selOptions[0] == '')
+						firstCombination = $scope.combinations[1];
+
+					var firstSymbol = conditions[0].negative ? '!a' : 'a';
+					var secondSymbol = conditions[1].negative ? '!b' : 'b';
+
+					if (firstCombination == 'And')
+						formula = '(' + firstSymbol + ' & ' + secondSymbol + ')';
+					else
+						formula = '(' + firstSymbol + ' | ' + secondSymbol + ')';
+					
+					if (conditions.length == 3){
+						var thirdSymbol = conditions[2].negative ? '!c' : 'c';
+
+						if (secondCombination == 'And')
+							formula += ' & ' + thirdSymbol;
+						else
+							formula += ' | ' + thirdSymbol;
+					}
+
+					return formula;
+				}
+
+				$scope.apply = function(){
+					var filterConditions = [];
+					for (var i = 0; i < 3; i++){
+						if ($scope.selOptions[i] != '' && $scope.filterValues[i] != ''){
+							var currentOperation = getOperation($scope.selOptions[i]);
+
+							filterConditions.push({ 
+								value: $scope.filterValues[i],
+								operation: currentOperation,
+								negative: $scope.filterOptions.indexOf($scope.selOptions[i]) % 2 == 0
+							});
+						}
+					}
+
+					if (filterConditions.length > 0){
+						var params = {}
+
+						if (filterConditions.length == 1){
+							params.conditions = filterConditions[0];
+						}
+						else {
+							params.conditions = filterConditions;
+							params.formula = getFormula(filterConditions);
+						}
+
+						$treeService.filter($scope.treeName, params);
+					}
+					else
+						$scope.reset();
+				}
+
+				$scope.reset = function(){
+		            $scope.filterValues = [ '', '', '' ];
+		            $scope.selOptions = [
+		                $scope.filterOptions[0],
+		                $scope.filterOptions[0],
+		                $scope.filterOptions[0]
+		            ];
+
+		            $scope.combinations = [ 'Or', 'Or' ];
+		            
+					$treeService.filter($scope.treeName);
+				}
+
+				$scope.onItemCheckedChanged = function(e){
+					if (e.item)
+						e.item.value = e.value;
+				}
+
+				$scope.applyCustomFilter = function(){
+					var params = {
+						callback: function(value, item){
+							return item.checked;
+						}
+					}
+
+					$treeService.filter($scope.treeName, params);
+				}
+			}]);
+    </script>
+    <style type="text/css">
+	    .feature-content
+	    {
+	    	width: 750px;
+	    }
+	    .control-panel
+	    {
+	    	width: 300px;
+	    }
+	    select
+	    {
+	    	margin-right: 15px;
+	    	width: 150px;
+	    }
+	    .inline-radio
+	    {
+	    	margin-right: 15px;
+	    }
+		button
+		{
+			display: inline-block;
+			margin: 5px;
+			width: 100px;
+			height: 22px;
+		}
+		.inline-block
+		{
+			display: inline-block;
+			margin: 3px 0;
+		}
+    </style>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span class="product-name">IntegralUI</span> Studio <span class="product-platform">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content" ng-app="appModule">
+        <div class="feature" ng-controller="appCtrl">
+	        <h2 class="feature-title">TreeView / Filter</h2>
+	        <div class="feature-content">
+                <iui-treeview name="{{treeName}}" class="directive" items="items" show-check-boxes="true" item-checked-changed="onItemCheckedChanged(e)"></iui-treeview>
+                <div class="control-panel">
+                	<label>Show items where: </label>
+					<div class="inline-block" style="margin-top:15px">
+	                	<select ng-model="selOptions[0]" ng-options="option for option in filterOptions"></select><input ng-model="filterValues[0]" type="text" style="width:125px"/>
+					</div>
+					<div class="inline-block" style="width:125px;margin:5px 15px">
+						<label class="inline-radio"><input type="radio" ng-model="combinations[0]" value="And" />And</label><label class="inline-radio"><input type="radio" ng-model="combinations[0]" value="Or" />Or</label>
+					</div>
+					<div class="inline-block">
+	                	<select ng-model="selOptions[1]" ng-options="option for option in filterOptions"></select><input ng-model="filterValues[1]" type="text" style="width:125px"/>
+					</div>
+					<div class="inline-block" style="width:125px;margin:5px 15px" align="center">
+						<label class="inline-radio"><input type="radio" ng-model="combinations[1]" value="And" />And</label><label class="inline-radio"><input type="radio" ng-model="combinations[1]" value="Or" />Or</label>
+					</div>
+					<div class="inline-block">
+	                	<select ng-model="selOptions[2]" ng-options="option for option in filterOptions"></select><input ng-model="filterValues[2]" type="text" style="width:125px"/>
+					</div>
+
+					<div class="inline-block" style="margin-top:25px;text-align:center;width:300px;">
+						<button ng-click="apply()">Apply Filter</button>
+						<button ng-click="reset()">Reset</button><br/><br/><br/>
+						<button ng-click="applyCustomFilter()" style="width:210px">Show Only Checked Items</button>
+					</div>
+                </div>
+                <br style="clear:both;"/>
+                <div class="feature-help">
+                    <p><span class="initial-space"></span>This sample shows how to filter the TreeView content using multiple different conditions in different combinations.</p>
+                    <p><span class="initial-space"></span>By selecting an option from combo boxes and specifying matching values, you can filter the TreeView so that only those items that matches the specified condition(s) are shown. In this example we can set a filter with 3 conditions using string operations. Furthermore these conditions are combined using the AND / OR operators.</p>
+                    <p><span class="initial-space"></span>By default, filtering is executed using the item's value field to match the specified criteria. If this field value is empty, then the value of item's text field is used.</p>
+                    <p><span class="initial-space"></span>For filtering operations we are using the <strong>IntegralUIFilter service</strong>, which provides many ways to set string, numeric or custom filtering using multiple conditions with multiple AND / OR combinations. For more information about filtering options, check out this sample: <a href="../services/filter-service.html">Filter Service</a>.</p>
+                    <p style="margin:10px 50px;"><strong>NOTE</strong> In order to create a custom filtering operation, you would need to create a function in your code and apply it to the callback field of filtering parameter. To see this in action just click on the <span style="color:#ff0000">Show Only Checked Items</span> button, the TreeView will only show checked items.</p>
+                    <p style="margin-bottom:30px"><span class="initial-space"></span>Additional information is available in this sample source code.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

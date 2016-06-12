@@ -1,0 +1,269 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>Grids - Custom Appearance</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/integralui.css" />
+    <link rel="stylesheet" href="../../../css/integralui.treegrid.css" />
+    <script type="text/javascript" src="../../../external/angular.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.lists.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.treegrid.min.js"></script>
+    <script type="text/javascript">
+ 		angular
+			.module("appModule", ["integralui"])
+			.controller("appCtrl", ["$scope", "$timeout", "IntegralUITreeGridService", function($scope, $timeout, $gridService){
+				$scope.gridName = "gridSample";
+
+				$scope.columns = [
+					{ name: 'Column1', headerText: 'Header1', footerText: 'Footer1', headerAlignment: 'center', footerAlignment: 'right', width: 200 },
+					{ name: 'Column2', headerText: 'Header2', footerText: 'Footer2', headerAlignment: 'center', contentAlignment: 'center', width: 250 },
+					{ name: 'Column3', headerText: 'Header3', footerText: 'Footer3', contentAlignment: 'right', footerAlignment: 'right', width: 120 }
+				];
+
+				$scope.rows = [
+					{ 
+						id: 1,
+						text: "Item1",
+						cells: [{ text: "Item11" }, { text: "Item12" }, { text: "Item13" }],
+						rows: [
+							{ id: 11, pid: 1, text: "Item11", cells: [{ text: "Item111" }, { text: "Item112" }, { text: "Item113" }] },
+							{ 
+								id: 12,
+								pid: 1,
+								text: "Item12",
+								cells: [{ text: "Item121" }, { text: "Item122" }, { text: "Item123" }],
+								rows: [
+									{ id: 121, pid: 12, text: "Item121", cells: [{ text: "Item1211" }, { text: "Item1212" }, { text: "Item1213" }] },
+									{ 
+										id: 122,
+										pid: 12,
+										text: "Item122", 
+										cells: [{ text: "Item1221" }, { text: "Item1222" }, { text: "Item1223" }],
+										expanded: false,
+										rows: [
+											{ id: 1221, pid: 122, text: "Item1221", cells: [{ text: "Item12211" }, { text: "Item12212" }, { text: "Item12213" }] },
+											{ id: 1222, pid: 122, text: "Item1222", cells: [{ text: "Item12221" }, { text: "Item12222" }, { text: "Item12223" }] }
+										]
+									},
+									{ id: 123, pid: 12, text: "Item123", cells: [{ text: "Item1231" }, { text: "Item1232" }, { text: "Item1233" }] }
+								]
+							},
+							{ id: 13, pid: 1, text: "Item13", cells: [{ text: "Item131" }, { text: "Item132" }, { text: "Item133" }] },
+							{
+								id: 14,
+								pid: 1,
+								text: "Item14",
+								cells: [{ text: "Item141" }, { text: "Item142" }, { text: "Item143" }],
+								expanded: false,
+								rows: [
+									{ id: 141, pid: 14, text: "Item141", cells: [{ text: "Item1411" }, { text: "Item1412" }, { text: "Item1413" }] },
+									{ id: 142, pid: 14, text: "Item142", cells: [{ text: "Item1421" }, { text: "Item1422" }, { text: "Item1423" }] }
+								]
+							}
+						]
+					},
+					{
+						id: 2,
+						text: "Item2",
+						cells: [{ text: "Item21" }, { text: "Item22" }, { text: "Item23" }],
+						rows: [
+							{ id: 21, pid: 2, text: "Item21", cells: [{ text: "Item211" }, { text: "Item212" }, { text: "Item213" }] },
+							{ id: 22, pid: 2, text: "Item22", cells: [{ text: "Item221" }, { text: "Item222" }, { text: "Item223" }] },
+							{
+								id: 23,
+								pid: 2,
+								text: "Item23", 
+								cells: [{ text: "Item231" }, { text: "Item232" }, { text: "Item233" }],
+								expanded: false,
+								rows: [
+									{ id: 231, pid: 23, text: "Item231", cells: [{ text: "Item2311" }, { text: "Item2312" }, { text: "Item2313" }] },
+									{ id: 232, pid: 23, text: "Item232", cells: [{ text: "Item2321" }, { text: "Item2322" }, { text: "Item2323" }] }
+								]
+							}
+						]
+					},
+					{ id: 3, text: "Item3", cells: [{ text: "Item31" }, { text: "Item32" }, { text: "Item33" }] }
+				];
+
+				var currentSelectedCell = null;
+
+				$scope.onCellClick = function(e){
+					if (currentSelectedCell)
+						currentSelectedCell.style = null;
+
+					if (e.cell){
+						e.cell.style = {
+							normal: 'cell-selected',
+							hovered: 'cell-selected'
+						}
+
+						currentSelectedCell = e.cell;
+					}
+
+					$gridService.updateView($scope.gridName);
+				}
+			}]);
+    </script>
+    <style type="text/css">
+		.feature-content
+		{
+			width: 750px;
+		}
+
+		/* Grid General */
+		.iui-treegrid-lines-horizontal, .iui-treegrid-row-cell:first-child, .iui-treegrid-row-cell:last-child
+		{
+			border-color: transparent;
+		}
+		.grid-dark
+		{
+			background: #323232;
+			color: white;
+        	width: 700px;
+        	height: 450px;
+		}
+		.grid-dark > .iui-treegrid-block
+		{
+			background: #323232;
+		}
+
+		/* Grid Column */
+		.iui-treegrid-column-header-cell, .iui-treegrid-column-footer-cell
+		{
+			padding: 10px 2px;
+		}
+		.iui-treegrid-column-header
+		{
+			background: transparent;
+			border: thin solid transparent;
+			padding: 0 5px;
+			font-weight: bold;
+		}
+		.iui-treegrid-column-header > div
+		{
+			background: transparent;
+			border: thin solid transparent;
+			border-bottom-color: #8ebae1;
+		}
+		.iui-treegrid-column-header-hovered, .iui-treegrid-column-header-selected
+		{
+			background: transparent !important;
+			border-color: transparent !important;
+		}
+		.iui-treegrid-column-header-selected > div
+		{
+			border-bottom-color: white;
+			color: #3074B1;
+		}
+		.iui-treegrid-column-header-hovered > div
+		{
+			color: #629ed5;
+		}
+
+		/* Grid Row */
+		.iui-treegrid-row-hovered
+		{
+			background-color: transparent;
+		}
+
+		/* Grid Cell */
+		.iui-treegrid-row-cell
+		{
+			padding: 0 5px;
+		}
+		.iui-treegrid-row-cell-content
+		{
+			padding: 7px 2px;
+		}
+		.iui-treegrid-row-cell > div
+		{
+			border: thin solid transparent;
+		}
+		.iui-treegrid-row-selected
+		{
+			background: transparent;
+		}
+		.iui-treegrid-row-cell-hovered > div
+		{
+			background-color: #3174b0;
+		}
+		.cell-selected > div
+		{
+			background-color: #629ed5;
+		}
+
+		/* Grid ScrollBar */
+		.grid-dark .iui-scrollbar-vertical
+		{
+			background-color: #303030;
+			border-left: thin solid #242424;
+		}
+		.grid-dark .iui-scroll-button-thumb-vertical, .grid-dark .iui-scroll-button-thumb-horizontal
+		{
+			background-color: #646464;
+			border: thin solid #484848;
+		}
+		.grid-dark .iui-scroll-button-thumb-vertical:hover, .grid-dark .iui-scroll-button-thumb-horizontal:hover
+		{
+			background-color: #aaaaaa;
+			border-color: #808080;
+		}
+		.grid-dark .iui-scrollbar-horizontal
+		{
+			background-color: #303030;
+			border-top: thin solid #242424;
+		}
+		.grid-dark .iui-scrollbar-corner
+		{
+			background-color: #303030;
+		}
+
+		/* Grid Expand Box */
+		.iui-treegrid-expand-box
+		{
+			background: url(../../../resources/expand-boxes.png) no-repeat 0 0;
+			display: inline-block;
+			margin-right: 2px;
+			width: 16px;
+			height: 16px;
+			vertical-align: middle;
+		}
+		.iui-treegrid-expand-box-open
+		{
+			background-position: -16px 0;
+		}
+		.iui-treegrid-expand-box-close
+		{
+			background-position: -32px 0;
+		}
+    </style>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span style="color:#c60d0d">IntegralUI</span> Studio <span style="font-size:0.75em; font-style:italic">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content" ng-app="appModule">
+        <div class="feature" ng-controller="appCtrl">
+	        <h2 class="feature-title">Grids / Custom Appearance</h2>
+	        <div class="feature-content">
+	            <div style="display:inline-block">
+	                <iui-treegrid name="{{gridName}}" class="grid-dark" columns="columns" rows="rows" allow-focus="false" grid-lines="'none'" show-footer="false" cell-click="onCellClick(e)"></iui-treegrid>
+                    <br style="clear:both;"/>
+                </div>
+                <div class="feature-help" style="margin:0">
+                    <p><span class="initial-space"></span>An example of a TreeGrid where it appears in dark colors. Appearance of each part of the grid is changed, that includes columns, rows, cells, expand icon and scrollbar.</p>
+                    <p><span class="initial-space"></span>Every part of Grid directive is fully customizable. Although there are multiple themes to choose from, in some cases you may need to change the appearance of specific part of the grid. You can modify either the built-in CSS classes, or create your own custom CSS styles that better suite your application requirements. </p>
+                    <p><span class="initial-space"></span>When using custom CSS classes, you can apply them during run-time by overriding the <span style="color:#c60d0d">controlStyle</span> property of the Grid or TreeGrid directive.</p>
+                    <p style="padding-bottom:30px"><span class="initial-space"></span>For more information check out the source code of this sample, or check out the <a href="cells-different-colors.html">Cells in Different Colors</a> sample.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,139 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>TreeView - Drag Drop</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/jquery.integralui.treeview.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-blue.css" />
+    <script type="text/javascript" src="../../../external/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="../../../external/jquery.ui.core.min.js"></script>
+    <script type="text/javascript" src="../../../external/jquery.ui.widget.min.js"></script>
+    <script type="text/javascript" src="../../../js/jquery.integralui.widget.min.js"></script>
+    <script type="text/javascript" src="../../../js/jquery.integralui.treeview.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $treeLeft = $('#treeview-left').treeview({
+                allowDrag: true,
+                allowDrop: true
+            });
+                
+            $treeRight = $('#treeview-right').treeview({
+                allowDrag: true,
+                allowDrop: true
+            });
+        });
+         
+        function toggleAllowDrag(elem){
+            if (elem === frm.allowDragLeft)
+                $treeLeft.treeview("option", "allowDrag", elem.checked);
+            else if (elem === frm.allowDragRight)
+                $treeRight.treeview("option", "allowDrag", elem.checked);
+        }
+         
+        function toggleAllowDrop(elem){
+            if (elem === frm.allowDropLeft)
+                $treeLeft.treeview("option", "allowDrop", elem.checked);
+            else if (elem === frm.allowDropRight)
+                $treeRight.treeview("option", "allowDrop", elem.checked);
+        }
+    </script>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span style="color:#c60d0d">IntegralUI</span> Studio <span style="font-size:0.75em; font-style:italic">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content">
+        <div class="feature">
+	        <h2 class="feature-title">TreeView / Drag Drop</h2>
+	        <div class="feature-content">
+	            <div style="display:inline-block">
+                    <div id="treeview-left" class="widget" style="width:300px;margin-right:30px">
+                        <ul>
+                            <li><span class="icons books" data-element="icon"></span><span>Books</span>
+                                <ul>
+                                    <li><span class="icons business" data-element="icon"></span><span>Business</span>
+                                        <ul>
+                                            <li><span>Economics</span></li>
+                                            <li data-expanded=false><span class="icons chart" data-element="icon"></span><span>Investing</span></li>
+                                            <li><span>Management</span></li>
+                                        </ul>
+                                    </li>
+                                    <li><span class="icons health" data-element="icon"></span><span>Health</span></li>
+                                    <li><span>Literature</span></li>
+                                    <li data-expanded=false><span class="icons science" data-element="icon"></span><span>Science</span>
+                                        <ul>
+                                            <li><span>Astronomy</span></li>
+                                            <li><span>Mathematics</span></li>
+                                            <li><span>Evolution</span></li>
+                                            <li><span>Nature</span></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li data-expanded=false><span>Electronics</span>
+                                <ul>
+                                    <li><span>Camera</span></li>
+                                    <li><span>Cell Phones</span></li>
+                                    <li><span>Video Game Consoles</span></li>
+                                </ul>
+                            </li>
+                            <li><span class="icons music" data-element="icon"></span><span>Music</span>
+                                <ul>
+                                    <li><span>Blues</span></li>
+                                    <li><span>Classic Rock</span></li>
+                                    <li><span>Pop</span></li>
+                                    <li><span>Jazz</span></li>
+                                </ul>
+                            </li>
+                            <li data-expanded=false><span>Sports</span>
+                                 <ul>
+                                    <li><span>Baseball</span></li>
+                                    <li><span>Martial Arts</span></li>
+                                    <li><span>Running</span></li>
+                                    <li data-expanded=false><span>Tennis</span>
+                                        <ul>
+                                            <li><span>Accessories</span></li>
+                                            <li><span>Balls</span></li>
+                                            <li><span>Racquets</span></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <div id="treeview-right" class="widget" style="width:300px"></div>
+                    <br style="clear:both;"/>
+                </div>
+                <form name="frm">
+                    <div style="display:inline-block; margin-top:20px">
+                        <div style="float:left;width:300px;margin-right:30px" align="center">
+                            <label style="margin-right:30px"><input type="checkbox" name="allowDragLeft" checked="checked" onclick="toggleAllowDrag(this)" /> Allow Drag</label>
+                            <label><input type="checkbox" name="allowDropLeft" checked="checked" onclick="toggleAllowDrop(this)" /> Allow Drop</label>
+                        </div>
+                        <div style="float:left;width:300px;" align="center">
+                            <label style="margin-right:30px"><input type="checkbox" name="allowDragRight" checked="checked" onclick="toggleAllowDrag(this)" /> Allow Drag</label>
+                            <label><input type="checkbox" name="allowDropRight" checked="checked" onclick="toggleAllowDrop(this)" /> Allow Drop</label>
+                        </div>
+                        <br style="clear:both;"/>
+                   </div>
+                </form>
+                <div class="feature-help" style="margin:0">
+                    <p><span class="initial-space"></span>In this sample you can drag-drop items within the same TreeView or from left TreeView to the right TreeView and vice versa. When item is dragged a drop marker is displayed showing the exact location at which dragged item can drop. If the marker is not shown, the drop position is not allowed.</p>
+                    <p><span class="initial-space"></span>While dragging an item over middle space of some target item, a mouse cursor will change showing '+' sign, meaning that if dropped, the item will be added as a child of the target item.</p>
+                    <p><span class="initial-space"></span>By clicking on check boxes, you can change the built-in properties:
+                        <ul class="feature-points">
+                            <li><span style="color:#c60d0d">allowDrag</span> - determines whether items can be dragged</li>
+                            <li><span style="color:#c60d0d">allowDrop</span> - determines whether items can be dropped</li>
+                       </ul>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

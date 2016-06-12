@@ -1,0 +1,65 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>Accordion - Expand On Hover</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/jquery.integralui.accordion.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-blue.css" />
+    <script type="text/javascript" src="../../../external/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="../../../external/jquery.ui.core.min.js"></script>
+    <script type="text/javascript" src="../../../external/jquery.ui.widget.min.js"></script>
+    <script type="text/javascript" src="../../../js/jquery.integralui.widget.min.js"></script>
+    <script type="text/javascript" src="../../../js/jquery.integralui.accordion.min.js"></script>
+    <script type="text/javascript">
+        var $bar = null;
+        $(document).ready(function() {
+            $bar = $('#accordion').accordion({
+                hoverSelection: true
+                });
+        });
+         
+        function toggleHoverSelection(elem){
+            $bar.accordion("option", "hoverSelection", elem.checked);
+        }
+    </script>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span style="color:#c60d0d">IntegralUI</span> Studio <span style="font-size:0.75em; font-style:italic">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content">
+        <div class="feature">
+	        <h2 class="feature-title">Accordion / Expand On Hover</h2>
+	        <div class="feature-content">
+                <div id="accordion" class="widget">
+                    <h3>Art</h3>
+                    <div></div>
+                    <h3>Health</h3>
+                    <div></div>
+                    <h3>Literature</h3>
+                    <div></div>
+                    <h3>Science</h3>
+                    <div></div>
+                </div>
+                <div class="control-panel">
+                    <form name="frm">
+                        <label><input type="checkbox" name="checkIcons" checked="checked" onclick="toggleHoverSelection(this)" /> Allow selection on hover</label><br />
+                    </form>
+                </div>
+                <br style="clear:both;"/>
+                <div class="feature-help">
+                    <p><span class="initial-space"></span>In this sample you can enable selection and expanding of selected group while mouse cursor hovers over group header. By clicking on check box on the right, you can change value of built-in property:</p>
+                     <ul class="feature-points">
+                        <li><span style="color:#c60d0d">hoverSelection</span> - determines whether a group can be selected and expanded when mouse cursor hovers over its header space</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,20 @@
+{  
+  "name": "UB_Alert",  
+  "version": "2.4",
+  "manifest_version":2,  
+  "description": "游族备份系统报警",
+  "permissions": [
+    "http://ubackup.uuzu.com:5000/"
+  ],  
+  "background":
+	{
+  		"scripts":["jquery.min.js","background.js"]
+	},
+  "browser_action": {  
+    "default_icon": "icon.png" ,
+    "default_title": "My Task List"
+  }  
+} 
+
+
+

@@ -1,0 +1,101 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>TabStrip - Icons</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/integralui.tabstrip.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-flat-blue.css" />
+    <script type="text/javascript" src="../../../external/angular.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.tabstrip.min.js"></script>
+    <script type="text/javascript">
+ 		angular
+			.module("appModule", ["integralui"])
+			.controller("appCtrl", ["$scope", "IntegralUITabStripService", function($scope, $ctrlService){
+                $scope.ctrlName = "ctrlSample";
+                $scope.tabs = [
+                    { 
+                        name: 'tab1',
+                        icon: 'library',
+                        text: 'Books',
+                        body: 'Curabitur pretium tincidunt lacus. Nulla gravida orci a odio. Nullam varius, turpis et commodo pharetra, est eros bibendum elit, nec luctus magna felis sollicitudin mauris. Integer in mauris eu nibh euismod gravida. Duis ac tellus et risus vulputate vehicula. Donec lobortis risus a elit. Etiam tempor.'
+                    },
+                    { 
+                        name: 'tab2',
+                        icon: 'album',
+                        text: 'Music',
+                        body: 'Pellentesque malesuada nulla a mi. Duis sapien sem, aliquet nec, commodo eget, consequat quis, neque. Aliquam faucibus, elit ut dictum aliquet, felis nisl adipiscing sapien, sed malesuada diam lacus eget erat. Cras mollis scelerisque nunc. Nullam arcu. Aliquam consequat.'
+                    },
+                    { 
+                        name: 'tab3',
+                        icon: 'star-empty',
+                        text: 'Favorites',
+                        body: 'Fusce convallis, mauris imperdiet gravida bibendum, nisl turpis suscipit mauris, sed placerat ipsum urna sed risus. In convallis tellus a mauris. Curabitur non elit ut libero tristique sodales. Mauris a lacus. Donec mattis semper leo. In hac habitasse platea dictumst.'
+                    }
+                ];
+                
+                $scope.showIcons = true;
+
+                $scope.toggleIcons = function(){
+                    $scope.showIcons = !$scope.showIcons;
+                    $ctrlService.updateLayout($scope.ctrlName);
+                }
+		}]);
+    </script>
+    <style type="text/css">
+        .directive
+        {
+            height: 300px;
+        }
+        button
+        {
+            float: right;
+        }
+        .custom-content
+        {
+            margin: 0;
+            padding: 5px;
+            height: 150px;
+        }
+        .tab-icon
+        {
+            top: 4px;
+            right: 4px;
+        }
+    </style>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span style="color:#c60d0d">IntegralUI</span> Studio <span style="font-size:0.75em; font-style:italic">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content" ng-app="appModule">
+        <div class="feature" ng-controller="appCtrl">
+	        <h2 class="feature-title">TabStrip / Icons</h2>
+	        <div class="feature-content">
+                <iui-tabstrip name="{{ctrlName}}" class="directive" tabs="tabs">
+                    <iui-tab ng-repeat="tab in tabs" name="{{tab.name}}">
+                        <iui-tab-header>
+                            <span class="tab-icon icons-medium {{tab.icon}}" ng-show="showIcons"></span>
+                            <span>{{tab.text}}</span>
+                        </iui-tab-header>
+                        <p class="custom-content">{{tab.body}}</p>
+                    </iui-tab>
+                </iui-tabstrip>
+                <div class="control-panel" align="center" style="width:150px">
+                    <label><input type="checkbox" ng-click="toggleIcons()" checked="checked" /> Show Icons</label><br /><br /><br />
+                </div>
+                <br style="clear:both;"/>
+                <div class="feature-help">
+                    <p><span class="initial-space"></span>In this sample you can show/hide icons for tabs in TabStrip directive. Icons are fully customizable and can be placed in any location within the tab header. In our example icons are placed on the left side.</p>
+                    <p style="padding-bottom:30px"><span class="initial-space"></span>For more information check out the source code of this sample.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

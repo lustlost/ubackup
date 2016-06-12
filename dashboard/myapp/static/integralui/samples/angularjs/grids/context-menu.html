@@ -1,0 +1,218 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>Grids - Context Menu</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/integralui.css" />
+    <link rel="stylesheet" href="../../../css/integralui.contextmenu.css" />
+    <link rel="stylesheet" href="../../../css/integralui.treegrid.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-flat-blue.css" />
+    <script type="text/javascript" src="../../../external/angular.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.lists.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.treegrid.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.contextmenu.min.js"></script>
+    <script type="text/javascript">
+ 		angular
+			.module("appModule", ["integralui"])
+			.controller("appCtrl", ["$scope", "IntegralUITreeGridService", function($scope, $gridService){
+				$scope.gridName = "gridSample";
+
+				// Context menu data for TreeGrid
+				$scope.gridContextMenu = [
+					{ text: "TreeGrid", type: "header" },
+					{ key: 'ADD_COLUMN', text: "Add Column", itemClick: function(e){ return $scope.processMenuItemClicks(e.item); } },
+					{ key: 'ADD_ROOT', text: "Add Row", itemClick: function(e){ return $scope.processMenuItemClicks(e.item); } },
+					{ type: "separator" },
+					{ key: 'CLEAR_ALL', text: "Clear All", itemClick: function(e){ return $scope.processMenuItemClicks(e.item); } }
+				];
+				
+				// Context menu data for Columns
+				$scope.columnContextMenu = [
+					{ text: "Column", type: "header" },
+					{ key: 'ADD_COLUMN', text: "Add Column", itemClick: function(e){ return $scope.processMenuItemClicks(e.item); } },
+					{ key: 'INSERT_COLUMN_BEFORE', text: "Insert Column Before", itemClick: function(e){ return $scope.processMenuItemClicks(e.item); } },
+					{ key: 'INSERT_COLUMN_AFTER', text: "Insert Column After", itemClick: function(e){ return $scope.processMenuItemClicks(e.item); } },
+					{ type: "separator" },
+					{ key: 'REMOVE_COLUMN', text: "Remove Column", itemClick: function(e){ return $scope.processMenuItemClicks(e.item); } }
+				];
+				
+				// Context menu data for Rows
+				$scope.rowContextMenu = [
+					{ text: "Row", type: "header" },
+					{ key: 'ADD_ROW', text: "Add Row", itemClick: function(e){ return $scope.processMenuItemClicks(e.item); } },
+					{ key: 'INSERT_ROW_BEFORE', text: "Insert Row Before", itemClick: function(e){ return $scope.processMenuItemClicks(e.item); } },
+					{ key: 'INSERT_ROW_AFTER', text: "Insert Row After", itemClick: function(e){ return $scope.processMenuItemClicks(e.item); } },
+					{ type: "separator" },
+					{ key: 'REMOVE_ROW', text: "Remove Row", itemClick: function(e){ return $scope.processMenuItemClicks(e.item); } },
+					{ key: 'CLEAR_CHILD', text: "Clear All Children", enabled: false, itemClick: function(e){ return $scope.processMenuItemClicks(e.item); } }
+				];
+
+				// Initial data
+				$scope.columns = [
+					{ id: 1, headerText: "Header1", footerText: "Footer1", width: 200, contextMenu: $scope.columnContextMenu },
+					{ id: 2, headerText: "Header2", footerText: "Footer2", width: 250, contextMenu: $scope.columnContextMenu },
+					{ id: 3, headerText: "Header3", footerText: "Footer3", width: 120, contextMenu: $scope.columnContextMenu }
+				];
+
+				$scope.rows = [
+					{ id: 1, text: "Row1", cells: [{ cid: 1, text: "Item11" },	{ cid: 2, text: "Item12" }, { cid: 3, text: "Item13" }], contextMenu: $scope.rowContextMenu },
+					{ 
+						id: 2, 
+						text: "Row2", 
+						cells: [{ cid: 1, text: "Item21" }, { cid: 2, text: "Item22" }, { cid: 3, text: "Item23" }], 
+						contextMenu: $scope.rowContextMenu,
+						rows: [
+							{ id: 21, text: "Row21", cells: [{ cid: 1, text: "Item211" }, { cid: 2, text: "Item212" }, { cid: 3, text: "Item213" }], contextMenu: $scope.rowContextMenu  },
+						]
+
+					},
+					{ id: 3, text: "Row3", cells: [{ cid: 1, text: "Item31" }, { cid: 2, text: "Item32" }, { cid: 3, text: "Item33" }], contextMenu: $scope.rowContextMenu  }
+				];
+				
+				// Help methods to create a new column and row
+				var colCount = 3;
+				var createNewColumn = function(){
+					colCount++;
+					
+					var column = {
+						id: colCount,
+						headerText: "Header" + colCount,
+						footerText: "Footer" + colCount,
+						contextMenu: $scope.columnContextMenu
+					}
+					
+					return column;
+				}
+
+				var rowCount = 3;
+				var createNewRow = function(){
+					rowCount++;
+					
+					var row = {
+						id: rowCount,
+						text: "Row" + rowCount,
+						cells: [],
+						contextMenu: $scope.rowContextMenu
+					}
+					
+					for (var j = 0; j < $scope.columns.length; j++){
+						row.cells.push({ cid: $scope.columns[j].id, text: "Item" + rowCount + $scope.columns[j].id, contextMenu: $scope.rowContextMenu });
+					}
+
+					return row;
+				}
+				
+				// Different actions depending on which menu option is clicked
+				$scope.processMenuItemClicks = function(item){
+					if (item){
+						var selColumn = $gridService.selectedColumn($scope.gridName);
+						var selRow = $gridService.selectedRow($scope.gridName);
+						
+						switch (item.key){
+							case 'ADD_COLUMN':
+								$gridService.addColumn($scope.gridName, createNewColumn());
+								break;
+								
+							case 'INSERT_COLUMN_BEFORE':
+								$gridService.insertColumnBefore($scope.gridName, createNewColumn(), selColumn);
+								break;
+								
+							case 'INSERT_COLUMN_AFTER':
+								$gridService.insertColumnAfter($scope.gridName, createNewColumn(), selColumn);
+								break;
+								
+							case 'REMOVE_COLUMN':
+								$gridService.removeColumn($scope.gridName, selColumn);
+								break;
+								
+							case 'ADD_ROOT':
+								$gridService.addRow($scope.gridName, createNewRow());
+								break;
+								
+							case 'ADD_ROW':
+								$gridService.addRow($scope.gridName, createNewRow(), selRow);
+								break;
+								
+							case 'INSERT_ROW_BEFORE':
+								$gridService.insertRowBefore($scope.gridName, createNewRow(), selRow);
+								break;
+								
+							case 'INSERT_ROW_AFTER':
+								$gridService.insertRowAfter($scope.gridName, createNewRow(), selRow);
+								break;
+								
+							case 'REMOVE_ROW':
+								$gridService.removeRow($scope.gridName, selRow);
+								break;
+								
+							case 'CLEAR_CHILD':
+								$gridService.clearRows($scope.gridName, selRow);
+								break;
+								
+							case 'CLEAR_ALL':
+								$gridService.clearColumns($scope.gridName);
+								$gridService.clearRows($scope.gridName);
+								
+								colCount = 0;
+								rowCount = 0;
+								break;
+								
+							case 'EDIT_CELL':
+								$gridService.clearRows($scope.gridName);
+								break;
+						}
+					}
+				}
+
+				var isThereChildren = function(row){
+					return row && row.rows && row.rows.length > 0 ? true : false;
+				}
+				
+				$scope.onRowRightClick = function(e){
+					if (e.row){
+						for (var i = 0; i < $scope.rowContextMenu.length; i++){
+							if ($scope.rowContextMenu[i].key === 'CLEAR_CHILD')
+								$scope.rowContextMenu[i].enabled = isThereChildren(e.row);
+						}
+					}
+				}
+		}]);
+    </script>
+    <style type="text/css">
+		.feature-help
+		{
+			width: 800px;
+		}
+		.directive
+		{
+			width: 800px;
+		}
+    </style>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span style="color:#c60d0d">IntegralUI</span> Studio <span style="font-size:0.75em; font-style:italic">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content" ng-app="appModule">
+        <div class="feature" ng-controller="appCtrl">
+	        <h2 class="feature-title">Grids / Context Menu</h2>
+	        <div class="feature-content">
+                <iui-treegrid name="{{gridName}}" class="directive" columns="columns" rows="rows" iui-contextmenu menu-items="gridContextMenu" selection-changed="onSelectionChanged(e)" row-rightclick="onRowRightClick(e)"></iui-treegrid>
+            </div>
+			<br style="clear:both;"/>
+			<div class="feature-help" style="color:black;font-size:0.75em">
+				<p><span class="initial-space"></span>In this sample you can see how to attach context menu to the column, row or TreeGrid component. By using the menu options listed in context menus you can create and modify the tree structure during run-time.</p>
+				<p><span class="initial-space"></span>Context menu is a native AngularJS directive (attribute only), which can be applied to any other directive. In our example only TreeGrid and its columns and rows have their context menu set.</p>
+				<p><span class="initial-space"></span>By right-clicking on some column or row, a context menu will pop-up showing options specific for that column or row. To simplify our example, all columns and rows have the same context menu, but you can apply a different one for a specific column or row, if required. Also you can apply a different context menyu to each cell, but in this demonstration this option is excluded.</p>
+				<p><span class="initial-space"></span>Each column, row or cell has a <span style="color:#c60d0d">contextMenu</span> field, which accepts an array object with all menu options which will appear in context menu when they are clicked using the right mouse button.</p>
+			</div>
+        </div>
+    </div>
+</body>
+</html>

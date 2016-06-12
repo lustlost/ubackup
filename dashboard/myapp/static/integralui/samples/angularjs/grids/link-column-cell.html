@@ -1,0 +1,152 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>Grids - Link between Columns  and Cells</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/integralui.css" />
+    <link rel="stylesheet" href="../../../css/integralui.treegrid.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-flat-blue.css" />
+    <script type="text/javascript" src="../../../external/angular.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.lists.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.treegrid.min.js"></script>
+    <script type="text/javascript">
+ 		angular
+			.module("appModule", ["integralui"])
+			.controller("appCtrl", ["$scope", "IntegralUITreeGridService", "$timeout", function($scope, $gridService, $timeout){
+				$scope.gridName = "gridSample";
+				$scope.sampleRows = [];
+				$scope.defaultIcon = "icons-medium empty-doc";
+
+				$scope.sampleColumns = [
+					{ id: 1, columnTitle: "Customer/Order ID", columnAlignment: "center", size: 180 },
+					{ id: 2, columnTitle: "Ordered", columnAlignment: "center", cellAlignment: "center", size: 90 },
+					{ id: 3, columnTitle: "Shipped", columnAlignment: "center", cellAlignment: "center", size: 90 },
+					{ id: 4, columnTitle: "Ship Via", columnAlignment: "center", size: 125 },
+					{ id: 5, columnTitle: "Freight", columnAlignment: "center", cellAlignment: "right", size: 80 },
+					{ id: 6, columnTitle: "Address", columnAlignment: "center", size: 200 },
+					{ id: 7, columnTitle: "City", columnAlignment: "center" },
+					{ id: 8, columnTitle: "Country", columnAlignment: "center" }
+
+				];
+
+				$scope.flatData = [
+					{ 
+						rowID: 1,
+						icon: "icons-medium people",
+						rowText: "Piccolo und mehr",
+						cells: [{ cid: 1, cellText: "Piccolo und mehr" }, { cid: 6, cellText: "Geislweg 14" }, { cid: 7, cellText: "Salzburg" }, { cid: 8, cellText: "Austria" }]
+					},
+					{ 
+						rowID: 11,
+						parentID: 1,
+						rowText: "Order #10259",
+						cells: [{ cid: 1, cellText: "10259" }, { cid: 2, cellText: "9/13/2012" }, { cid: 3, cellText: "9/27/2012" }, { cid: 4, cellText: "Federal Shipping" }, { cid: 5, cellText: "360.63" }]
+					},
+					{ 
+						rowID: 12,
+						parentID: 1,
+						rowText: "Order #11094",
+						cells: [{ cid: 1, cellText: "11094" }, { cid: 2, cellText: "1/20/2013" }, { cid: 3, cellText: "2/5/2013" }, { cid: 4, cellText: "Federal Shipping" }, { cid: 5, cellText: "200.14" }]
+					},
+					{ 
+						rowID: 2,
+						icon: "icons-medium people",
+						rowText: "Frankenversand",
+						cells: [{ cid: 1, cellText: "Frankenversand" }, { cid: 6, cellText: "Berliner Platz 43" }, { cid: 7, cellText: "München" }, { cid: 8, cellText: "Germany" }]
+					},
+					{ 
+						rowID: 21,
+						parentID: 2,
+						rowText: "Order #11536",
+						cells: [{ cid: 1, cellText: "11536" }, { cid: 2, cellText: "12/9/2013" }, { cid: 3, cellText: "1/7/2014" }, { cid: 4, cellText: "Speedy Express" }, { cid: 5, cellText: "85.53" } ]
+					},
+					{ 
+						rowID: 22,
+						parentID: 2,
+						rowText: "Order #14472",
+						cells: [{ cid: 1, cellText: "14472" }, { cid: 2, cellText: "11/14/2014" }, { cid: 3, cellText: "11/25/2014" }, { cid: 4, cellText: "Speedy Express" }, { cid: 5, cellText: "112.30" } ]
+					},
+					{ 
+						rowID: 3,
+						icon: "icons-medium people",
+						rowText: "Laughing Bacchus Wine Cellars",
+						cells: [{ cid: 1, cellText: "Laughing Bacchus Wine Cellars" }, { cid: 6, cellText: "1900 Oak St." }, { cid: 7, cellText: "Vancouver" }, { cid: 8, cellText: "Canada" }]
+					},
+					{ 
+						rowID: 31,
+						parentID: 3,
+						rowText: "Order #11495",
+						cells: [{ cid: 1, cellText: "11495" }, { cid: 2, cellText: "8/7/2013" }, { cid: 3, cellText: "9/20/2013" }, { cid: 4, cellText: "United Package" }, { cid: 5, cellText: "49.28" } ]
+					}
+				];
+
+				$scope.dataFields = {
+					column: {
+						headerText: 'columnTitle',
+						headerAlignment: 'columnAlignment',
+						contentAlignment: 'cellAlignment',
+						width: 'size'
+					},
+					row: {
+						id: 'rowID',
+						pid: 'parentID',
+						text: 'rowText'
+					},
+					cell: {
+						text: 'cellText'
+					}
+				}
+
+				var loadTimer = $timeout(function(){
+					$gridService.loadData($scope.gridName, $scope.flatData, null, $scope.dataFields, true);
+
+					$timeout.cancel(loadTimer);
+				}, 1);
+			}]);
+    </script>
+    <style type="text/css">
+		.control-panel
+		{
+			width: 170px;
+		}
+		.feature-content
+		{
+			width: 850px;
+		}
+		.feature-list
+		{
+			width: 300px;
+		}
+        .directive
+        {
+        	border: thin solid #cecece;
+        	width: 800px;
+        	height: 300px;
+        }
+    </style>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span class="product-name">IntegralUI</span> Studio <span class="product-platform">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content" ng-app="appModule">
+        <div class="feature" ng-controller="appCtrl">
+	        <h2 class="feature-title">Grids / Link between Columns  and Cells</h2>
+	        <div class="feature-content">
+                <iui-treegrid name="{{gridName}}" class="directive" columns="sampleColumns" rows="sampleRows" row-icon="defaultIcon" show-footer="false" ></iui-treegrid>
+                <br style="clear:both;"/>
+                <div class="feature-help">
+                    <p><span class="initial-space"></span>In this example it is shown how to link columns with cells in TreeGrid, AngularJS. Each cell has a <span style="color:#c60d0d">cid</span> field which is linked to the column <span style="color:#c60d0d">id</span> field. Even if cells are aranged in different order in your code, by setting these links, each cell will appear in corresponding column.</p>
+                    <p><span class="initial-space"></span>You can change the names of thee fields by using custom names set in your code. To see how this can be done, check out the <a href="data-binding.html">Data Bindings</a> sample.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

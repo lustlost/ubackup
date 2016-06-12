@@ -1,0 +1,142 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>TreeView - Fast Load</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/jquery.integralui.treeview.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-blue.css" />
+    <script type="text/javascript" src="../../../external/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="../../../external/jquery.ui.core.min.js"></script>
+    <script type="text/javascript" src="../../../external/jquery.ui.widget.min.js"></script>
+    <script type="text/javascript" src="../../../js/jquery.integralui.widget.min.js"></script>
+    <script type="text/javascript" src="../../../js/jquery.integralui.treeview.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var $tree = $('#treeview').treeview();
+            
+            // Make sure each node has a random set of child items
+            function getRandomNumber(level){
+                var nCount = 1 + Math.floor(Math.random() * 10);
+                
+                if (level === 0)
+                {
+                    if (frm.numLevels.value == 0)
+                        nCount = frm.numItems.value;
+                    else
+                    {
+                        var derivative = 1;
+                        for (var k = 1; k <= frm.numLevels.value; k++)
+                            derivative = (derivative * nCount) + 1;
+
+                        nCount = frm.numItems.value / derivative + 1;
+                        if (nCount < 1000)
+                            nCount = 1000;
+                    }
+                }
+                
+                return nCount;
+            }
+            
+            // Recursive function for adding root and child items to the TreeView
+            var itemCount = 1;
+            function addLarge(parentItem, level){
+                if (level > frm.numLevels.value)
+                    return;
+                    
+                var numChilds = getRandomNumber(level);    
+                for (var i = 0; i < numChilds; i++){
+                    if (itemCount <= frm.numItems.value){
+                        var item = {
+                            text : 'Item ' + itemCount,
+                            id: itemCount,
+                            expanded : false
+                        };
+                            
+                        $tree.treeview('addItem', item, parentItem);
+                        itemCount += 1;
+                    
+                        addLarge(item, level + 1);
+                    }
+                }
+            };
+            
+            function clearList(){
+                $tree.treeview("clearItems");
+                itemCount = 1;
+            }
+            
+            $('#add').click(function(){
+                // Clear the content of TreeView
+                clearList();
+                
+                // Suspend TreeView layotu from updating to increase performance
+                $tree.treeview('suspendLayout');
+                
+                addLarge(null, 0);
+                
+                // Resume and update TreeView layout
+                $tree.treeview('resumeLayout');
+            });
+
+            $('#clear').click(function(e){
+                // Clear the content of TreeView
+                clearList();
+            });
+        });
+    
+    // Only allow numbers to be inserted into numItems and numLevels on the right panel   
+    function isNumberKey(e){
+        var charCode = (e.which) ? e.which : event.keyCode;
+        if (charCode > 31 && (charCode < 48 || charCode > 57))
+            return false;
+            
+        return true;
+    }
+    
+    function maxNumber(elem, maxValue){
+        elem.value = Math.min(elem.value, maxValue);
+    }
+    </script>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span class="product-name">IntegralUI</span> Studio <span class="product-platform">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content">
+        <div class="feature">
+	        <h2 class="feature-title">TreeView / Fast Load</h2>
+	        <div class="feature-content">
+                <div id="treeview" class="widget"></div>
+                <div class="control-panel">
+                    <form name="frm">
+                        <table>
+                            <tr>
+                                <td>Max items: </td>
+                                <td class="align-left"><input type="number" name="numItems" min="1" max="100000" value="10000" onkeypress="return isNumberKey(event)" onkeyup="maxNumber(this, 100000)" style="width:75px" /></td>
+                            </tr>
+                            <tr>
+                                <td>Levels: </td>
+                                <td class="align-left"><input type="number" name="numLevels" min="0" max="100" value="3" onkeypress="return isNumberKey(event)" onkeyup="maxNumber(this, 100)" style="width:75px" /></td>
+                            </tr>
+                        </table>
+                        <div align="center" style="margin-top:20px">
+                            <button type="button" id="add" style="width:65px; margin-right:10px">Add</button>
+                            <button type="button" id="clear" style="width:65px">Clear</button>
+                        </div>
+                    </form>
+                </div>
+                <br style="clear:both;"/>
+                <div class="feature-help">
+                    <p><span class="initial-space"></span>In this sample you can add large set of items to the TreeView. Although there is no limit on how many items you can add, for demonstration purposes we have limited the maximum number of items to 100,000.</p>
+                    <p><span class="initial-space"></span>Using controls in right panel, you can add maximum of 100,000 items with maximum depth of 100 tree levels.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

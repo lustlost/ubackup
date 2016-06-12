@@ -1,0 +1,253 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>TabStrip - Context Menu</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/integralui.tabstrip.css" />
+    <link rel="stylesheet" href="../../../css/integralui.contextmenu.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-flat-blue.css" />
+    <script type="text/javascript" src="../../../external/angular.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.tabstrip.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.contextmenu.min.js"></script>
+    <script type="text/javascript">
+ 		angular
+			.module("appModule", ["integralui"])
+			.controller("appCtrl", ["$scope", "IntegralUITabStripService", function($scope, $ctrlService){
+                $scope.ctrlName = "ctrlSample";
+
+                $scope.ctrlBackground = 'transparent';
+                $scope.ctrlBorder = 'thin solid transparent';
+                $scope.visibleTabs = 3;
+
+                $scope.tabs = [
+                    { 
+                        name: 'tab1',
+                        text: 'Tab 1',
+                        body: 'Curabitur pretium tincidunt lacus. Nulla gravida orci a odio. Nullam varius, turpis et commodo pharetra, est eros bibendum elit, nec luctus magna felis sollicitudin mauris. Integer in mauris eu nibh euismod gravida. Duis ac tellus et risus vulputate vehicula. Donec lobortis risus a elit. Etiam tempor.'
+                    },
+                    { 
+                        name: 'tab2',
+                        text: 'Tab 2',
+                        body: 'Pellentesque malesuada nulla a mi. Duis sapien sem, aliquet nec, commodo eget, consequat quis, neque. Aliquam faucibus, elit ut dictum aliquet, felis nisl adipiscing sapien, sed malesuada diam lacus eget erat. Cras mollis scelerisque nunc. Nullam arcu. Aliquam consequat.'
+                    },
+                    { 
+                        name: 'tab3',
+                        text: 'Tab 3',
+                        body: 'Fusce convallis, mauris imperdiet gravida bibendum, nisl turpis suscipit mauris, sed placerat ipsum urna sed risus. In convallis tellus a mauris. Curabitur non elit ut libero tristique sodales. Mauris a lacus. Donec mattis semper leo. In hac habitasse platea dictumst.'
+                    }
+                ];
+
+                var tabCount = $scope.tabs.length;
+
+                var getCurrentSelection = function(){
+                    return $ctrlService.selectedTab($scope.ctrlName);
+                }
+                
+                var createNewTab = function(){
+                    tabCount++;
+                    return { name: "tab" + tabCount, text: "Tab " + tabCount, body: 'Tab ' + tabCount + " Content" };
+                }
+                
+                var getNextTab = function(tab){
+                    var foundTab = null;
+
+                    var index = $scope.tabs.indexOf(tab);
+                    for (var i = index+1; i < $scope.tabs.length; i++){
+                        if ($scope.tabs[i].visible != false){
+                            foundTab = $scope.tabs[i];
+                            break;
+                        }
+                    }
+
+                    if (!foundTab){
+                        for (var i = index-1; i >= 0; i--){
+                            if ($scope.tabs[i].visible != false){
+                                foundTab = $scope.tabs[i];
+                                break;
+                            }
+                        }
+                    }
+
+                    return foundTab;
+                }
+
+                var defaultMenuItems = [
+                    { text: 'Add Tab', key: 'ADD_TAB' },
+                    { text: 'Insert Tab Before', key: 'INSERT_TAB_BEFORE' },
+                    { text: 'Insert Tab After', key: 'INSERT_TAB_AFTER' },
+                    { text: 'Remove Tab', key: 'REMOVE_TAB', enabled: $scope.visibleTabs > 0 }
+                ];
+
+                var visibilityMenuItems = [];
+
+                var getCheckIcon = function(tab){
+                    return tab.visible != false ? 'icons check-mark' : null;
+                }
+
+                var updateMenu = function(){
+                    $scope.tabMenu.items.length = 0;
+                    $scope.visibleTabs = 0;
+
+                    for (var i = 0; i < defaultMenuItems.length; i++)
+                        $scope.tabMenu.items.push(defaultMenuItems[i]);
+
+                    visibilityMenuItems.length = 0;
+
+                    var menuItem = { type: "separator" };
+                    if ($scope.tabs.length > 0){
+                        $scope.tabMenu.items.push(menuItem);
+
+                        for (var i = 0; i < $scope.tabs.length; i++){
+                            menuItem = { 
+                                icon: getCheckIcon($scope.tabs[i]),
+                                text: $scope.tabs[i].text
+                            }
+
+                            if ($scope.tabs[i].visible != false)
+                                $scope.visibleTabs++;
+
+                            visibilityMenuItems.push(menuItem);
+                            $scope.tabMenu.items.push(menuItem);
+                        }
+                    }
+
+                    $scope.tabMenu.items[1].enabled = $scope.visibleTabs > 0;
+                    $scope.tabMenu.items[2].enabled = $scope.visibleTabs > 0;
+                    $scope.tabMenu.items[3].enabled = $scope.visibleTabs > 0;
+                }
+
+                $scope.tabMenu = {
+                    itemIcon: 'icons empty',
+                    items: [],
+                    itemClick: function(e){
+                        if (e.item){
+                            $ctrlService.suspendLayout($scope.ctrlName);
+
+                            var selTab = getCurrentSelection();
+
+                            switch (e.item.key){
+                                case 'ADD_TAB':
+                                    $ctrlService.addTab($scope.ctrlName, createNewTab());
+                                    break;
+
+                                case 'INSERT_TAB_BEFORE':
+                                    $ctrlService.insertTabBefore($scope.ctrlName, createNewTab(), getCurrentSelection());
+                                    break;
+
+                                case 'INSERT_TAB_AFTER':
+                                    $ctrlService.insertTabAfter($scope.ctrlName, createNewTab(), getCurrentSelection());
+                                    break;
+
+                                case 'REMOVE_TAB':
+                                    $ctrlService.removeTab($scope.ctrlName, getCurrentSelection());
+                                    break;
+
+                                default:
+                                    var index = visibilityMenuItems.indexOf(e.item);
+                                    if (index >= 0 && index < $scope.tabs.length){
+                                        $scope.tabs[index].visible = $scope.tabs[index].visible == undefined ? false : !$scope.tabs[index].visible;
+
+                                        // Make sure correct tab is selected
+                                        if ($scope.tabs[index].visible != false)
+                                            $ctrlService.selectedTab($scope.ctrlName, $scope.tabs[index]);
+                                        else if ($scope.tabs[index] == selTab)
+                                            $ctrlService.selectedTab($scope.ctrlName, getNextTab(selTab));
+                                    }
+                                    break;
+                            }
+
+                            updateMenu();
+
+                            $ctrlService.resumeLayout($scope.ctrlName);
+                        }
+                    }
+                }
+
+                updateMenu();
+
+                $scope.$watch("visibleTabs", function(newValue){
+                    if (newValue == 0){
+                        $scope.ctrlBackground = 'white';
+                        $scope.ctrlBorder = 'thin solid gray';
+                    }
+                    else {
+                        $scope.ctrlBackground = 'transparent';
+                        $scope.ctrlBorder = 'thin solid transparent';
+                    }
+                });
+
+
+                $scope.onTabAdded = function(e){
+                    $ctrlService.selectedTab($scope.ctrlName, e.obj);
+                }
+
+                $scope.onTabRemoved = function(e){
+                    updateMenu();
+                }
+		}]);
+    </script>
+    <style type="text/css">
+        .directive
+        {
+            height: 200px;
+        }
+        .custom-content
+        {
+            margin: 0;
+            padding: 5px;
+        }
+        .iui-contextmenu-block
+        {
+            border-radius: 0;
+            padding: 2px;
+        }
+        .iui-contextmenu-item
+        {
+            width: 140px;
+        }
+        .icons
+        {
+            margin-right: 5px;
+            vertical-align: middle;
+        }
+        .check-mark
+        {
+            background-position: -96px -48px;
+        }
+    </style>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span style="color:#c60d0d">IntegralUI</span> Studio <span style="font-size:0.75em; font-style:italic">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content" ng-app="appModule">
+        <div class="feature" ng-controller="appCtrl">
+	        <h2 class="feature-title">TabStrip / Context Menu</h2>
+	        <div class="feature-content">
+                <iui-tabstrip name="{{ctrlName}}" class="directive" tabs="tabs" iui-contextmenu="tabMenu" tab-added="onTabAdded(e)" tab-removed="onTabRemoved(e)" iui-style="background:{{ctrlBackground}};border:{{ctrlBorder}}">
+                    <iui-tab ng-repeat="tab in tabs" name="{{tab.name}}">
+                        <iui-tab-header iui-contextmenu="tabMenu">
+                            {{tab.text}}
+                        </iui-tab-header>
+                        <p class="custom-content">{{tab.body}}</p>
+                    </iui-tab>
+                </iui-tabstrip>
+                <div class="control-panel" style="margin-left:50px;">
+                </div>
+                <br style="clear:both;"/>
+                <div class="feature-help">
+                    <p><span class="initial-space"></span>In this sample you can see how to attach context menu to the TabStrip and to each tab.</p>
+                    <p><span class="initial-space"></span>By right-clicking on some tab, a context menu will pop-up showing options specific for that tab. To simplify our example, all tabs have the same context menu, but you can apply a different one for a specific tab, if required.</p>
+                    <p><span class="initial-space"></span>We are using the <a href="../menu/context-menu.html">IntergralUI ContextMenu</a> directive to apply a context menu to each tab. This directive accepts an object with all menu options which will appear in context menu when tab is right-clicked.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

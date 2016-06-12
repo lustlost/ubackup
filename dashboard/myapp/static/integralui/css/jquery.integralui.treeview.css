@@ -1,0 +1,172 @@
+.iui-treeview
+{
+	background-color: white;
+	border: solid thin gray;
+	border-radius: 3px;
+	padding: 3px;
+    color: black;
+	cursor: default;
+	overflow: auto;
+	position: relative;
+	
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+}
+.iui-treeview ul
+{
+	margin: 0;
+}
+.iui-treeview > ul
+{
+	padding: 0;
+}
+.iui-treeview-block
+{
+	padding: 0;
+	padding: 0 0 0 15px;
+}
+.iui-treeview-block-rtl
+{
+	direction: rtl;
+}
+.iui-treeview-block-shift-left
+{
+	margin-left: 16px !important;
+}
+.iui-treeview-block-shift-right
+{
+	margin-right: 16px;
+}
+.iui-treeview-item-block
+{
+	padding: 0 0 0 15px;
+}
+.iui-treeview-item-block-rtl
+{
+	padding: 0 15px 0 0;
+}
+
+.iui-treeview-item
+{
+	background: url(../resources/empty.png) no-repeat 0 0;
+	display: block;
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	white-space: nowrap;
+}
+.iui-treeview-item-content
+{
+	border-radius: 3px;
+	margin: 0;
+	vertical-align: middle;
+}
+.iui-treeview-item span
+{
+	vertical-align: middle;
+}
+.iui-treeview-expand
+{
+	background: url(../resources/expand.png) no-repeat 0 5px;
+}
+.iui-treeview-expand-rtl
+{
+	background: url(../resources/expand-rtl.png) no-repeat right 5px;
+}
+.iui-treeview-collapse
+{
+	background: url(../resources/collapse.png) no-repeat 0 2px;
+}
+.iui-treeview-collapse-rtl
+{
+	background: url(../resources/collapse-rtl.png) no-repeat right 2px;
+}
+.iui-treeview-expand-box
+{
+	background: url(../resources/empty.png) no-repeat 0 0;
+	display: inline-block;
+	width: 16px;
+	height: 16px;
+}
+.iui-treeview-expand-box-open
+{
+	background: url(../resources/expand.png) no-repeat 0 0;
+}
+.iui-treeview-expand-box-close
+{
+	background: url(../resources/collapse.png) no-repeat 0 0;
+}
+.iui-treeview-expand-box-open-rtl
+{
+	background: url(../resources/expand-rtl.png) no-repeat 0 0;
+}
+.iui-treeview-expand-box-close-rtl
+{
+	background: url(../resources/collapse-rtl.png) no-repeat 0 0;
+}
+.iui-treeview-drop-marker
+{
+	background: transparent;
+	border:0;
+	height: 6px;
+	margin:0;
+	padding:0;
+	position: absolute;
+	width: 100%;
+}
+.iui-treeview-drop-marker-left
+{
+	background: black;
+	height: 6px;
+	left: 0;
+	margin: 0;
+	padding: 0;
+	position: absolute;
+	top: 0;
+	width: 2px;
+}
+.iui-treeview-drop-marker-middle
+{
+	background: black;
+	height: 2px;
+	left: 0;
+	margin: 0;
+	padding: 0;
+	position: absolute;
+	top:  2px;
+	width: 100%;
+}
+.iui-treeview-drop-marker-right
+{
+	background: black;
+	height: 6px;
+	margin: 0;
+	padding: 0;
+	position:absolute;
+	right: 0;
+	top: 0;
+	width: 2px;
+}
+	
+.cursor-move
+{
+	cursor: url("../resources/cursor-move.png"), default;
+}
+	
+.cursor-add
+{
+	cursor: url("../resources/cursor-add.png"), default;
+}
+	
+.cursor-no-drop
+{
+	cursor: no-drop;
+}
+.iui-treeview-status-icon
+{
+	position: absolute;
+	left: 3px;
+}

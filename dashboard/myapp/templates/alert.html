@@ -1,0 +1,458 @@
+{% raw %}
+<style type="text/css" media="screen">
+
+    .alert {
+        margin: 5px;
+        padding: 5px;
+    }
+
+.differentTable, .differentTable td{
+   border-color: black !important;
+}
+
+    @media (max-width: 1200px) {
+        .modal-dialog {
+            width: 90%;
+            max-width: 100%;
+            height: auto;
+            max-height: 100%;
+            overflow: auto;
+        }
+    }
+
+    @media (min-width: 1200px) {
+        .modal-dialog {
+            width: 90%;
+            max-width: 100%;
+            height: auto;
+            max-height: 100%;
+            overflow: auto;
+        }
+    }
+
+</style>
+
+
+<div class="wrapper wrapper-content animated fadeInRight">
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="panel-body">
+                <div class="panel-group" id="accordion">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#accordion"
+                                   href="tabs_panels.html#collapseThree" class="collapsed" aria-expanded="false">点击配置关注的产品</a>
+                            </h4>
+                        </div>
+                        <div id="collapseThree" class="panel-collapse collapse" aria-expanded="false">
+                            <div class="panel-body">
+                                <div class="">
+                                    <label class="col-sm-2 control-label">
+                                        勾选产品以显示对应产品的报警列表
+                                        <button type="button" class="btn btn-danger" ng-click="select_all()">
+                                            全选
+                                        </button>
+                                        <button type="button" class="btn btn-info" ng-click="select_none()">
+                                            全不选
+                                        </button>
+                                        <button type="button" class="btn btn-success" ng-click="save_focus_business()">
+                                            保存
+                                        </button>
+                                    </label>
+
+                                    <div class="col-sm-10">
+                                        <div class="checkbox-inline"
+                                             ng-repeat="b in business_list track by b.business_id">
+                                            <label>
+                                                <input style="margin-top:2px;" type="checkbox"
+                                                       ng-checked="isSelected(b.business_id)"
+                                                       ng-click="updateSelection($event,b.business_id)" value=""/>{{b.name}}
+                                            </label>
+
+                                        </div>
+                                        <!--<div>-->
+                                        <!--<select multiple="multiple" id="my-select" name="my-select[]" class="searchable">-->
+                                        <!--<option value='b.id' ng-repeat="b in business_list track by b.id">-->
+                                        <!--{{b.name}}-->
+                                        <!--</option>-->
+                                        <!--</select>-->
+                                        <!--</div>-->
+
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12">
+
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>报警列表</h5>
+
+                </div>
+                <div class="ibox-content">
+                    <div class="row m-b-sm m-t-sm">
+                        <div class="col-md-1">
+                            <button type="button" id="loading-example-btn" class="btn btn-white btn-sm"
+                                    ng-click="flush()"><i
+                                    class="fa fa-refresh"></i> {{flush_state}}
+                            </button>
+                        </div>
+
+
+                        <div class="col-md-2">
+                            <input type="text" placeholder="全局搜索" class="input-sm form-control" ng-model="query">
+                        </div>
+
+                        <div class="col-md-1">
+                            <button type="button" class="btn btn-sm btn-primary" ng-click="flush()"> 搜索</button>
+
+                        </div>
+
+                        <div class="col-md-2">
+                            <div class="btn btn-sm btn-white">
+                                <small>总数 :</small>
+                                {{ alerts.length + other_alerts.length }}<i lass="fa fa-bolt"></i>
+
+                                <small>过滤数量 :</small>
+                                {{ alerts_filtered.length + other_alerts_filtered.length}}<i lass="fa fa-bolt"></i>
+
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="project-list table-responsive">
+
+                        <table class="table differentTable table-hover ">
+                            <thead>
+
+
+                            <tr>
+                                <th>
+                                    <div class="th-inner ">操作</div>
+                                    <div class="fht-cell"></div>
+                                </th>
+
+                                <th>
+                                    <div class="th-inner ">名称</div>
+                                    <div class="fht-cell"></div>
+                                </th>
+                                <th data-field="sex" tabindex="0">
+                                    <div class="th-inner ">Server_ID</div>
+                                    <div class="fht-cell"></div>
+                                </th>
+
+                                <th data-field="sex" tabindex="0">
+                                    <div class="th-inner ">IP</div>
+                                    <div class="fht-cell"></div>
+                                </th>
+
+
+                                <th data-field="Score" tabindex="0">
+                                    <div class="th-inner ">类型</div>
+                                    <div class="fht-cell"></div>
+                                </th>
+
+                                <th data-field="Score" tabindex="0">
+                                    <div class="th-inner ">实例号</div>
+                                    <div class="fht-cell"></div>
+                                </th>
+
+                                <th data-field="Score" tabindex="0">
+                                    <div class="th-inner ">业务</div>
+                                    <div class="fht-cell"></div>
+                                </th>
+
+                                <th data-field="Score" tabindex="0">
+                                    <div class="th-inner ">时间</div>
+                                    <div class="fht-cell"></div>
+                                </th>
+
+                                <th tabindex="0">
+                                    <div class="th-inner ">日志</div>
+                                    <div class="fht-cell"></div>
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+
+                            <tr>
+                                <td colspan="9" class="alert alert-danger">关注产品报警:总数{{alerts.length}}
+                                    过滤数量:{{alerts_filtered.length}}
+                                </td>
+                            </tr>
+                            <tr class="alert alert-danger"
+                                ng-repeat="alert in alerts | filter:query  |orderBy:'-game_name'  as alerts_filtered ">
+
+                                <td class="project-status">
+                                    <button ng-click="get_backup_list(alert.server_id,alert.instance,alert.type)"
+                                            data-toggle="modal"
+                                            data-target="#myModal"
+                                            type="button" class="btn btn-sm btn-success">
+                                        备份列表
+                                    </button>
+                                </td>
+
+                                <td class="project-status" style="white-space: nowrap;">
+                                    <span class="alert alert-success th-inner">{{ alert.instance_name || 'unknow' }}</span>
+                                </td>
+
+                                <td class="project-title">
+                                    <span class="label label-info">{{alert.server_id.toString()}}</span>
+                                </td>
+
+                                <td class="project-title">
+                                    <span class="label label-success">{{alert.game_server_ip}}</span>
+                                </td>
+
+
+                                <td class="project-title">
+                                    <span class="label label-waring">{{ alert.type }}</span>
+                                </td>
+
+                                <td class="project-title">
+                                    <span class="label label-white">{{ alert.instance }}</span>
+                                </td>
+
+                                <td class="project-title">
+                                    <span class="label label-primary">{{ alert.game_name }}</span>
+                                </td>
+
+                                <td class="project-title">
+                                    <span class="label label-primary">{{ alert.create_time | date:'MM-dd HH:mm'}}</span>
+                                </td>
+                                <td>
+                                    <span class="label label-danger">{{ alert.log }}</span>
+                                </td>
+
+                            </tr>
+
+                            <tr>
+                                <td colspan="9" class="alert alert-warning">未关注产品: 总数:{{other_alerts.length}}
+                                    过滤数量:{{other_alerts_filtered.length}}
+                                </td>
+                            </tr>
+                            <tr ng-repeat="alert in other_alerts | filter:query  |orderBy:'-game_name'  as other_alerts_filtered ">
+                                <td class="project-status">
+                                    <button ng-click="get_backup_list(alert.server_id,alert.instance,alert.type)"
+                                            data-toggle="modal"
+                                            data-target="#myModal"
+                                            type="button" class="btn btn-sm btn-success">
+                                        备份列表
+                                    </button>
+                                </td>
+
+                                <td class="project-status" style="white-space: nowrap;">
+                                    <span class="alert alert-success">{{ alert.instance_name || 'unknow' }}</span>
+                                </td>
+
+                                <td class="project-title">
+                                    <span class="label label-info">{{alert.server_id}}</span>
+                                </td>
+
+                                <td class="project-title">
+                                    <span class="label label-success">{{alert.game_server_ip}}</span>
+                                </td>
+
+
+                                <td class="project-title">
+                                    <span class="label label-waring">{{ alert.type }}</span>
+                                </td>
+
+                                <td class="project-title">
+                                    <span class="label label-white">{{ alert.instance }}</span>
+                                </td>
+
+                                <td class="project-title">
+                                    <span class="label label-primary">{{ alert.game_name }}</span>
+                                </td>
+
+                                <td class="project-title">
+                                    <span class="label label-primary">{{ alert.create_time | date:'MM-dd HH:mm'}}</span>
+                                </td>
+                                <td>
+                                    <span class="label label-danger">{{ alert.log }}</span>
+                                </td>
+
+                            </tr>
+
+
+                            </tbody>
+
+                        </table>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div id="modal-form" class="modal fade in" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="ibox-title">
+                    <h5>添加业务</h5>
+                </div>
+                <div class="ibox-content">
+                    <form class="form-horizontal m-t" id="commentForm" novalidate="novalidate" name="myForm">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">唯一Key：</label>
+                            <div class="col-sm-8">
+                                <input id="cname" name="name" minlength="2" type="text" class="form-control"
+                                       required=""
+                                       aria-required="true" ng-model="businessform.key">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">名称</label>
+                            <div class="col-sm-8">
+                                <input id="cname" name="name" minlength="2" type="text" class="form-control"
+                                       required=""
+                                       aria-required="true" ng-model="businessform.name">
+                            </div>
+                        </div>
+
+                        <div class="form-group" ng-if="isadd">
+                            <label class="col-sm-3 control-label">类型{{ businessform.isdir }}</label>
+                            <div class="col-sm-8">
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" checked value=1 id="optionsRadios1"
+                                               ng-model="businessform.isdir">目录</label>
+
+                                    <label>
+                                        <input type="radio" value=0 id="optionsRadios2"
+                                               ng-model="businessform.isdir">实例</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-4 col-sm-offset-3">
+                                <button class="btn btn-primary" type="submit" data-dismiss="modal"
+                                        ng-click="addsubmit()">
+                                    提交
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" style="width: auto;"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close"
+                        data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    ServerID:{{backup_server_id}},类型:{{backup_backup_type}},实例号:{{backup_instance}} 备份实例列表(显示最后480个备份)
+                </h4>
+            </div>
+            <div class="modal-body">
+                <center>
+                    <table class="table table-striped table-condensed center table-bordered" style="width: auto; ">
+                        <thead>
+                        <tr>
+                            <th>状态</th>
+                            <th>存储IP</th>
+                            <th>客户端IP</th>
+                            <th>备份时间</th>
+                            <th>Rsync时间</th>
+                            <th>备份名称</th>
+                            <th>备份大小</th>
+                            <th>全备时间</th>
+                            <th>全备名称</th>
+                            <th>日志</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-class="{true: 'success', false: 'danger'}[backup.succeed==1]"
+                            ng-repeat="backup in backup_list">
+                            <td>{{backup.succeed == 1 && '成功' || '失败'}}</td>
+                            <td>{{backup.back_server_ip}}</td>
+                            <td>{{backup.game_server_ip}}</td>
+                            <td>{{backup.create_time | date:'MM-dd HH:mm'}}</td>
+                            <td>{{backup.rsync_time | date:'MM-dd HH:mm'}}</td>
+                            <td>{{backup.filename}}</td>
+                            <td>{{backup.size | bytes}}</td>
+                            <td>{{backup.last_all_time | date:'MM-dd HH:mm'}}</td>
+                            <td>{{backup.last_all_filename}}</td>
+                            <td>{{backup.log}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </center>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default"
+                        data-dismiss="modal">关闭
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+<script>
+    //    setTimeout(function () {
+    //        $(".i-checks").iCheck({checkboxClass: "icheckbox_square-green", radioClass: "iradio_square-green",});
+    //    }, 2 * 1000);//延迟5000毫米
+    $('.searchable').multiSelect({
+        selectableHeader: "<input type='text' class='search-input' autocomplete='off' placeholder='try \"12\"'>",
+        selectionHeader: "<input type='text' class='search-input' autocomplete='off' placeholder='try \"4\"'>",
+        afterInit: function (ms) {
+            var that = this,
+                    $selectableSearch = that.$selectableUl.prev(),
+                    $selectionSearch = that.$selectionUl.prev(),
+                    selectableSearchString = '#' + that.$container.attr('id') + ' .ms-elem-selectable:not(.ms-selected)',
+                    selectionSearchString = '#' + that.$container.attr('id') + ' .ms-elem-selection.ms-selected';
+
+            that.qs1 = $selectableSearch.quicksearch(selectableSearchString)
+                    .on('keydown', function (e) {
+                        if (e.which === 40) {
+                            that.$selectableUl.focus();
+                            return false;
+                        }
+                    });
+
+            that.qs2 = $selectionSearch.quicksearch(selectionSearchString)
+                    .on('keydown', function (e) {
+                        if (e.which == 40) {
+                            that.$selectionUl.focus();
+                            return false;
+                        }
+                    });
+        },
+        afterSelect: function () {
+            this.qs1.cache();
+            this.qs2.cache();
+        },
+        afterDeselect: function () {
+            this.qs1.cache();
+            this.qs2.cache();
+        }
+    });
+
+</script>
+{% endraw %}

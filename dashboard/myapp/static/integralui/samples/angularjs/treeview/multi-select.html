@@ -1,0 +1,138 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>TreeView - Multiple Selection</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/integralui.css" />
+    <link rel="stylesheet" href="../../../css/integralui.treeview.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-flat-blue.css" />
+    <script type="text/javascript" src="../../../external/angular.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.lists.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.treeview.min.js"></script>
+    <script type="text/javascript">
+ 		angular
+			.module("appModule", ["integralui"])
+			.controller("appCtrl", function($scope){
+				$scope.treeName = "treeSample";
+				$scope.selMode = 'multi-extended';
+
+				$scope.data = [
+					{ 
+						id: 1,
+						text: "Item1",
+						items: [
+							{ id: 11, pid: 1, text: "Item11" },
+							{ 
+								id: 12,
+								pid: 1,
+								text: "Item12",
+								items: [
+									{ id: 121, pid: 12, text: "Item121" },
+									{ 
+										id: 122,
+										pid: 12,
+										text: "Item122", 
+										expanded: false,
+										items: [
+											{ id: 1221, pid: 122, text: "Item1221" },
+											{ id: 1222, pid: 122, text: "Item1222" }
+										]
+									},
+									{ id: 123, pid: 12, text: "Item123" },
+									{ id: 124, pid: 12, text: "Item124" },
+									{ id: 125, pid: 12, text: "Item125" }
+								]
+							},
+							{ id: 13, pid: 1, text: "Item13" },
+							{
+								id: 14,
+								pid: 1,
+								text: "Item14", 
+								items: [
+									{ id: 141, pid: 14, text: "Item141" },
+									{ id: 142, pid: 14, text: "Item142" }
+								]
+							}
+						]
+					},
+					{
+						id: 2,
+						text: "Item2",
+						expanded: false,
+						items: [
+							{ id: 21, pid: 2, text: "Item21" },
+							{ id: 22, pid: 2, text: "Item22" },
+							{
+								id: 23,
+								pid: 2,
+								text: "Item23", 
+								expanded: false,
+								items: [
+									{ id: 231, pid: 23, text: "Item231" },
+									{ id: 232, pid: 23, text: "Item232" }
+								]
+							}
+						]
+					},
+					{ id: 3, text: "Item3" },
+					{ id: 4, text: "Item4" },
+					{ id: 5, text: "Item5" },
+					{
+						id: 6,
+						text: "Item6",
+						items: [
+							{ id: 61, pid: 6, text: "Item61" },
+							{ id: 62, pid: 6, text: "Item62" }
+						]
+					},
+					{ id: 7, text: "Item7" }
+				];
+			});
+    </script>
+    <style type="text/css">
+    </style>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span style="color:#c60d0d">IntegralUI</span> Studio <span style="font-size:0.75em; font-style:italic">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content" ng-app="appModule">
+        <div class="feature" ng-controller="appCtrl">
+	        <h2 class="feature-title">TreeView / Multiple Selection</h2>
+	        <div class="feature-content">
+                <iui-treeview name="{{treeName}}" class="directive" items="data" selection-mode="{{selMode}}" ></iui-treeview>
+                <div class="control-panel">
+					<label>Choose Selection Type</label><br /><br />
+					<label><input type="radio" ng-model="selMode" value="none" />None</label><br />
+					<label><input type="radio" ng-model="selMode" value="one" />One</label><br />
+					<label><input type="radio" ng-model="selMode" value="multi-simple" />Multi-Simple</label><br />
+					<label><input type="radio" ng-model="selMode" value="multi-extended" />Multi-Extended</label><br />
+                </div>
+                <br style="clear:both;"/>
+                <div class="feature-help">
+                    <p><span class="initial-space"></span>A demonstration of different selection types available in TreeView directive for AngularJS. By clicking on check box on the right, you can change the built-in property:
+                        <ul class="feature-points">
+                            <li><span style="color:#c60d0d">selectionMode</span> - determines how many items can be selected at the same time and also changes the selection process</li>
+                        </ul>
+                    </p>
+                     <p>There are four acceptable values:
+                        <ul class="feature-points">
+                            <li><span style="color:#c60d0d">'none'</span> - selection is disabled</li>
+                            <li><span style="color:#c60d0d">'one'</span> - Only one item can be selected</li>
+                            <li><span style="color:#c60d0d">'multi-simple'</span> - Multiple items can be selected using mouse clicks or keyboard keys</li>
+                            <li><span style="color:#c60d0d">'multi-extended'</span> - Multiple items can be selected using mouse clicks or keyboard keys, including the SHIFT key</li>
+                        </ul>
+                    </p>
+                    <p>In multi-selection mode, items can become selected using the CTRL key or Arrow keys. Furthermore by pressing the CTRL+SPACE keys, you can select/deselect items. The  <strong>'multi-extended'</strong> mode allows selection of multiple items in wide range. While SHIFT key is pressed, all items from first to last clicked item will become selected.</p>
+               </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

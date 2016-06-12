@@ -1,0 +1,224 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>Grids - Dynamically Add Rows</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/integralui.css" />
+    <link rel="stylesheet" href="../../../css/integralui.treegrid.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-flat-blue.css" />
+    <script type="text/javascript" src="../../../external/angular.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.lists.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.treegrid.min.js"></script>
+    <script type="text/javascript">
+ 		angular
+			.module("appModule", ["integralui"])
+			.controller("appCtrl", ["$scope", "IntegralUITreeGridService", "$timeout", function($scope, $gridService, $timeout){
+				$scope.gridName = "gridSample";
+
+				$scope.columns = [
+					{ headerText: 'Header1', width: 200 },
+					{ headerText: 'Header2', width: 250 },
+					{ headerText: 'Header3', width: 300 }
+				];
+
+				$scope.rows = [
+					{ id: 1, text: "Item1", cells: [{ text: "Item11" }, { text: "Item12" }, { text: "Item13" }] },
+					{ id: 2, text: "Item2",	cells: [{ text: "Item21" }, { text: "Item22" }, { text: "Item23" }]	},
+					{ id: 3, text: "Item3", cells: [{ text: "Item31" }, { text: "Item32" }, { text: "Item33" }] }
+				];
+
+				// Code which updates current selection after item is removed
+				var rowIndex = -1;
+				var parent = null;
+
+				$scope.onRowRemoving = function(e){
+					rowIndex = -1;
+
+					parent = $gridService.getRowParent($scope.gridName, e.obj);
+					var list = $gridService.getList($scope.gridName, parent);
+					if (list && list.length > 0)
+						rowIndex = list.indexOf(e.obj);
+				}
+
+				$scope.onRowRemoved = function(e){
+					var updateTimer = $timeout(function(){
+						var selRow = null;
+						var list = $gridService.getList($scope.gridName, parent);
+
+						if (list && list.length > 0){
+							if (rowIndex == list.length)
+								rowIndex = list.length - 1;
+
+							if (rowIndex >= 0 && rowIndex < list.length){
+								if (rowIndex < list.length)
+									selRow = list[rowIndex];
+								else
+									selRow = list[list.length-1];
+							}
+						}
+						else if (parent)
+							selRow = parent;
+
+						$gridService.selectedRow($scope.gridName, selRow);
+
+						$timeout.cancel(updateTimer);
+					}, 1);
+				}
+
+				var rowCount = 3;
+				var newRow = null;
+
+				$scope.onAddRow = function(){
+					rowCount++;
+
+					newRow = { 
+						id: rowCount, 
+						text: "", 
+						cells: [{ text: "" }, { text: "" }, { text: "" }]
+					}
+
+					$gridService.insertRowAt($scope.gridName, newRow, 0);
+
+					var delayTimer = $timeout(function(){
+						$gridService.openEditor($scope.gridName, newRow.cells[0]);
+
+						$timeout.cancel(delayTimer);
+					}, 100);
+				}
+
+				$scope.onRemoveRow = function(){
+					var selRow = $gridService.selectedRow($scope.gridName);
+					$gridService.removeRow($scope.gridName, selRow);
+				}
+
+				var isRowEmpty = function(row){
+					if (row && row.cells){
+						var emptyCellCount = 0;
+						for (var j = 0; j < row.cells.length; j++){
+							if (row.cells[j].text == '')
+								emptyCellCount++;
+						}
+
+						if (emptyCellCount == row.cells.length)
+							return true;
+					}
+
+					return false;
+				}
+
+				$scope.onLostFocus = function(e){
+					if (e.edit && newRow && isRowEmpty(newRow))
+						$gridService.removeRow($scope.gridName, newRow);
+				}
+
+				$scope.onAfterLabelEdit = function(e){
+					if (e.cell && e.cell.text != ''){
+						var row = $gridService.findRowById($scope.gridName, e.cell.rid);
+						$gridService.selectedRow($scope.gridName, row);
+					}
+				}
+			}]);
+    </script>
+    <style type="text/css">
+		/* TreeGrid settings */
+		.iui-treegrid-column-header-cell, .iui-treegrid-column-footer-cell
+		{
+			padding: 2px 2px;
+		}
+		.iui-treegrid-row-cell-content
+		{
+			padding: 2px 2px;
+		}
+		/* Sample settings */
+		.feature-content
+		{
+			width: 800px;
+		}
+		.feature-list
+		{
+			width: 300px;
+		}
+        .directive
+        {
+        	width: 800px;
+        	height: 390px;
+        }
+	    .top-panel
+	    {
+	    	background: #2455b0;
+	    	padding: 3px;
+	    	margin-bottom: 1px;
+	    }
+	    button
+	    {
+	    	background: transparent;
+	    	border: thin solid transparent;
+	    	color: white;
+	    	padding: 5px 10px;
+	    	display: inline-block;
+			vertical-align: middle;
+	    }
+	    button:hover
+	    {
+			background-color: #153268;
+	    	border: thin solid #0F244A;
+	    }
+	    .icon-add
+	    {
+	    	background: url("../../../resources/icons-x24.png") no-repeat -48px -120px;
+	    	display: inline-block;
+	    	width: 24px;
+	    	height: 24px;
+			vertical-align: middle;
+	    }
+	    .icon-remove
+	    {
+	    	background: url("../../../resources/icons-x24.png") no-repeat -72px -120px;
+	    	display: inline-block;
+	    	width: 24px;
+	    	height: 24px;
+			vertical-align: middle;
+	    }
+    </style>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span class="product-name">IntegralUI</span> Studio <span class="product-platform">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content" ng-app="appModule">
+        <div class="feature" ng-controller="appCtrl">
+	        <h2 class="feature-title">Grids / Dynamically Add Rows</h2>
+	        <div class="feature-content">
+	        	<div class="top-panel">
+	        		<button ng-click="onAddRow()"><span class="icon-add"></span>Add New Row</button>
+	        		<button ng-click="onRemoveRow()"><span class="icon-remove"></span>Remove Row</button>
+	        	</div>
+                <iui-treegrid name="{{gridName}}" class="directive" columns="columns" rows="rows" show-footer="false" row-removing="onRowRemoving(e)" row-removed="onRowRemoved(e)" label-edit="true" lost-focus="onLostFocus(e)" after-label-edit="onAfterLabelEdit(e)"></iui-treegrid>
+                <br style="clear:both;"/>
+                <div class="feature-help">
+                    <p><span class="initial-space"></span>This sample shows how to add new rows dynamically by using an <span style="color:#c60d0d">'Add New Row'</span> button which when clicked, will create a new row with input focus set to a textbox in the first cell. This allows you to quickly add a new row when required, with content set on run-time.</p>
+                    <p><span class="initial-space"></span>When label editor appears, you can enter the value of the editing cell. To confirm the changes, press the ENTER key. This will close the editor. Next using keyboard left or right key, you can move to other cells of the newly added row, and repeat the process. The label editor is activated either by press-holding the left mouse button over a cell, or by pressign the ENTER key.</p>
+                    <p><span class="initial-space"></span>If the row is empty, meanign its cells have empty values, the row will be automatically removed, when label editor losses its focus.</p>
+                    <p><span class="initial-space"></span>In this example, the following methods and events are used:</p>
+                        <ul class="feature-points">
+                            <li><span style="color:#c60d0d">insertRowAt</span> - inserts a new row at specified position</li>
+                            <li><span style="color:#c60d0d">openEditor</span> - opens the editor for specified cell</li>
+                            <li><span style="color:#c60d0d">removeRow</span> - removes a specified row</li>
+                            <li><span style="color:#c60d0d">lostFocus</span> - occurs when editor or cell loses teh input focus</li>
+                            <li><span style="color:#c60d0d">afterLabelEdit</span> - occurs when after label editing is completed</li>
+                        </ul>
+                    </p>
+                    <p><span class="initial-space"></span>For more information check out the source code of this sample.</p>
+                    <br />
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

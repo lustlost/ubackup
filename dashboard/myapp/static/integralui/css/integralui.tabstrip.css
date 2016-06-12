@@ -1,0 +1,198 @@
+.iui-tabstrip
+{
+	background-color: transparent;
+	border: 0;
+	cursor: default;
+	overflow: hidden;
+	padding: 0;
+	position: relative;
+}
+
+.iui-tabstrip ul
+{
+	position: absolute;
+	list-style: none;
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	white-space: nowrap;
+}
+
+.iui-tabstrip-tab-header, .iui-tab-header
+{
+	position: absolute;
+	display: inline-block;
+	list-style: none;
+	margin: 0;
+	overflow: hidden;
+	padding: 5px 7px 5px 5px;
+	z-index: 0;
+	opacity: 0;
+}
+
+.iui-tabstrip-tab-header-top, .iui-tab-header-top
+{
+	border-radius: 5px 5px 0 0;
+}
+.iui-tabstrip-tab-header-right, .iui-tab-header-right
+{
+	border-radius: 0 5px 5px 0;
+}
+.iui-tabstrip-tab-header-bottom, .iui-tab-header-bottom
+{
+	border-radius: 0 0 5px 5px;
+}
+.iui-tabstrip-tab-header-left, .iui-tab-header-left
+{
+	border-radius: 5px 0 0 5px;
+}
+.iui-tabstrip-tab-selected, .iui-tab-header-selected
+{
+	z-index: 2;
+}
+.iui-tabstrip2 > div:not(.iui-tabstrip-nav-buttons), .iui-tab-content
+{
+	border: thin solid gray;
+	margin:0;
+	padding: 5px;
+	z-index: 1;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+.iui-tab-content
+{
+	display: none;
+}
+.iui-tabstrip-tab-content-top
+{
+	border-radius: 0 0 5px 5px;
+}
+.iui-tabstrip-tab-content-right
+{
+	border-radius: 5px 0 0 5px;
+}
+.iui-tabstrip-tab-content-bottom
+{
+	border-radius: 5px 5px 0 0;
+}
+.iui-tabstrip-tab-content-left
+{
+	border-radius: 0 5px 5px 0;
+}
+.iui-tabstrip-tab-icon
+{
+    position: absolute;
+}
+.iui-tabstrip-nav-buttons, .iui-tabstrip-navigation
+{
+	position: absolute;
+	padding: 3px;
+	margin: 0;
+	
+	background: #f5f5f5;
+	z-index: 3;
+
+	background2: red;
+}
+.iui-tabstrip-navigation-button
+{
+	position: absolute;
+	border: thin solid transparent;
+	display: inline-block;
+	margin: 0;
+	padding: 2px;
+	vertical-align: middle;
+}
+.iui-tabstrip-navigation-button span
+{
+	display: block;
+	width: 16px;
+	height: 16px;
+}
+.iui-tabstrip-nav-buttons span
+{
+	display: inline-block;
+	width: 16px;
+	height: 16px;
+}
+.iui-tabstrip-nav-buttons span:hover, .iui-tabstrip-navigation-button:hover
+{
+	background: white;
+	border: thin solid black;
+}
+
+.iui-tabstrip-nav-button-left
+{
+	background: url(../resources/icons.png) no-repeat -192px 0;
+}
+
+.iui-tabstrip-nav-button-right
+{
+	background: url(../resources/icons.png) no-repeat -208px 0;
+}
+
+.iui-tabstrip-nav-button-up
+{
+	background: url(../resources/icons.png) no-repeat -224px 0;
+}
+
+.iui-tabstrip-nav-button-down
+{
+	background: url(../resources/icons.png) no-repeat -240px 0;
+}
+
+.iui-tabstrip-nav-button-close
+{
+	background: url(../resources/icons.png) no-repeat -176px 0;
+}
+
+
+.iui-tabstrip-navigation-button-left span
+{
+	background: url(../resources/icons.png) no-repeat 0 -96px;
+}
+.iui-tabstrip-navigation-button-right span
+{
+	background: url(../resources/icons.png) no-repeat -16px -96px;
+}
+.iui-tabstrip-navigation-button-up span
+{
+	background: url(../resources/icons.png) no-repeat -32px -96px;
+}
+.iui-tabstrip-navigation-button-down span
+{
+	background: url(../resources/icons.png) no-repeat -48px -96px;
+}
+.iui-tabstrip-navigation-button-close span
+{
+	background: url(../resources/icons.png) no-repeat -64px -96px;
+}
+
+
+/*.iui-tab
+{
+	border: thin solid blue;
+	padding: 1px;
+	margin: 2px 0;
+}
+.iui-tab:first-child
+{
+	margin-top: 0;
+}
+.iui-tab:last-child
+{
+	margin-bottom: 0;
+}
+.iui-tab-header
+{
+	border: thin solid green;
+	padding: 3px;
+	margin: 0;
+}
+.iui-tab-body
+{
+	border: thin solid red;
+	padding: 3px;
+	margin: 0;
+}*/

@@ -1,0 +1,131 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>Accordion - Inline Expand</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/jquery.integralui.accordion.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-blue.css" />
+    <script type="text/javascript" src="../../../external/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="../../../external/jquery.ui.core.min.js"></script>
+    <script type="text/javascript" src="../../../external/jquery.ui.widget.min.js"></script>
+    <script type="text/javascript" src="../../../js/jquery.integralui.widget.min.js"></script>
+    <script type="text/javascript" src="../../../js/jquery.integralui.accordion.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            // Create the content of group panel
+            var generateGroupContent = function(){
+                return "<div class='group-content marker-left'><a href=''>read more</a>Lorem ipsum dolor sit amet ... </div>";
+            }
+
+            // Create an instance of Accordion widget
+            var $bar = $('#accordion').accordion({
+                animationSpeed: 350,
+                expandDirection: 'right',
+                hoverSelection: true,
+                showExpandBox: false
+            });
+            
+            // Suspend the Accordion layout to increase performance
+            $bar.accordion("suspendLayout");
+            
+            $bar.accordion("addGroup", {
+                headerContent: "<div class='caption'>Art</div>",
+                content: generateGroupContent()
+            });
+            $bar.accordion("addGroup", {
+                headerContent: "<div class='caption'>Books</div>",
+                content: generateGroupContent()
+            });
+            $bar.accordion("addGroup", {
+                headerContent: "<div class='caption'>Music</div>",
+                content: generateGroupContent()
+            });
+            $bar.accordion("addGroup", {
+                headerContent: "<div class='caption'>Sports</div>",
+                content: generateGroupContent()
+            });
+            $bar.accordion("addGroup", {
+                headerContent: "<div class='caption'>Tech</div>",
+                content: generateGroupContent()
+            });
+            
+            // Resume and update the layout of Accordion
+            $bar.accordion("resumeLayout");
+        });
+    </script>
+    <style type="text/css">
+    .caption
+    {
+        direction: rtl;
+        display: inline-block;
+        margin: 0;
+        padding: 0 5px;
+        font-size: 1em;
+        font-weight: normal;
+    }
+    .group-content
+    {
+        padding: 5px;
+        position: relative;
+        height: 100%;
+    }
+    .group-content a
+    {
+        float: right;
+        background: green;
+        border: thin solid black;
+        border-radius: 3px;
+        color: white;
+        padding: 0 5px;
+        text-decoration: none;
+    }
+    .widget
+    {
+        width: 650px;
+        height: 33px;
+    }
+    .marker-left::before
+    {
+	    content: "";
+	    border: 5px solid #fefefe;
+	    border-color: transparent #1e4691 transparent transparent;
+	    position: absolute;
+	    top: 11px;
+	    left: -11px;
+    }
+    .marker-left::after
+    {
+	    content: "";
+	    border: 5px solid #fefefe;
+	    border-color: transparent #fefefe transparent transparent;
+	    position: absolute;
+	    top: 11px;
+	    left: -10px;
+    }
+    </style>
+</head>
+<body>
+    <div id="header"></div>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span class="product-name">IntegralUI</span> Studio <span class="product-platform">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content">
+        <div class="feature">
+	        <h2 class="feature-title">Accordion / Inline Expand</h2>
+	        <div class="feature-content">
+                <div id="accordion" class="widget"></div>
+                <br style="clear:both;"/>
+                <div class="feature-help" style="margin-top:150px">
+                    <p><span class="initial-space"></span>A demonstration on how to create groups which expands its content horizontally in single line. Instead of using HTML code, in this exampled all groups are created using JavaScript combined with CSS styles for visual appearance.</p>
+                    <p><span class="initial-space"></span>To expand groups horizontally, the expandDirection property is set to right, this enables expansion of group content from left to right. </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

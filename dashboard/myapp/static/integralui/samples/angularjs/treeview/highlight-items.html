@@ -1,0 +1,218 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>TreeView - How to Highlight Items</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/integralui.css" />
+    <link rel="stylesheet" href="../../../css/integralui.checkbox.css" />
+    <link rel="stylesheet" href="../../../css/integralui.treeview.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-flat-blue.css" />
+    <script type="text/javascript" src="../../../external/angular.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.checkbox.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.lists.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.treeview.min.js"></script>
+    <script type="text/javascript">
+ 		angular
+			.module("appModule", ["integralui"])
+			.controller("appCtrl", ["$scope", "$timeout", "IntegralUITreeViewService", function($scope, $timeout, $treeService){
+				$scope.treeName = "treeSample";
+
+				$scope.data = [
+					{ 
+						id: 1,
+						text: "PC", 
+						items: [
+							{ id: 11, pid: 1, text: "Action", expanded: false,
+								items: [
+									{ id: 111, pid: 11, text: "Diablo 3" },
+									{ id: 112, pid: 11, text: "Gears of War" },
+									{ id: 113, pid: 11, text: "F.E.A.R." },
+									{ id: 114, pid: 11, text: "Path of Exile" },
+									{ id: 115, pid: 11, text: "Grand Theft Auto IV" },
+									{ id: 116, pid: 11, text: "Divine Divinity" },
+									{ id: 117, pid: 11, text: "The Witcher 2" }
+								]
+							},
+							{ id: 12, pid: 1, text: "Driving/Racing", expanded: false,
+								items: [
+									{ id: 121, pid: 12, text: "DiRT 3" },
+									{ id: 122, pid: 12, text: "Ridge Racer Unbounded" },
+									{ id: 123, pid: 12, text: "TrackMania 2" }
+								]
+							},
+							{ id: 13, pid: 1, text: "Role-Playing", expanded: false,
+								items: [
+									{ id: 131, pid: 13, text: "Dark Souls 2" },
+									{ id: 132, pid: 13, text: "Mass Effect 3" },
+									{ id: 133, pid: 13, text: "The Elder Scrolls V: Skyrim" },
+									{ id: 134, pid: 13, text: "Divinity: Original Sin" },
+									{ id: 135, pid: 13, text: "Fallout: New Vegas" }
+								]
+							},
+							{ id: 14, pid: 1, text: "Shooter", expanded: false,
+								items: [
+									{ id: 141, pid: 14, text: "Battlefield: Bad Company 2" },
+									{ id: 142, pid: 14, text: "Call of Duty: Black Ops" },
+									{ id: 143, pid: 14, text: "BioShock Infinite" },
+									{ id: 144, pid: 14, text: "Crysis 2" }
+								]
+							}
+						]
+					},
+					{ 
+						id: 2,
+						text: "Xbox One",
+						expanded: false,
+						items: [
+							{ id: 21, pid: 2, text: "Adventure", expanded: false,
+								items: [
+									{ id: 211, pid: 21, text: "Assassin's Creed IV" },
+									{ id: 212, pid: 21, text: "Tomb Raider" },
+									{ id: 213, pid: 21, text: "Metal Gear Solid V" }
+								]
+							},
+							{ id: 22, pid: 2, text: "Miscellaneous", expanded: false,
+								items: [
+									{ id: 221, pid: 22, text: "Peggle 2" }
+								]
+							},
+							{ id: 23, pid: 2, text: "Sports", expanded: false,
+								items: [
+									{ id: 231, pid: 23, text: "FIFA 14" },
+									{ id: 232, pid: 23, text: "Madden NFL 25" }
+								]
+							}
+						]
+					},
+					{ 
+						id: 3,
+						text: "PlayStation", 
+						expanded: false,
+						items: [
+							{ id: 31, pid: 3, text: "First-Person", expanded: false,
+								items: [
+									{ id: 311, pid: 31, text: "Battlefield 4" },
+									{ id: 312, pid: 31, text: "Call of Duty: Ghosts" },
+									{ id: 313, pid: 31, text: "Killzone: Shadow Fall" }
+								]
+							},
+							{ id: 32, pid: 3, text: "MMO", expanded: false,
+								items: [
+									{ id: 313, pid: 32, text: "Final Fantasy XIV Online" }
+								]
+							},
+							{ id: 33, pid: 3, text: "Platformer", expanded: false,
+								items: [
+									{ id: 331, pid: 33, text: "Rayman Legends" },
+									{ id: 332, pid: 33, text: "Rogue Legacy" },
+									{ id: 333, pid: 33, text: "1001 Spikes" }
+								]
+							}
+						]
+					}
+				];
+				
+				$scope.checkBoxSettings = {
+					style: {
+		 				box: {
+				 			checked: 'checkbox-checked',
+				 			unchecked: 'checkbox-unchecked'
+		 				}
+					}
+				}
+
+				$scope.ctrlStyle = {
+					item: {
+						general: {
+							normal: 'item-normal',
+							hovered: 'item-hover'
+						},
+						content: {
+							normal: 'item-normal',
+							hovered: 'item-hover',
+							selected: 'item-selected'
+						}
+					}
+				}
+
+				// Highlights the item when item is checked
+				$scope.onItemCheckedChanged = function(e){
+					if (e.value)
+						e.item.style = {
+							general: 'item-highlight',
+							content: 'item-highlight'
+						}
+					else
+						e.item.style = 'initial';
+
+					var refreshTimer = $timeout(function(){
+						$treeService.refresh($scope.treeName, e.item);
+
+						$timeout.cancel(refreshTimer);
+					}, 1);
+				}
+
+				var expandTimer = $timeout(function(){
+					$treeService.expand($scope.treeName);
+				}, 1);
+			}]);
+    </script>
+    <style type="text/css">
+    	.item-normal
+    	{
+    		margin: 1px 0;
+    	}
+    	.item-hover
+    	{
+			background: #00aa00;
+			color: white;
+    	}
+    	.item-selected
+    	{
+    		background: transparent;
+    	}
+		.item-highlight
+		{
+			background: #008000;
+			color: white;
+		}
+		.checkbox-checked
+		{
+			border-color: red;
+			color: red;
+		}
+		.checkbox-unchecked
+		{
+			border-color: #000080;
+		}
+    </style>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span style="color:#c60d0d">IntegralUI</span> Studio <span style="font-size:0.75em; font-style:italic">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content" ng-app="appModule">
+        <div class="feature" ng-controller="appCtrl">
+	        <h2 class="feature-title">TreeView / How to Highlight Items</h2>
+	        <div class="feature-content">
+	            <div style="display:inline-block">
+					<iui-treeview name="{{treeName}}" class="directive" items="data" show-check-boxes="true" control-style="ctrlStyle" checkbox-settings="checkBoxSettings" auto-check="true" item-click="onItemClick(e)" item-checked-changed="onItemCheckedChanged(e)" allow-focus="false"></iui-treeview>
+                    <br style="clear:both;"/>
+                </div>
+                <div class="feature-help" style="margin:0">
+                    <p><span class="initial-space"></span>This sample demonstrates how to highlight items in TreeView, whenever a item is checked. Selection of items for this sample is disabled.</p>
+                    <p><span class="initial-space"></span>By default all items have their appearance set by general CSS styles. TreeView has an option to alter the appearance of each column, item or cell by simply overriding these CSS styles, through code. You may also notice that check box has a different appearance: blue border which when checked goes red with red check mark.</p>
+                    <p><span class="initial-space"></span>You can dynamically change the overall appearance of items by simply applying a different CSS class to a specific item, based on its current state. There are 5 different states for a item: disabled, hovered, normal, focused and selected. By default each item is in normal state. As it can be seen from code of this sample, we are are making checked items to become highlighted by simply setting a CSS class.</p>
+                    <p><span class="initial-space"></span>In similar way you can customize the appearance of other parts of TreeView like: expand box, individual cells, column headers or footers, etc.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

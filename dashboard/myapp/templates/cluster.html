@@ -1,0 +1,297 @@
+{% raw %}
+<script type="text/javascript">
+
+</script>
+
+<style type="text/css" media="screen">
+
+    .alert {
+        margin: 5px;
+        padding: 5px;
+    }
+
+
+</style>
+<div class="wrapper wrapper-content animated fadeInRight">
+
+    <div class="row">
+        <div class="col-sm-12">
+
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>
+                        <div class="ibox-tools pull-left">
+                            <button type="button" class="btn btn-primary btn-xs" ng-click="add()" data-toggle="modal"
+                                    href="#modal-form">
+                                添加集群
+                            </button>
+                        </div>
+                    </h5>
+
+                </div>
+                <div class="ibox-content">
+                    <div class="row m-b-sm m-t-sm">
+                        <div class="col-md-1">
+                            <button type="button" id="loading-example-btn" class="btn btn-white btn-sm" ng-click="flush()"><i
+                                    class="fa fa-refresh"></i> {{data_state}}
+                            </button>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="input-group">
+                                <input type="text" placeholder="请输入项目名称" class="input-sm form-control" ng-model="query"> <span
+                                    class="input-group-btn">
+                                        <button type="button" class="btn btn-sm btn-primary"> 搜索</button> </span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2">
+                            <div class="btn btn-sm btn-white">
+                                <small>总数 :</small>
+                                {{ clusterlist.length }}<i lass="fa fa-bolt"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="project-list">
+                        <table class="table table-hover">
+                            <thead>
+
+
+                            <tr>
+                                <th style="" data-field="First" tabindex="0">
+                                    <div class="th-inner ">ID</div>
+                                    <div class="fht-cell"></div>
+                                </th>
+                                <th style="" data-field="First" tabindex="0">
+                                    <div class="th-inner ">名称</div>
+                                    <div class="fht-cell"></div>
+                                </th>
+                                <th style="" data-field="sex" tabindex="0">
+                                    <div class="th-inner ">节点数</div>
+                                    <div class="fht-cell"></div>
+                                </th>
+                                <th style="" data-field="sex" tabindex="0">
+                                    <div class="th-inner ">队列地址</div>
+                                    <div class="fht-cell"></div>
+                                </th>
+
+                                <th style="" data-field="sex" tabindex="0">
+                                    <div class="th-inner ">队列阻塞</div>
+                                    <div class="fht-cell"></div>
+                                </th>
+
+                                <th style="" data-field="Score" tabindex="0">
+                                    <div class="th-inner ">容量</div>
+                                    <div class="fht-cell"></div>
+                                </th>
+
+                                <th style="" data-field="Score" tabindex="0">
+                                    <div class="th-inner ">操作</div>
+                                    <div class="fht-cell"></div>
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            <tr ng-repeat="cluster in clusterlist | filter:query">
+                                <td class="project-status">
+                                    <span class="alert">{{cluster.id}}</span>
+                                </td>
+                                <td class="project-status">
+                                    <span class="alert alert-info">{{cluster.name}}</span>
+                                </td>
+
+                                <td class="project-title">
+                                    <span class="label label-info">{{cluster.nodes.length }}</span>
+                                </td>
+
+                                <td class="project-title">
+                                    <span class="label label-info">{{cluster.queue_address}}</span>
+                                </td>
+                                <td class="project-title">
+                                    <span class="label label-info">{{cluster.queue_size}}</span>
+                                </td>
+
+                                <td class="project-title">
+                                    <div class="progress progress-striped active" style="margin: 1px;">
+                                        <div style="width: {{cluster.used_sum/cluster.size_sum*100}}%" aria-valuemax={{cluster.size_sum}} aria-valuemin="0" aria-valuenow={{cluster.used_sum}}
+                                             role="progressbar" class="progress-bar  {{cluster.used_sum/cluster.size_sum*100>80 && 'progress-bar-warning' || 'progress-bar-success' }}"
+                                             style="min-width: 5em; ">
+                                            {{cluster.used_sum/cluster.size_sum*100| number:0}}%
+
+                                        </div>
+
+                                    </div>
+                                    <span>{{cluster.used_sum/1024 | number:0}}/{{cluster.size_sum/1024| number:0}}  TB</span>
+                                </td>
+
+
+                                <td class="project-title">
+                                    <!--<button class="btn btn-success btn-sm" data-toggle="modal" href="#modal-form2"-->
+                                            <!--ng-click="cpzb_chart()">-->
+                                        <!--<i class="fa fa-folder"></i>产品占比-->
+                                    <!--</button>-->
+                                    <button class="btn btn-info btn-sm" data-toggle="modal" href="#modal-form"
+                                            ng-click="update(cluster)">
+                                        <i class="fa fa-pencil"></i>编辑
+                                    </button>
+                                    <button class="btn btn-danger btn-sm" ng-click="delete(cluster)">
+                                        <i class="fa fa-pencil"></i>删除
+                                    </button>
+
+                                    <button class="btn btn-white btn-sm" ng-click="display_node(cluster)" data-toggle="modal"
+                                    href="#modal-form3">
+                                        <i class="fa fa-folder"></i>节点
+                                    </button>
+
+
+                                </td>
+                            </tr>
+                            </tbody>
+
+                        </table>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div id="modal-form" class="modal fade in" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="ibox-title">
+                    <h5>添加集群</h5>
+                </div>
+                <div class="ibox-content">
+                    <form class="form-horizontal m-t" id="commentForm" novalidate="novalidate" name="myForm">
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">名称</label>
+                            <div class="col-sm-8">
+                                <input id="cname" name="name" minlength="2" type="text" class="form-control" required=""
+                                       aria-required="true" ng-model="name" placeholder="集群名称,类似于:亚马逊区域2">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">队列地址</label>
+                            <div class="col-sm-8">
+                                <input id="cname" name="name" minlength="2" type="text" class="form-control" required=""
+                                       aria-required="true" ng-model="queue_address"
+                                       placeholder="redis队列地址,格式类似于: 192.168.1.2:6379">
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <div class="col-sm-4 col-sm-offset-3">
+                                <button class="btn btn-primary" type="submit" data-dismiss="modal"
+                                        ng-click="addsubmit()">
+                                    提交
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div id="modal-form2" class="modal fade in" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+
+
+                <div class="ibox-content">
+
+                    <div id="cpbt" style="height: 400px;width: 500px;"></div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div id="modal-form3" class="modal fade in" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="ibox-title">
+                    <h5>集群名称:{{the_cluster_name}}</h5>
+                </div>
+
+                <div class="ibox-content">
+
+                     <table class="table table-hover">
+                            <thead>
+
+
+                            <tr>
+                                <th style="" data-field="First" tabindex="0">
+                                    <div class="th-inner ">ID</div>
+                                    <div class="fht-cell"></div>
+                                </th>
+                                <th style="" data-field="First" tabindex="0">
+                                    <div class="th-inner ">IP</div>
+                                    <div class="fht-cell"></div>
+                                </th>
+                                <th style="" data-field="sex" tabindex="0">
+                                    <div class="th-inner ">容量</div>
+                                    <div class="fht-cell"></div>
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            <tr ng-repeat="node in nodelist">
+                                <td class="project-status">
+                                    <span class="alert">{{node.id}}</span>
+                                </td>
+                                <td class="project-status">
+                                    <span class="alert alert-info">{{node.ip}}</span>
+                                </td>
+
+
+                                <td class="project-title">
+                                    <div class="progress progress-striped active" style="margin: 1px;">
+                                        <div style="width: {{node.used/node.size*100}}%" aria-valuemax={{node.size}} aria-valuemin="0" aria-valuenow={{node.used}}
+                                             role="progressbar" class="progress-bar {{ node.used/node.size*100 >80 && 'progress-bar-warning' || 'progress-bar-success'}}"
+                                             style="min-width: 5em; ">
+                                            {{node.used/node.size*100| number:0}}%
+
+                                        </div>
+
+                                    </div>
+                                    <span>{{node.used/1024 | number:1}}/{{node.size/1024| number:1}}  TB</span>
+                                </td>
+
+
+                            </tr>
+                            </tbody>
+
+                        </table>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('#table_id')
+            .removeClass('display')
+            .addClass('table table-striped table-bordered');
+</script>
+{% endraw %}

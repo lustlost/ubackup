@@ -1,0 +1,91 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>CheckBox - Overview</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="../../../css/samples.css" />
+    <link rel="stylesheet" href="../../../css/integralui.checkbox.css" />
+    <link rel="stylesheet" href="../../../css/themes/theme-blue.css" />
+    <script type="text/javascript" src="../../../external/angular.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.min.js"></script>
+    <script type="text/javascript" src="../../../js/angular.integralui.checkbox.min.js"></script>
+    <script type="text/javascript">
+ 		angular
+			.module("appModule", ["integralui"])
+			.controller("appCtrl", function($scope){
+				$scope.ctrlName = "ctrlSample";
+                $scope.ctrlAutoCheck = true;
+                $scope.ctrlEnabled = true;
+                $scope.isRtl = false;
+                $scope.isThreeState = true;
+                $scope.ctrlText = "CheckBox";
+		});
+    </script>
+    <style type="text/css">
+    input
+    {
+        margin: 7px 0;
+    }
+    .directive
+    {
+        float: left;
+    	width: 100px;
+    	height: 25px;
+    }
+    .panel
+    {
+        padding-top: 20px;
+        height: 250px;
+    }
+    .control-panel
+    {
+        padding-left: 20px;
+        width: 250px;
+    }
+    </style>
+</head>
+<body>
+	<div class="header">
+        <div class="header-content">
+		    <h1><span style="color:#c60d0d">IntegralUI</span> Studio <span style="font-size:0.75em; font-style:italic">for Web</span></h1>
+        </div>
+        <hr class="head-separator" />
+    </div>
+    <div class="content" ng-app="appModule">
+        <div class="feature" ng-controller="appCtrl">
+	        <h2 class="feature-title">CheckBox - Overview</h2>
+	        <div class="feature-content">
+                <div class="panel">
+                    <iui-checkbox name="{{ctrlName}}" class="directive" auto-check="ctrlAutoCheck" enabled="ctrlEnabled" three-state="isThreeState" rtl="isRtl">{{ctrlText}}</iui-checkbox>
+                </div>
+                <div class="control-panel">
+                    <label>CheckBox Properties: </label><br /><br />
+                    <label><input type="checkbox" ng-model="ctrlAutoCheck" /> Auto Check</label><br />
+                    <label><input type="checkbox" ng-model="ctrlEnabled" /> Enabled</label><br />
+                    <label><input type="checkbox" ng-model="isRtl" /> RTL</label><br />
+                    <label><input type="checkbox" ng-model="isThreeState" /> Three State</label><br />
+                    <label>Text: <input type="text" ng-model="ctrlText"/></label><br />
+                </div>
+                <br style="clear:both;"/>
+                <div class="feature-help">
+                    <p><span class="initial-space"></span>IntegralUI CheckBox is a native AngularJS directive which acts as a check box component. Using options in right panel, you can check out some of the built-in properties of the CheckBox directive:</p>
+                     <ul class="feature-points">
+                        <li><span style="color:#c60d0d">autoCheck</span> - when true, the state of CheckBox is changed also by clicks on its title</li>
+                        <li><span style="color:#c60d0d">enabled</span> - determines whether the CheckBox is enabled or disabled</li>
+                        <li><span style="color:#c60d0d">rtl</span> - changes the CheckBox layout to left-to-right or right-to-left </li>
+                        <li><span style="color:#c60d0d">threeState</span> - determines whether CheckBox can have two or three state values </li>
+                        <li><span style="color:#c60d0d">text</span> - title of the CheckBox</li>
+                    </ul>
+                    <p style="margin:40px 0 5px 0"><span class="initial-space"></span>Other features:</p>
+                    <ul class="feature-list">
+                        <li><a href="custom-appearance.html">Custom Appearance</a></li>
+                        <li><a href="custom-content.html">Custom Content</a></li>
+                        <li><a href="events.html">Events</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
