@@ -1,0 +1,126 @@
+{% raw %}
+
+<div class="wrapper wrapper-content animated fadeInRight">
+
+    <div class="row">
+        <div class="col-sm-12">
+            <button data-toggle="modal" href="#modal-form" class="btn btn-primary" ng-click="add()">添加分类</button>
+        </div>
+        <br/>
+        <br/>
+        <br/>
+
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+
+                </div>
+
+                <div class="bootstrap-table">
+                    <div class="fixed-table-toolbar"></div>
+                    <div class="fixed-table-container" style="height: auto; padding-bottom: 36px;">
+
+                        <div class="fixed-table-body">
+                            <table data-toggle="table" data-mobile-responsive="true" data-row-style="rowStyle"
+                                   data-height="250" class="table table-hover">
+                                <thead>
+                                <tr>
+                                    <th style="" data-field="First" tabindex="0">
+                                        <div class="th-inner ">ID</div>
+                                        <div class="fht-cell"></div>
+                                    </th>
+                                    <th style="" data-field="First" tabindex="0">
+                                        <div class="th-inner ">名称</div>
+                                        <div class="fht-cell"></div>
+                                    </th>
+                                    <th style="" data-field="First" tabindex="0">
+                                        <div class="th-inner ">业务ID(Game_ID)</div>
+                                        <div class="fht-cell"></div>
+                                    </th>
+                                    <th style="" data-field="First" tabindex="0">
+                                        <div class="th-inner ">操作</div>
+                                        <div class="fht-cell"></div>
+                                    </th>
+
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                <tr data-index="0" ng-repeat="business in business_list">
+                                    <td style="">{{business.id}}</td>
+                                    <td style="">{{business.name}}</td>
+                                    <td style="">{{business.business_id}}</td>
+                                    <td style="">
+                                        <span><button ng-click="update(business)" type="button"
+                                                      class="btn btn-sm btn-warning" data-toggle="modal"
+                                                      href="#modal-form">修改
+                                        </button></span>
+                                        <span><button type="button" class="btn btn-sm btn-danger"
+                                                      ng-click="delete(business)">删除
+                                        </button></span>
+                                    </td>
+                                </tr>
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="fixed-table-footer" style="display: none;">
+                            <table>
+                                <tbody>
+                                <tr></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="fixed-table-pagination" style="display: none;"></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modal-form" class="modal fade in" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="ibox-title">
+                    <h5>添加分类</h5>
+                </div>
+
+                <div class="ibox-content">
+                    <form class="form-horizontal m-t" id="commentForm" novalidate="novalidate">
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">名称：</label>
+                            <div class="col-sm-8">
+                                <input id="cname" name="name" type="text" class="form-control" required=""
+                                       aria-required="true" ng-model="name">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">业务ID(game_id)：</label>
+                            <div class="col-sm-8">
+                                <input id="cname" name="name" type="text" class="form-control" required=""
+                                       aria-required="true" ng-model="business_id">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-4 col-sm-offset-3">
+                                <button class="btn btn-primary" type="submit" data-dismiss="modal"
+                                        ng-click="addsubmit()">提交
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endraw %}
