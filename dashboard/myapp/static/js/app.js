@@ -12,18 +12,6 @@ var Uoc = angular.module('myApp', ['ngRoute', 'ngTreeView', 'ngResource', 'oitoz
             .when('/backup_instance', {templateUrl: '/html/backup_instance', controller: 'backupInstanceController'})
             .when('/alert', {templateUrl: '/html/alert', controller: 'alertController'})
             .when('/statistic', {templateUrl: '/html/statistic', controller: 'statisticController'})
-
-            .when('/uslist', {templateUrl: '/html/uslist', controller: 'usController'})
-            .when('/appmarket', {templateUrl: '/html/appmarket', controller: 'appMarketController'})
-            .when('/agentlist', {templateUrl: '/html/agentlist', controller: 'agentController'})
-            .when('/agentalert', {templateUrl: '/html/agentalert', controller: 'agentalertController'})
-            .when('/business_tree', {templateUrl: '/html/business_tree', controller: 'businesstreeController'})
-            .when('/depapp', {redirectTo: '/depapp/0'})
-            .when('/depapp/:id', {templateUrl: '/html/depapp', controller: 'depAppController'})
-            .when('/tasklog', {templateUrl: '/html/log_list', controller: 'tasklistController'})
-            .when('/task_detail/:task_id', {templateUrl: '/html/log_detail', controller: 'taskdetailController'})
-            .when('/agentversion', {templateUrl: '/html/agentversion', controller: 'agentversionController'})
-            .when('/test', {templateUrl: '/html/test', controller: 'testController'})
             .otherwise({redirectTo: '/index'});
     }])
 .filter('bytes', function() {
