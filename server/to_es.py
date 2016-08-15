@@ -34,7 +34,7 @@ while True:
       message['game_name'] = 'unknow'
     if int(message['rsync_time']) == 0:
       message['rsync_time']=int(time.time())
-    r=requests.post("/uuzubackup/table/"%es_url,data=json.dumps(message))
+    r=requests.post("%s/uuzubackup/table/"%es_url,data=json.dumps(message))
     key=':'.join([str(message['server_id']),str(message['type']),str(message['instance'])])
     if 'interval' in message.keys():
       interval=int(message['interval']+3000)
