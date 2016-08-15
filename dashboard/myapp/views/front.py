@@ -72,5 +72,5 @@ def get_backup_list():
 
     import requests
 
-    b = requests.get("http://ubackup.uuzu.com:9200/uuzubackup/table/_search", data=json.dumps(q_string))
+    b = requests.get("http://127.0.0.1:9200/uuzubackup/table/_search", data=json.dumps(q_string))
     return json.dumps([i['_source'] for i in b.json()['hits']['hits']])
